@@ -1,0 +1,32 @@
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+  padding: 0 1rem;
+}
+
+h3 {
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.section-separator {
+  margin-bottom: 3rem;
+  background: black;
+}
+
+.form {
+  max-width: 500px;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-control img {
+  max-width: 200px;
+  height: 200px;
+}
