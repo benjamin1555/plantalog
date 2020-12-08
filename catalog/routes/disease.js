@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 
 const diseaseController = require('../controllers/disease');
-const uploadImage = require('../middleware/uploadImage');
 const resizeImage = require('../middleware/resizeImage');
 const isAuth = require('../middleware/is-auth');
 const diseaseValidationRules = require('../validations/disease-validations');
@@ -16,7 +15,6 @@ router.post(
   isAuth,
   diseaseValidationRules(),
   validate,
-  uploadImage,
   resizeImage,
   diseaseController.createDisease
 );
@@ -28,7 +26,6 @@ router.put(
   isAuth,
   diseaseValidationRules(),
   validate,
-  uploadImage,
   resizeImage,
   diseaseController.updateDisease
 );

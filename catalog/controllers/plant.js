@@ -1,4 +1,4 @@
-const clearImages = require('../util/clear-images');
+const imagesUtil = require('../util/clear-images');
 const defaultError = require('../util/default-error');
 
 const Plant = require('../models/plant');
@@ -7,7 +7,7 @@ exports.getPlants = async (req, res, next) => {
   try {
     const totalItems = await Plant.find().countDocuments();
     const plants = await Plant.find();
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Plants fetched.',
       plants,
       totalItems
@@ -76,8 +76,8 @@ exports.updatePlant = async (req, res, next) => {
   let imagesUrl = req.body.images;
   try {
     const plant = await findPlant(plantId);
-    if (imagesUrl.normal !== plant.imagesUrl.normal) {
-      clearImages(plant.imagesUrl);
+    if (imagesUrl.regular !== plant.imagesUrl.regular) {
+      imagesUtil.clearImages(plant.imagesUrl);
     }
     plant.species = species;
     plant.variety = variety;
@@ -102,7 +102,7 @@ exports.deletePlant = async (req, res, next) => {
   const plantId = req.params.plantId;
   try {
     const plant = await findPlant(plantId);
-    clearImages(plant.imagesUrl);
+    imagesUtil.clearImages(plant.imagesUrl);
     await Plant.findByIdAndRemove(plantId);
     res.status(200).json({
       message: 'Plant successfully deleted.'

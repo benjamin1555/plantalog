@@ -33,12 +33,13 @@ const resizeImage = async (req, res, next) => {
     makeImage(randomToken, file, 'thumbnail', 'jpeg'),
     makeImage(randomToken, file, 'icon', 'png'),
   ]);
-  
-  req.body.images = { 
+
+  req.body.images = {
     regular: results[0],
     thumbnail: results[1],
     icon: results[2]
    };
+   console.log(req.body.images)
   next();
 };
 

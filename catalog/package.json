@@ -4,7 +4,8 @@
   "description": "Plants catalog API",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm -s run mocha-test",
+    "mocha-test": "mocha './test/**/*tests.js'",
     "start": "nodemon app.js"
   },
   "author": "Benjamin Testé",
@@ -22,6 +23,9 @@
     "sharp": "^0.26.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
+    "sinon": "^9.2.1"
   }
 }

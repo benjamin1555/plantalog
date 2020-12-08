@@ -1,4 +1,4 @@
-const clearImages = require('../util/clear-images');
+const imagesUtil = require('../util/clear-images');
 const defaultError = require('../util/default-error');
 
 const Disease = require('../models/disease');
@@ -58,9 +58,9 @@ exports.updateDisease = async (req, res, next) => {
   let imagesUrl = req.body.images;
   try {
     const disease = await findDisease(diseaseId);
-    if (imagesUrl.normal !== disease.imagesUrl.normal) {
+    if (imagesUrl.regular !== disease.imagesUrl.regular) {
       imagesUrl = req.body.images;
-      clearImages(disease.imagesUrl);
+      imagesUtil.clearImages(disease.imagesUrl);
     }
     disease.name = name;
     disease.symptoms = symptoms;
@@ -80,7 +80,7 @@ exports.deleteDisease = async (req, res, next) => {
   const diseaseId = req.params.diseaseId;
   try {
     const disease = await findDisease(diseaseId);
-    clearImages(disease.imagesUrl);
+    imagesUtil.clearImages(disease.imagesUrl);
     await Disease.findByIdAndRemove(diseaseId);
     res.status(200).json({
       message: 'Disease successfully deleted.'

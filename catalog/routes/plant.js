@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 
 const plantController = require('../controllers/plant');
-const uploadImage = require('../middleware/uploadImage');
 const resizeImage = require('../middleware/resizeImage');
 const isAuth = require('../middleware/is-auth');
 const plantValidationRules = require('../validations/plant-validations');
@@ -16,7 +15,6 @@ router.post(
   isAuth,
   plantValidationRules(),
   validate,
-  uploadImage,
   resizeImage,
   plantController.createPlant
 );
@@ -28,7 +26,6 @@ router.put(
   isAuth,
   plantValidationRules(),
   validate,
-  uploadImage,
   resizeImage,
   plantController.updatePlant
 );

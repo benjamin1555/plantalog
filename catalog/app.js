@@ -10,9 +10,11 @@ const authRouter = require('./routes/auth');
 
 const setHeaders = require('./middleware/setHeaders');
 const errorHandler = require('./middleware/errorHandler');
+const uploadImage = require('./middleware/uploadImage');
 
 const app = express();
 
+app.use(uploadImage);
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
