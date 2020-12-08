@@ -9,6 +9,7 @@ const imagesUtil = require('../util/clear-images');
 describe('==== Disease Controller ====', function() {
   describe('getDiseases()', function() {
     let status, json, res;
+
     beforeEach(function() {
       status = sinon.stub();
       json = sinon.spy();
@@ -243,4 +244,3 @@ describe('==== Disease Controller ====', function() {
     });
   });
 });
-
