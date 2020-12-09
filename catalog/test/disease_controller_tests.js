@@ -76,7 +76,7 @@ describe('==== Disease Controller ====', function() {
 
     it('test_return_201_on_success', async function() {
       await diseaseController.createDisease(req, res, () => {});
-      expect(json.calledOnce).to.be.true;
+      expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(201);
     });
 
