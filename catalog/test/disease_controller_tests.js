@@ -6,16 +6,20 @@ const diseaseController = require('../controllers/disease');
 const testUtil = require('./test_util');
 const imagesUtil = require('../util/clear-images');
 
+
 describe('==== Disease Controller ====', function() {
   describe('getDiseases()', function() {
     let status, json, res;
-
     beforeEach(function() {
+      sinon.stub(Disease, 'find');
       status = sinon.stub();
       json = sinon.spy();
       res = { json, status };
       status.returns(res);
-      sinon.stub(Disease, 'find');
+    });
+
+    afterEach(function() {
+      sinon.restore();
     });
 
     afterEach(function() {
@@ -72,6 +76,7 @@ describe('==== Disease Controller ====', function() {
 
     it('test_return_201_on_success', async function() {
       await diseaseController.createDisease(req, res, () => {});
+      expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(201);
     });
 

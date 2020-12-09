@@ -12,7 +12,6 @@ exports.getDiseases = async (req, res, next) => {
     });
   } catch (err) {
     next(defaultError(err));
-    return err;
   }
 };
 
