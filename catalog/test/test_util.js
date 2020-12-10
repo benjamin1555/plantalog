@@ -1,3 +1,5 @@
+const { updateDisease } = require("../controllers/disease");
+
 const shallowEquality = (obj1, obj2) => {
   const keys1 = Object.keys(obj1);
   const keys2 = Object.keys(obj2);

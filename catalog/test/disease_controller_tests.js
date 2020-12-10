@@ -6,7 +6,6 @@ const diseaseController = require('../controllers/disease');
 const testUtil = require('./test_util');
 const imagesUtil = require('../util/clear-images');
 
-
 describe('==== Disease Controller ====', function() {
   describe('getDiseases()', function() {
     let status, json, res;
