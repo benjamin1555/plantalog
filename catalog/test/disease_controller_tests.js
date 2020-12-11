@@ -258,21 +258,8 @@ describe('==== Disease Controller ====', function() {
       json = sinon.spy();
       res = { json, status };
       status.returns(res);
-      req = {
-        params: {
-          diseaseId: 'fakeId'
-        }
-      };
-      foundDisease = {
-        name: 'disease name',
-        symptoms: 'disease symptoms',
-        imagesUrl: {
-          regular: 'regular_imageUrl',
-          thumbnail: 'thumbnail_imageUrl',
-          icon: 'icon_imageUrl'
-        },
-        treatment: 'disease treatment'
-      };
+      req = testUtil.findDiseaseReq;
+      foundDisease = testUtil.foundDiseaseObj;
     });
 
     afterEach(function() {
