@@ -247,4 +247,71 @@ describe('==== Disease Controller ====', function() {
       expect(next.args[0][0]).to.be.an.instanceof(Error);
     });
   });
+
+  describe('deleteDisease()', function() {
+    let status, json, req, res, foundDisease, findDiseaseStub;
+    beforeEach(async function() {
+      findDiseaseStub = sinon.stub(Disease, 'findById');
+      sinon.stub(Disease, 'findByIdAndRemove');
+      sinon.stub(imagesUtil, 'clearImages');
+      status = sinon.stub();
+      json = sinon.spy();
+      res = { json, status };
+      status.returns(res);
+      req = {
+        params: {
+          diseaseId: 'fakeId'
+        }
+      };
+      foundDisease = {
+        name: 'disease name',
+        symptoms: 'disease symptoms',
+        imagesUrl: {
+          regular: 'regular_imageUrl',
+          thumbnail: 'thumbnail_imageUrl',
+          icon: 'icon_imageUrl'
+        },
+        treatment: 'disease treatment'
+      };
+    });
+
+    afterEach(function() {
+      sinon.restore();
+    });
+
+    it('test_return_200_on_success', async function() {
+      findDiseaseStub.returns(foundDisease);
+      await diseaseController.deleteDisease(req, res, () => {});
+      expect(status.calledOnce).to.be.true;
+      expect(status.args[0][0]).to.equal(200);
+    });
+
+    it('test_body_contains_message', async function() {
+      findDiseaseStub.returns(foundDisease);
+      await diseaseController.deleteDisease(req, res, () => {});
+      expect(json.calledOnce).to.be.true;
+      expect(json.args[0][0]).to.have.property('message', 'Disease successfully deleted.');
+    });
+
+    it('test_disease_is_removed', async function() {
+      findDiseaseStub.returns(foundDisease);
+      await diseaseController.deleteDisease(req, res, () => {});
+      expect(Disease.findByIdAndRemove.calledOnce).to.be.true;
+    });
+
+    it('test_images_are_removed', async function() {
+      findDiseaseStub.returns(foundDisease);
+      await diseaseController.deleteDisease(req, res, () => {});
+      expect(imagesUtil.clearImages.calledWith(foundDisease.imagesUrl)).to.be.true;
+    });
+
+    it('test_pass_error_on_failure', async function() {
+      const next = sinon.spy();
+      findDiseaseStub.throws;
+      await diseaseController.deleteDisease(req, res, next);
+      expect(next.calledOnce).to.be.true;
+      expect(next.args[0][0]).to.be.an.instanceof(Error);
+    });
+  });
 });
+
