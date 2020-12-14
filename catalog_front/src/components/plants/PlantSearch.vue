@@ -7,10 +7,21 @@
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
       </form>
-      <base-button mode="outline"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
+      <base-button mode="outline" link :to="addPlantLink"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
+      <router-view></router-view>
     </section>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    addPlantLink() {
+      return `${this.$route.path}/ajouter-plante`;
+    }
+  }
+}
+</script>
 
 <style scoped>
 section.search-section {

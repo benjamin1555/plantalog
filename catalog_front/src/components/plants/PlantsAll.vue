@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-button @click="togglePlantsDisplay" mode="outline"><i class="fas fa-angle-double-down"></i>Afficher Tout</base-button>
+    <base-button @click="togglePlantsDisplay" mode="outline"><i :class="plantsDisplayBtnIcon"></i>{{ plantsDisplayBtnText }}</base-button>
     <base-card v-if="displayPlants">
       <p>Nothing to show right now...</p>
     </base-card>
@@ -13,6 +13,14 @@ export default {
     return {
       displayPlants: false
     };
+  },
+  computed: {
+    plantsDisplayBtnText() {
+      return this.displayPlants ? 'Masquer' : 'Afficher Tout'
+    },
+    plantsDisplayBtnIcon() {
+      return this.displayPlants ? 'fas fa-angle-double-up' : 'fas fa-angle-double-down'
+    }
   },
   methods: {
     togglePlantsDisplay() {

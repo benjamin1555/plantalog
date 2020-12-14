@@ -10,6 +10,5 @@
   border-radius: 3px;
   padding: 1rem;
   margin: 2rem 0;
-  max-width: 60rem;
 }
 </style>

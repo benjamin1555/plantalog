@@ -1,0 +1,204 @@
+<template>
+  <form @submit.prevent="submitForm">
+    <div class="form-control" :class="{ invalid: !species.isValid }">
+      <label for="species">Espèce</label>
+      <input type="text" id="species" v-model.trim="species.val" @blur="clearInvalidField('species')">
+      <p v-if="!species.isValid">L'espèce doit être renseignée.</p>
+    </div>
+    <div class="form-control">
+      <label for="variety">Variété</label>
+      <input type="text" id="variety" v-model.trim="variety.val">
+    </div>
+    <div class="form-control">
+      <label for="image">Image</label>
+      <input type="file" id="image" ref="image" @change="selectImage">
+    </div>
+    <div class="form-control" :class="{ invalid: !plantationType.isValid }">
+      <label for="plantationType">Type de plantation</label>
+      <input type="text" id="plantationType" v-model.trim="plantationType.val" @blur="clearInvalidField('plantationType')">
+      <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
+    </div>
+    <div class="dates">
+      <div class="form-control plant-date" :class="{ invalid: !plantationDate.isValid }">
+        <label for="plantationDate">Date de plantation</label>
+        <input type="date" id="plantationDate" v-model.trim="plantationDate.val" @blur="clearInvalidField('plantationDate')">
+        <p v-if="!plantationDate.isValid">La date de plantation doit être renseignée.</p>
+      </div>
+      <div class="form-control harvest-date">
+        <label for="harvestDate">Date de récolte</label>
+        <input type="date" id="harvestDate" v-model.number="harvestDate.val">
+      </div>
+    </div>
+    <div class="form-control">
+      <label for="beneficialInteractions">Intéractions bénéfiques</label>
+      <input type="calendar" id="beneficialInteractions" v-model.number="beneficialInteractions.val">
+    </div>
+    <div class="form-control">
+      <label for="harmfulInteractions">Intéractions néfastes</label>
+      <input type="calendar" id="harmfulInteractions" v-model.number="harmfulInteractions.val">
+    </div>
+    <div class="form-control">
+      <label for="diseases">Maladies</label>
+      <input type="calendar" id="diseases" v-model.number="diseases.val">
+    </div>
+    <div class="form-control">
+      <label for="notes">Remarques</label>
+      <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
+    </div>
+    <p v-if="!formIsValid" class="invalid">Des champs sont manquants.</p>
+    <base-button>Ajouter Espèce</base-button>
+  </form>
+</template>
+
+<script>
+export default {
+  emits: ['save-data'],
+  data() {
+    return {
+      species: {
+        val: '',
+        isValid: true
+      },
+      variety: {
+        val: ''
+      },
+      image: {
+        val: ''
+      },
+      plantationType: {
+        val: '',
+        isValid: true
+      },
+      plantationDate: {
+        val: '',
+        isValid: true
+      },
+      harvestDate: {
+        val: ''
+      },
+      beneficialInteractions: {
+        val: ''
+      },
+      harmfulInteractions: {
+        val: ''
+      },
+      diseases: {
+        val: ''
+      },
+      notes: {
+        val: ''
+      },
+      formIsValid: true
+    };
+  },
+  methods: {
+    clearInvalidField(input) {
+      this[input].isValid = true;
+    },
+    validateForm() {
+      this.formIsValid = true;
+      if (this.species.val === '') {
+        this.species.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.plantationType.val === '') {
+        this.plantationType.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.plantationDate.val === '') {
+        this.plantationDate.isValid = false;
+        this.formIsValid = false;
+      }
+    },
+    selectImage() {
+      this.image = this.$refs.image.files[0];
+    },
+    submitForm() {
+      this.validateForm();
+
+      if (!this.formIsValid) return;
+
+      const formData = {
+        species: this.species.val,
+        variety: this.variety.val,
+        plantationType: this.plantationType.val,
+        plantationDate: this.plantationDate.val,
+        harvestDate: this.harvestDate.val,
+        beneficialInteractions: this.beneficialInteractions.val,
+        harmfulInteractions: this.harmfulInteractions.val,
+        diseases: this.diseases.val,
+        notes: this.notes.val
+      };
+      this.$emit('save-data', formData);
+    }
+  }
+}
+</script>
+
+<style scoped>
+.form-control {
+  margin: 0.5rem 0;
+}
+
+.dates {
+  display: flex;
+}
+
+.dates .plant-date {
+  margin-right: 2rem;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+input[type='checkbox'] + label {
+  font-weight: normal;
+  display: inline;
+  margin: 0 0 0 0.5rem;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  font: inherit;
+}
+
+input:focus,
+textarea:focus {
+  background-color: #f0e6fd;
+  outline: none;
+  border-color: #3d008d;
+}
+
+input[type='checkbox'] {
+  display: inline;
+  width: auto;
+  border: none;
+}
+
+input[type='checkbox']:focus {
+  outline: #3d008d solid 1px;
+}
+
+h3 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.invalid label,
+.invalid p,
+.invalid h3,
+p.invalid {
+  color: red;
+}
+
+.invalid input,
+.invalid textarea {
+  border: 1px solid red;
+}
+</style>
