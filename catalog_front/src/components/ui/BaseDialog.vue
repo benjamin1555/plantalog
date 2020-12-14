@@ -6,16 +6,16 @@
         <header>
           <slot name="header">
             <h2>{{ title }}</h2>
+            <menu v-if="!fixed">
+              <slot name="actions">
+                <base-button @click="tryClose"><i class="fas fa-times"></i></base-button>
+              </slot>
+            </menu>
           </slot>
         </header>
         <section>
           <slot></slot>
         </section>
-        <menu v-if="!fixed">
-          <slot name="actions">
-            <base-button @click="tryClose">Close</base-button>
-          </slot>
-        </menu>
       </dialog>
     </transition>
   </teleport>
@@ -63,28 +63,40 @@ export default {
 
 dialog {
   position: fixed;
-  top: 20vh;
+  top: 5vh;
   left: 10%;
   width: 80%;
   z-index: 100;
-  border-radius: 12px;
+  border-radius: 4px;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   padding: 0;
   margin: 0;
-  overflow: hidden;
   background-color: white;
+  max-height: calc(100vh - 5vh);
+    overflow-y: auto;
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #3a0061;
   color: white;
   width: 100%;
-  padding: 1rem;
+  padding-left: 1rem;
 }
 
 header h2 {
   margin: 0;
+}
+
+header i {
+  opacity: 0.7;
+}
+
+header button:hover i {
+  opacity: 1;
 }
 
 section {
