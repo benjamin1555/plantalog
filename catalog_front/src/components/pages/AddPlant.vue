@@ -1,5 +1,9 @@
 <template>
-  <base-dialog :show="formVisible" title="Ajouter Une Espèce" @close="redirectToCatalog">
+  <base-dialog
+    :show="formVisible"
+    title="Ajouter Une Espèce"
+    @close="redirectToCatalog"
+    @submit-data="addPlant">
     <plant-form></plant-form>
   </base-dialog>
 </template>
@@ -20,6 +24,9 @@ export default {
     redirectToCatalog() {
       this.formVisible = false;
       this.$router.replace('/catalogue');
+    },
+    addPlant(data) {
+      console.log(data);
     }
   }
 }
