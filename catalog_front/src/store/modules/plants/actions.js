@@ -7,5 +7,9 @@ export default {
       return plant.species.match(new RegExp(regexp));
     });
     context.commit('searchPlant', results);
+  },
+  addPlant(context, data) {
+    context;
+    console.log(data);
   }
 };

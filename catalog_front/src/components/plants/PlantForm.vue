@@ -67,7 +67,7 @@ export default {
   components: {
     AddPlantAttributes
   },
-  emits: ['save-data'],
+  emits: ['submit-data'],
   data() {
     return {
       species: {
@@ -155,8 +155,7 @@ export default {
         diseases: this.diseases,
         notes: this.notes.val
       };
-      console.log(formData);
-      this.$emit('save-data', formData);
+      this.$emit('submit-data', formData);
     }
   }
 }
