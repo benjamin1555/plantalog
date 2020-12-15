@@ -30,12 +30,22 @@
       </div>
     </div>
     <div class="form-control">
-      <label for="beneficialInteractions">Intéractions bénéfiques</label>
-      <input type="calendar" id="beneficialInteractions" v-model.number="beneficialInteractions.val">
+      <label for="beneficialInteractions">Interactions bénéfiques</label>
+      <add-plant-attributes
+        attributeName="beneficialInteractions"
+        default-option="interaction bénéfique"
+        :attributes-list="getAllPlants"
+        @get-selected-values="setBeneficialInteractions"
+      ></add-plant-attributes>
     </div>
     <div class="form-control">
-      <label for="harmfulInteractions">Intéractions néfastes</label>
-      <input type="calendar" id="harmfulInteractions" v-model.number="harmfulInteractions.val">
+      <label for="harmfulInteractions">Interactions néfastes</label>
+      <add-plant-attributes
+        attributeName="harmfulInteractions"
+        default-option="interaction néfaste"
+        :attributes-list="getAllPlants"
+        @get-selected-values="setHarmfulInteractions"
+      ></add-plant-attributes>
     </div>
     <div class="form-control">
       <label for="diseases">Maladies</label>
@@ -51,7 +61,12 @@
 </template>
 
 <script>
+import AddPlantAttributes from './AddPlantAttributes.vue';
+
 export default {
+  components: {
+    AddPlantAttributes
+  },
   emits: ['save-data'],
   data() {
     return {
@@ -77,19 +92,24 @@ export default {
         val: ''
       },
       beneficialInteractions: {
-        val: ''
+        val: []
       },
       harmfulInteractions: {
-        val: ''
+        val: []
       },
       diseases: {
-        val: ''
+        val: []
       },
       notes: {
         val: ''
       },
       formIsValid: true
     };
+  },
+  computed: {
+    getAllPlants() {
+      return this.$store.getters['plants/sortedPlants'];
+    }
   },
   methods: {
     clearInvalidField(input) {
@@ -113,6 +133,12 @@ export default {
     selectImage() {
       this.image = this.$refs.image.files[0];
     },
+    setBeneficialInteractions(interactions) {
+      this.beneficialInteractions = interactions;
+    },
+    setHarmfulInteractions(interactions) {
+      this.harmfulInteractions = interactions;
+    },
     submitForm() {
       this.validateForm();
 
@@ -124,11 +150,12 @@ export default {
         plantationType: this.plantationType.val,
         plantationDate: this.plantationDate.val,
         harvestDate: this.harvestDate.val,
-        beneficialInteractions: this.beneficialInteractions.val,
-        harmfulInteractions: this.harmfulInteractions.val,
-        diseases: this.diseases.val,
+        beneficialInteractions: this.beneficialInteractions,
+        harmfulInteractions: this.harmfulInteractions,
+        diseases: this.diseases,
         notes: this.notes.val
       };
+      console.log(formData);
       this.$emit('save-data', formData);
     }
   }
@@ -149,7 +176,7 @@ export default {
 }
 
 label {
-  font-weight: bold;
+  font-weight: 300;
   display: block;
   margin-bottom: 0.5rem;
 }
@@ -161,7 +188,8 @@ input[type='checkbox'] + label {
 }
 
 input,
-textarea {
+textarea,
+select {
   display: block;
   width: 100%;
   border: 1px solid #ccc;

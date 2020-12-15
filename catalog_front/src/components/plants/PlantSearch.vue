@@ -1,23 +1,45 @@
 <template>
   <div>
     <section class="search-section">
-      <form>
+      <form @submit.prevent="searchPlant">
         <div class="form-control">
-          <input type="text" id="searchInput" placeholder="Rechercher une espèce">
+          <input type="text" ref="searchPlantInput" id="searchInput" placeholder="Rechercher une espèce">
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
       </form>
       <base-button mode="outline" link :to="addPlantLink"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
       <router-view></router-view>
     </section>
+    <plant-search-results :has-searched="hasSearched"></plant-search-results>
   </div>
 </template>
 
 <script>
+import PlantSearchResults from './PlantSearchResults.vue';
+
 export default {
+  components: {
+    PlantSearchResults
+  },
+  data() {
+    return {
+      hasSearched: false
+    }
+  },
   computed: {
     addPlantLink() {
       return `${this.$route.path}/ajouter-plante`;
+    },
+    searched() {
+      return this.hasSearched;
+    }
+  },
+  methods: {
+    searchPlant() {
+      const searchQuery = this.$refs.searchPlantInput.value.toLowerCase().trim();
+      if (!searchQuery) return;
+      this.$store.dispatch('plants/searchPlant', searchQuery);
+      this.hasSearched = true;
     }
   }
 }

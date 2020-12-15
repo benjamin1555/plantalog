@@ -89,6 +89,7 @@ header {
 
 header h2 {
   margin: 0;
+  font-weight: 300;
 }
 
 header i {
