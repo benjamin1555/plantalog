@@ -40,6 +40,7 @@ export default {
       if (!searchQuery) return;
       this.$store.dispatch('plants/searchPlant', searchQuery);
       this.hasSearched = true;
+      this.$refs.searchPlantInput.value = '';
     }
   }
 }

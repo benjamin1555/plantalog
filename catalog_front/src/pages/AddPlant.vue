@@ -2,14 +2,13 @@
   <base-dialog
     :show="formVisible"
     title="Ajouter Une Espèce"
-    @close="redirectToCatalog"
-    @submit-data="addPlant">
-    <plant-form></plant-form>
+    @close="redirectToCatalog">
+    <plant-form @save-data="addPlant"></plant-form>
   </base-dialog>
 </template>
 
 <script>
-import PlantForm from '../plants/PlantForm.vue';
+import PlantForm from '../components/plants/PlantForm.vue';
 
 export default {
   components: {
@@ -26,7 +25,8 @@ export default {
       this.$router.replace('/catalogue');
     },
     addPlant(data) {
-      console.log(data);
+      this.$store.dispatch('plants/addPlant', data);
+      this.$router.replace('/catalogue');
     }
   }
 }

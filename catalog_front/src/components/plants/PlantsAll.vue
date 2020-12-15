@@ -2,7 +2,8 @@
   <div>
     <base-button @click="togglePlantsDisplay" mode="outline"><i :class="plantsDisplayBtnIcon"></i>{{ plantsDisplayBtnText }}</base-button>
     <base-card v-if="displayPlants">
-      <ul v-if="hasPlants">
+      <base-spinner v-if="isLoading"></base-spinner>
+      <ul v-else-if="!isLoading && hasPlants">
         <h3>Liste des plantes enregistrées</h3>
         <plant-item
           v-for="plant in sortedPlants"
@@ -25,7 +26,8 @@ export default {
   },
   data() {
     return {
-      displayPlants: false
+      displayPlants: false,
+      isLoading: false
     };
   },
   computed: {
@@ -43,8 +45,16 @@ export default {
     }
   },
   methods: {
-    togglePlantsDisplay() {
+    async togglePlantsDisplay() {
       this.displayPlants = !this.displayPlants;
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('plants/fetchPlants');
+        this.isLoading = false
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
+      }
     }
   }
 };
