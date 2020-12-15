@@ -67,7 +67,7 @@ export default {
   components: {
     AddPlantAttributes
   },
-  emits: ['submit-data'],
+  emits: ['save-data'],
   data() {
     return {
       species: {
@@ -145,9 +145,9 @@ export default {
       if (!this.formIsValid) return;
 
       const formData = {
-        species: this.species.val,
-        variety: this.variety.val,
-        plantationType: this.plantationType.val,
+        species: this.species.val.toLowerCase(),
+        variety: this.variety.val.toLowerCase(),
+        plantationType: this.plantationType.val.toLowerCase(),
         plantationDate: this.plantationDate.val,
         harvestDate: this.harvestDate.val,
         beneficialInteractions: this.beneficialInteractions,
@@ -155,7 +155,7 @@ export default {
         diseases: this.diseases,
         notes: this.notes.val
       };
-      this.$emit('submit-data', formData);
+      this.$emit('save-data', formData);
     }
   }
 }

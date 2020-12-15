@@ -11,13 +11,21 @@
 </template>
 
 <script>
-import PlantSearch from '../plants/PlantSearch.vue';
-import PlantsAll from '../plants/PlantsAll.vue';
+import PlantSearch from '../components/plants/PlantSearch.vue';
+import PlantsAll from '../components/plants/PlantsAll.vue';
 
 export default {
   components: {
     PlantSearch,
     PlantsAll
+  },
+  methods: {
+    async loadPlants() {
+      await this.$store.dispatch('plants/fetchPlants');
+    }
+  },
+  created() {
+    this.loadPlants();
   }
 };
 </script>
