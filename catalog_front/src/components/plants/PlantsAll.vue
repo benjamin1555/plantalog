@@ -47,13 +47,16 @@ export default {
   methods: {
     async togglePlantsDisplay() {
       this.displayPlants = !this.displayPlants;
-      this.isLoading = true;
-      try {
-        await this.$store.dispatch('plants/fetchPlants');
-        this.isLoading = false
-      } catch (err) {
-        this.isLoading = false;
-        console.log(err);
+
+      if (this.displayPlants) {
+        this.isLoading = true;
+        try {
+          await this.$store.dispatch('plants/fetchPlants');
+          this.isLoading = false
+        } catch (err) {
+          this.isLoading = false;
+          console.log(err);
+        }
       }
     }
   }
