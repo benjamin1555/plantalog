@@ -78,7 +78,7 @@ export default {
         val: ''
       },
       image: {
-        val: ''
+        val: null
       },
       plantationType: {
         val: '',
@@ -147,6 +147,7 @@ export default {
       const formData = {
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
+        image: this.image,
         plantationType: this.plantationType.val.toLowerCase(),
         plantationDate: this.plantationDate.val,
         harvestDate: this.harvestDate.val,

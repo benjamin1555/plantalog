@@ -7,7 +7,7 @@ exports.getPlants = async (req, res, next) => {
   try {
     const totalItems = await Plant.find().countDocuments();
     const plants = await Plant.find();
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Plants fetched.',
       plants,
       totalItems
