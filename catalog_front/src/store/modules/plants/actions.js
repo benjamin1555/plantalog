@@ -1,5 +1,5 @@
 // #### TEMPORARY - for test purpose only
-const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlbmphbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmYzNjNmQ3MDBiNzcwYjRjYjI2ZGUyNiIsImlhdCI6MTYwODA3OTMzMSwiZXhwIjoxNjA4MDgyOTMxfQ.ztfbrPfxfDHiTf7M0gQSElUBaE8Tv5NZB9ETJPMdoZ4';
+const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlbmphbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmYzNjNmQ3MDBiNzcwYjRjYjI2ZGUyNiIsImlhdCI6MTYwODEzMDE5NCwiZXhwIjoxNjA4MTMzNzk0fQ.cGLm3mAe2eAnxmsNwKCdhan3X7w2HX1vKxtrIEv4F5E';
 // ######################################
 
 export default {
