@@ -1,5 +1,5 @@
 // #### TEMPORARY - for test purpose only
-const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlbmphbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmYzNjNmQ3MDBiNzcwYjRjYjI2ZGUyNiIsImlhdCI6MTYwODEzMDE5NCwiZXhwIjoxNjA4MTMzNzk0fQ.cGLm3mAe2eAnxmsNwKCdhan3X7w2HX1vKxtrIEv4F5E';
+const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlbmphbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmYzNjNmQ3MDBiNzcwYjRjYjI2ZGUyNiIsImlhdCI6MTYwODEzOTUyMCwiZXhwIjoxNjA4MTQzMTIwfQ.nJb_t5caFa0JmC_zyq70hxFyCCd4T0mIwNQ-QsLeGxA';
 // ######################################
 
 export default {
@@ -17,12 +17,11 @@ export default {
       },
       body: formData
     });
-
     const responseData = await response.json();
     console.log(responseData);
 
     context.commit('addPlant', {
-      _id: '5fb575048396009e9d066d11',
+      _id: responseData.savedPlant._id,
       ...data
     });
   },
@@ -45,8 +44,12 @@ const createFormData = data => {
   formData.append('plantationType', data.plantationType);
   formData.append('plantationDate', data.plantationDate);
   formData.append('harvestDate', data.harvestDate);
-  formData.append('beneficialInteractions', data.beneficialInteractions);
-  formData.append('harmfulInteractions', data.harmfulInteractions);
-  formData.append('diseases', data.diseases);
+  formData.append('beneficialInteractions', convertEmptyProxyToNull(data.beneficialInteractions));
+  formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
+  formData.append('diseases', convertEmptyProxyToNull(data.diseases));
   return formData;
+};
+
+const convertEmptyProxyToNull = proxy => {
+  return proxy.val === null ? null : proxy;
 };

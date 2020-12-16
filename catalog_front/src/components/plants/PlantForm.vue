@@ -92,13 +92,13 @@ export default {
         val: ''
       },
       beneficialInteractions: {
-        val: []
+        val: null
       },
       harmfulInteractions: {
-        val: []
+        val: null
       },
       diseases: {
-        val: []
+        val: null
       },
       notes: {
         val: ''
