@@ -5,6 +5,7 @@
         <plant-item
           v-for="plant in foundPlants"
           :key="plant._id"
+          :id="plant._id"
           :species="plant.species"
           :variety="plant.variety"
         ></plant-item>

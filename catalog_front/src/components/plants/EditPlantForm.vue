@@ -35,6 +35,7 @@
         attributeName="beneficialInteractions"
         default-option="interaction bénéfique"
         :attributes-list="getAllPlants"
+        :known-interactions="beneficialInteractions"
         @get-selected-values="setBeneficialInteractions"
       ></add-plant-attributes>
     </div>
@@ -44,6 +45,7 @@
         attributeName="harmfulInteractions"
         default-option="interaction néfaste"
         :attributes-list="getAllPlants"
+        :known-interactions="harmfulInteractions"
         @get-selected-values="setHarmfulInteractions"
       ></add-plant-attributes>
     </div>
@@ -57,7 +59,7 @@
     </div>
     <p v-if="!formIsValid" class="invalid">Des champs sont manquants.</p>
     <div class="submit-btn">
-      <base-button>Ajouter Espèce</base-button>
+      <base-button>Valider</base-button>
     </div>
   </form>
 </template>
@@ -70,8 +72,10 @@ export default {
     AddPlantAttributes
   },
   emits: ['save-data'],
+  props: ['id'],
   data() {
     return {
+      plant: null,
       species: {
         val: '',
         isValid: true
@@ -94,13 +98,13 @@ export default {
         val: ''
       },
       beneficialInteractions: {
-        val: null
+        val: []
       },
       harmfulInteractions: {
-        val: null
+        val: []
       },
       diseases: {
-        val: null
+        val: []
       },
       notes: {
         val: ''
@@ -114,6 +118,12 @@ export default {
     }
   },
   methods: {
+    plantToEdit() {
+      this.plant = this.$store.getters['plants/plants'].find(plant => plant._id === this.id);
+    },
+    formatDate(date) {
+      return date.split('T')[0];
+    },
     clearInvalidField(input) {
       this[input].isValid = true;
     },
@@ -143,10 +153,10 @@ export default {
     },
     submitForm() {
       this.validateForm();
-
       if (!this.formIsValid) return;
 
       const formData = {
+        _id: this.id,
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
         image: this.image,
@@ -160,6 +170,18 @@ export default {
       };
       this.$emit('save-data', formData);
     }
+  },
+  mounted() {
+    this.plantToEdit();
+    this.species.val = this.plant.species;
+    this.variety.val = this.plant.variety;
+    this.plantationType.val = this.plant.plantationType;
+    this.plantationDate.val = this.formatDate(this.plant.plantationDate);
+    this.harvestDate.val = this.formatDate(this.plant.harvestDate);
+    this.beneficialInteractions = this.plant.beneficialInteractions;
+    this.harmfulInteractions = this.plant.harmfulInteractions;
+    this.diseases = this.plant.diseases;
+    this.notes.val = this.plant.notes;
   }
 }
 </script>

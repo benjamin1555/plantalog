@@ -2,6 +2,9 @@ export default {
   hasPlants(state) {
     return state.plants && state.plants.length > 0;
   },
+  plants(state) {
+    return state.plants;
+  },
   sortedPlants(state) {
     const sortedPlants = state.plants.sort((a, b) => {
       if (a.species === b.species) {

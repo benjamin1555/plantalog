@@ -8,6 +8,7 @@
         <plant-item
           v-for="plant in sortedPlants"
           :key="plant._id"
+          :id="plant._id"
           :species="plant.species"
           :variety="plant.variety"
         ></plant-item>
