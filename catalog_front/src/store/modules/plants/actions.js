@@ -25,6 +25,12 @@ export default {
       ...data
     });
   },
+  editPlant(context, data) {
+    const plants = context.getters.plants;
+    const plantIdToEdit = plants.findIndex(plant => plant._id === data._id);
+    plants[plantIdToEdit] = data;
+    context.commit('editPlant', plants);
+  },
   searchPlant(context, searchQuery) {
     if (!searchQuery) return null;
     const regexp = new RegExp(searchQuery);

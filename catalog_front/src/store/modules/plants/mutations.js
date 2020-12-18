@@ -7,5 +7,9 @@ export default {
   },
   addPlant(state, payload) {
     state.plants.push(payload);
+  },
+  editPlant(state, payload) {
+    state.plants = payload;
+    console.log(payload);
   }
 };

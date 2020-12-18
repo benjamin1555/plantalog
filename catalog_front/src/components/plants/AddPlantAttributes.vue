@@ -26,7 +26,7 @@ export default {
   components: {
     BaseLabel
   },
-  props: ['attributeName', 'defaultOption', 'attributesList'],
+  props: ['attributeName', 'defaultOption', 'attributesList', 'knownInteractions'],
   emits: ['get-selected-values'],
   data() {
     return {
@@ -56,9 +56,17 @@ export default {
       this.selectedValues.push(inputValue);
       this.$emit('get-selected-values', this.selectedValues);
     },
+    initializeInteractionsValues() {
+      if (this.knownInteractions && this.knownInteractions.length > 0) {
+        this.selectedValues = this.knownInteractions;
+      }
+    },
     removeAttribute(plantToRemoveId) {
       this.selectedValues.splice(this.selectedValues.indexOf(plantToRemoveId), 1);
     }
+  },
+  beforeUpdate() {
+    this.initializeInteractionsValues();
   }
 };
 </script>
