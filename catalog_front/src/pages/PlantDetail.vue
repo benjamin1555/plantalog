@@ -6,14 +6,14 @@
       @close="closeDialog">
       <div class="content">
         <div class="content-text">
-          <p>Variété : {{ selectedPlant.variety }}</p>
-          <p>Type de plantation : {{ selectedPlant.plantationType }}</p>
-          <p>Dates plantation : {{ selectedPlant.plantationDate }}</p>
-          <p>Dates récolte : {{ selectedPlant.harvestDate }}</p>
-          <p>Interactions bénéfiques : {{ fetchBeneficialInteractions }}</p>
-          <p>Interactions néfastes : {{ fetchHarmfulInteractions }}</p>
-          <p>Maladies connues : {{ selectedPlant.diseases }}</p>
-          <p>Remarques : {{ selectedPlant.notes }}</p>
+          <p><span class="underline">Variété :</span> {{ selectedPlant.variety }}</p>
+          <p><span class="underline">Type de plantation :</span> {{ selectedPlant.plantationType }}</p>
+          <p><span class="underline">Date de plantation :</span> {{ selectedPlant.plantationDate }}</p>
+          <p><span class="underline">Dates de récolte :</span> {{ selectedPlant.harvestDate }}</p>
+          <p><span class="underline">Interactions bénéfiques :</span> {{ fetchBeneficialInteractions }}</p>
+          <p><span class="underline">Interactions néfastes :</span> {{ fetchHarmfulInteractions }}</p>
+          <p><span class="underline">Maladies connues :</span> {{ selectedPlant.diseases }}</p>
+          <p><span class="underline">Remarques :</span> {{ selectedPlant.notes }}</p>
         </div>
         <div class="content-img">
           <img src="https://via.placeholder.com/150" alt="plant_image">
@@ -87,6 +87,11 @@ export default {
 
 .content-text {
   max-width: 350px;
+}
+
+.content-text p .underline {
+  border-bottom: 1px solid #3A0061;
+  font-weight: 600;
 }
 
 .content-img {

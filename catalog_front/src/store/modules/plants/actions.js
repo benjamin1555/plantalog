@@ -1,7 +1,3 @@
-// #### TEMPORARY - for test purpose only
-const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlbmphbWluQGdtYWlsLmNvbSIsInVzZXJJZCI6IjVmYzNjNmQ3MDBiNzcwYjRjYjI2ZGUyNiIsImlhdCI6MTYwODEzOTUyMCwiZXhwIjoxNjA4MTQzMTIwfQ.nJb_t5caFa0JmC_zyq70hxFyCCd4T0mIwNQ-QsLeGxA';
-// ######################################
-
 export default {
   async fetchPlants(context) {
     const response = await fetch('http://localhost:3000/catalog/plants');
@@ -13,7 +9,7 @@ export default {
     const response = await fetch('http://localhost:3000/catalog/plants', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${jwt}`
+        Authorization: `Bearer ${context.rootGetters.token}`
       },
       body: formData
     });

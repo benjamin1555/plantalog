@@ -3,13 +3,31 @@
     <ul>
       <li><router-link to="/planter">Planter</router-link></li>
       <li><router-link to="/catalogue">Catalogue</router-link></li>
+      <li v-if="!isLoggedIn"><router-link to="/login">Se connecter</router-link></li>
+      <li v-else><router-link to="/login" @click="logout">Se déconnecter</router-link></li>
     </ul>
   </nav>
 </template>
 
+<script>
+export default {
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.replace('/');
+    }
+  }
+};
+</script>
+
 <style scoped>
 nav.wrapper {
-  width: 10rem;
+  width: 12rem;
 }
 
 a {

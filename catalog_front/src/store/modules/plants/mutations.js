@@ -10,6 +10,5 @@ export default {
   },
   editPlant(state, payload) {
     state.plants = payload;
-    console.log(payload);
   }
 };

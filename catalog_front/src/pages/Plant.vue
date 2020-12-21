@@ -4,6 +4,7 @@
       <h2>Planter</h2>
       <p>{{ getTodayDate }}</p>
     </header>
+    <p>{{ username }}, voici l'état actuel de ce que vous avez planté :</p>
   </div>
 </template>
 
@@ -12,6 +13,9 @@ export default {
   computed: {
     getTodayDate() {
       return new Date().toLocaleDateString();
+    },
+    username() {
+      return this.$store.getters.username;
     }
   }
 };

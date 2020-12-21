@@ -5,6 +5,8 @@ import Catalog from './pages/Catalog.vue';
 import AddPlant from './pages/AddPlant.vue';
 import PlantDetail from './pages/PlantDetail.vue';
 import EditPlant from './pages/EditPlant.vue';
+import Login from './pages/Login.vue';
+import SignUp from './pages/SignUp.vue';
 import NotFound from './pages/NotFound.vue';
 
 const router = createRouter({
@@ -22,6 +24,8 @@ const router = createRouter({
         { path: 'ajouter-plante', component: AddPlant },
       ]
     },
+    { path: '/login', component: Login },
+    { path: '/signup', component: SignUp },
     { path: '/:notFound(.*)', component: NotFound }
   ]
 });
