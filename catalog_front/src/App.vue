@@ -16,6 +16,21 @@ export default {
   components: {
     TheHeader,
     TheMenu
+  },
+  computed: {
+    didAutoLogout() {
+      return this.$store.getters.didAutoLogout;
+    }
+  },
+  watch: {
+    didAutoLogout(cur, prev) {
+      if (cur && cur !== prev) {
+        this.$router.replace('/login');
+      }
+    }
+  },
+  created() {
+    this.$store.dispatch('tryLogin');
   }
 }
 </script>
