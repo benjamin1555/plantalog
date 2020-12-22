@@ -29,7 +29,9 @@
           L'adresse email et le nom d'utilisateur doivent être renseignés. <br>
           Le mot de passe et la confirmation doivent être identiques et d'une longueur supérieure à 5 caractères.
         </p>
-        <base-button>Créer compte</base-button>
+        <div class="bottom-links">
+          <base-button>Créer compte</base-button>
+        </div>
       </form>
     </base-card>
   </div>
@@ -58,6 +60,10 @@ export default {
           await this.$store.dispatch('signup', {
             email: this.email,
             username: this.username,
+            password: this.password
+          });
+          await this.$store.dispatch('login', {
+            email: this.email,
             password: this.password
           });
           this.$router.replace('/');
@@ -118,8 +124,12 @@ form h2 {
   border-bottom: 1px solid #CCC;
 }
 
+.bottom-links {
+  margin-top: 1.5rem;
+}
+
+
 label {
-  /* font-weight: bold; */
   margin-bottom: 0.5rem;
   display: block;
 }
@@ -138,24 +148,6 @@ textarea:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;
-}
-
-.switch-btn {
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  font: inherit;
-  background-color: transparent;
-  border: 1px solid #270041;
-  color: #270041;
-  cursor: pointer;
-  border-radius: 30px;
-  margin-right: 0.5rem;
-  display: inline-block;
-}
-
-.switch-btn:hover,
-.switch-btn:active {
-  background-color: #edd2ff;
 }
 
 p.invalid-form {

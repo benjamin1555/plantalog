@@ -13,9 +13,9 @@ export default {
           species: 'pomme',
           variety: 'granny',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
@@ -29,9 +29,9 @@ export default {
           species: 'pomme',
           variety: 'gala',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
@@ -46,9 +46,9 @@ export default {
           species: 'pomme',
           variety: '',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
@@ -62,9 +62,9 @@ export default {
           species: 'tomate',
           variety: 'ancienne',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
@@ -78,9 +78,9 @@ export default {
           species: 'laitue',
           variety: '',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
@@ -94,9 +94,9 @@ export default {
           species: 'aubergine',
           variety: '',
           imagesUrl: {
-            regular: "default/default_regular.png",
-            thumbnail: "default/default_thumbnail.png",
-            icon: "default/default_icon.png"
+            regular: 'default/default_regular.png',
+            thumbnail: 'default/default_thumbnail.png',
+            icon: 'default/default_icon.png'
           },
           plantationType: 'graine',
           plantationDate: '2020-12-04T00:00:00.000Z',
