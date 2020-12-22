@@ -49,8 +49,17 @@
     </div>
     <div class="form-control">
       <label for="diseases">Maladies</label>
-      <input type="calendar" id="diseases" v-model="diseases.val">
+      <add-plant-attributes
+        attributeName="diseases"
+        default-option="maladie"
+        :attributes-list="getAllDiseases"
+        @get-selected-values="setDiseases"
+      ></add-plant-attributes>
     </div>
+    <div class="add-disease-wrapper">
+      <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
+    </div>
+    <add-disease-form v-if="diseaseFormVisible" @create-disease="refreshDiseases"></add-disease-form>
     <div class="form-control">
       <label for="notes">Remarques</label>
       <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
@@ -64,10 +73,12 @@
 
 <script>
 import AddPlantAttributes from './AddPlantAttributes.vue';
+import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
 
 export default {
   components: {
-    AddPlantAttributes
+    AddPlantAttributes,
+    AddDiseaseForm
   },
   emits: ['save-data'],
   data() {
@@ -105,15 +116,35 @@ export default {
       notes: {
         val: ''
       },
-      formIsValid: true
+      formIsValid: true,
+      diseaseFormVisible: false
     };
   },
   computed: {
     getAllPlants() {
       return this.$store.getters['plants/sortedPlants'];
+    },
+    getAllDiseases() {
+      return this.$store.getters['diseases/diseases'];
+    },
+    createDiseaseBtnIcon() {
+      return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
+    },
+    createDiseaseBtnText() {
+      return this.diseaseFormVisible ? 'Masquer' : 'Créer une maladie';
     }
   },
   methods: {
+    loadDiseases() {
+      return this.$store.dispatch('diseases/fetchDiseases');
+    },
+    refreshDiseases() {
+      this.loadDiseases();
+      this.diseaseFormVisible = false;
+    },
+    toggleAddDiseaseForm() {
+      this.diseaseFormVisible = !this.diseaseFormVisible;
+    },
     clearInvalidField(input) {
       this[input].isValid = true;
     },
@@ -141,9 +172,11 @@ export default {
     setHarmfulInteractions(interactions) {
       this.harmfulInteractions = interactions;
     },
+    setDiseases(diseases) {
+      this.diseases = diseases;
+    },
     submitForm() {
       this.validateForm();
-
       if (!this.formIsValid) return;
 
       const formData = {
@@ -160,6 +193,9 @@ export default {
       };
       this.$emit('save-data', formData);
     }
+  },
+  mounted() {
+    this.loadDiseases();
   }
 }
 </script>
@@ -218,6 +254,17 @@ input[type='checkbox']:focus {
 h3 {
   margin: 0.5rem 0;
   font-size: 1rem;
+}
+
+.add-disease-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.add-disease-btn i {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
 }
 
 .submit-btn {

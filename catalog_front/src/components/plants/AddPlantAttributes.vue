@@ -6,7 +6,7 @@
         v-for="attribute in attributesList"
         :key="attribute._id"
         :value="attribute._id"
-      >{{ attribute.species }} <span v-if="attribute.variety">- {{ attribute.variety }}</span></option>
+      >{{ attribute.species || attribute.name }} <span v-if="attribute.variety">- {{ attribute.variety }}</span></option>
     </select>
     <div class="added-attributes" v-if="hasSelectedValues">
       <base-label
@@ -35,11 +35,11 @@ export default {
   },
   computed: {
     formattedSelectedValues() {
-      const values = this.selectedValues.map(plantId => {
-        const plant = this.attributesList.find(p => p._id === plantId);
-        const name = plant.variety ? `${plant.species} - ${plant.variety}` : plant.species;
+      const values = this.selectedValues.map(itemId => {
+        const item = this.attributesList.find(i => i._id === itemId);
+        const name = item.variety ? `${item.species} - ${item.variety}` : item.species || item.name;
         return {
-          _id: plant._id,
+          _id: item._id,
           name
         }
       });

@@ -59,6 +59,7 @@ a {
   color: #3d008d;
 }
 
+button:hover,
 .outline:hover {
   opacity: 1;
 }

@@ -20,8 +20,10 @@
         <p class="invalid-form" v-if="!formIsValid">
           L'adresse email et le mot de passe doivent être renseignés.
         </p>
-        <base-button>Se connecter</base-button>
-        <router-link to="/signup">Créer un compte</router-link>
+        <div class="bottom-links">
+          <base-button>Se connecter</base-button>
+          <router-link to="/signup">Créer un compte</router-link>
+        </div>
       </form>
     </base-card>
   </div>
@@ -99,8 +101,11 @@ form h2 {
   border-bottom: 1px solid #CCC;
 }
 
+.bottom-links {
+  margin-top: 1.5rem;
+}
+
 label {
-  /* font-weight: bold; */
   margin-bottom: 0.5rem;
   display: block;
 }
@@ -119,24 +124,6 @@ textarea:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;
-}
-
-.switch-btn {
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  font: inherit;
-  background-color: transparent;
-  border: 1px solid #270041;
-  color: #270041;
-  cursor: pointer;
-  border-radius: 30px;
-  margin-right: 0.5rem;
-  display: inline-block;
-}
-
-.switch-btn:hover,
-.switch-btn:active {
-  background-color: #edd2ff;
 }
 
 p.invalid-form {
