@@ -40,7 +40,7 @@ export default {
       throw error;
     }
 
-    const expiresIn = 3600 * 1000;
+    const expiresIn = 7200 * 1000;
     const expirationDate = new Date().getTime() + expiresIn;
 
     localStorage.setItem('token', responseData.token);

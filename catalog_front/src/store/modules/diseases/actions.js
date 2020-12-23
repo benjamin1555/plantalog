@@ -16,6 +16,7 @@ export default {
     const responseData = await response.json();
     console.log(responseData);
 
+    context.commit('setLastAddedDisease', responseData.savedDisease);
     context.commit('addDisease', {
       _id: responseData.savedDisease._id,
       ...data

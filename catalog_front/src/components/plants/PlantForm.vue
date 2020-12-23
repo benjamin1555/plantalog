@@ -53,13 +53,14 @@
         attributeName="diseases"
         default-option="maladie"
         :attributes-list="getAllDiseases"
+        :knownInteractions="getLastCreatedDisease"
         @get-selected-values="setDiseases"
       ></add-plant-attributes>
     </div>
     <div class="add-disease-wrapper">
       <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
     </div>
-    <add-disease-form v-if="diseaseFormVisible" @create-disease="refreshDiseases"></add-disease-form>
+    <add-disease-form v-if="diseaseFormVisible" @create-disease="handleCreatedDisease"></add-disease-form>
     <div class="form-control">
       <label for="notes">Remarques</label>
       <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
@@ -127,6 +128,15 @@ export default {
     getAllDiseases() {
       return this.$store.getters['diseases/diseases'];
     },
+    getLastCreatedDisease() {
+      let lastDisease = this.$store.getters['diseases/lastAddedDisease'];
+      if (lastDisease) {
+        const lastDiseaseId = lastDisease._id;
+        this.setDiseases([lastDiseaseId])
+        return [lastDiseaseId];
+      }
+      return null;
+    },
     createDiseaseBtnIcon() {
       return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
     },
@@ -138,7 +148,7 @@ export default {
     loadDiseases() {
       return this.$store.dispatch('diseases/fetchDiseases');
     },
-    refreshDiseases() {
+    handleCreatedDisease() {
       this.loadDiseases();
       this.diseaseFormVisible = false;
     },

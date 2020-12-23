@@ -6,6 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      lastAddedDisease: null,
       diseases: [
         {
           _id: '5fb58ffaced5dfa8e0928b54',

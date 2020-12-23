@@ -4,5 +4,8 @@ export default {
       return a.name.localeCompare(b.name);
     });
     return sortedDiseases;
+  },
+  lastAddedDisease(state) {
+    return state.lastAddedDisease;
   }
 };

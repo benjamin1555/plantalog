@@ -4,5 +4,8 @@ export default {
   },
   addDisease(state, payload) {
     state.diseases.push(payload);
+  },
+  setLastAddedDisease(state, payload) {
+    state.lastAddedDisease = payload;
   }
 };
