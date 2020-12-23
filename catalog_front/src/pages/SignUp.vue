@@ -69,7 +69,11 @@ export default {
           this.$router.replace('/');
         }
       } catch (err) {
-        this.error = 'Echec lors de la création de compte.';
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
       this.isLoading = false;
     },
