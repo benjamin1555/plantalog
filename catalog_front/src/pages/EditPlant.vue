@@ -27,7 +27,6 @@ export default {
     },
     editPlant(data) {
       this.$store.dispatch('plants/editPlant', data);
-      // this.$router.replace(`${this.$route.path.replace(/\/editer/, '')}`);
       this.$router.replace('/catalogue');
     }
   }
