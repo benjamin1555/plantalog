@@ -19,14 +19,25 @@
       <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
     </div>
     <div class="dates">
-      <div class="form-control plant-date" :class="{ invalid: !plantationDate.isValid }">
-        <label for="plantationDate">Date de plantation</label>
-        <input type="date" id="plantationDate" v-model="plantationDate.val" @blur="clearInvalidField('plantationDate')">
-        <p v-if="!plantationDate.isValid">La date de plantation doit être renseignée.</p>
+      <div class="form-control plant-date" :class="{ invalid: !plantationDate.start.isValid }">
+        <label for="plantationDateStart">Date début de plantation</label>
+        <input type="date" id="plantationDateStart" v-model="plantationDate.start.val" @blur="clearInvalidDateField('plantationDate', 'start')">
+        <p v-if="!plantationDate.start.isValid">La date de début de plantation doit être renseignée.</p>
+      </div>
+      <div class="form-control plant-date" :class="{ invalid: !plantationDate.end.isValid }">
+        <label for="plantationDateEnd">Date fin de plantation</label>
+        <input type="date" id="plantationDateEnd" v-model="plantationDate.end.val" @blur="clearInvalidDateField('plantationDate', 'end')">
+        <p v-if="!plantationDate.end.isValid">La date de fin de plantation doit être renseignée.</p>
+      </div>
+    </div>
+    <div class="dates">
+      <div class="form-control harvest-date">
+        <label for="harvestDateStart">Date début de récolte</label>
+        <input type="date" id="harvestDateStart" v-model="harvestDate.start.val">
       </div>
       <div class="form-control harvest-date">
-        <label for="harvestDate">Date de récolte</label>
-        <input type="date" id="harvestDate" v-model="harvestDate.val">
+        <label for="harvestDateEnd">Date fin de récolte</label>
+        <input type="date" id="harvestDateEnd" v-model="harvestDate.end.val">
       </div>
     </div>
     <div class="form-control">
@@ -99,11 +110,22 @@ export default {
         isValid: true
       },
       plantationDate: {
-        val: '',
-        isValid: true
+        start: {
+          val: '',
+          isValid: true
+        },
+        end : {
+          val: '',
+          isValid: true
+        }
       },
       harvestDate: {
-        val: ''
+        start: {
+          val: ''
+        },
+        end: {
+          val: ''
+        }
       },
       beneficialInteractions: {
         val: null
@@ -158,6 +180,9 @@ export default {
     clearInvalidField(input) {
       this[input].isValid = true;
     },
+    clearInvalidDateField(input, position) {
+      this[input][position].isValid = true;
+    },
     validateForm() {
       this.formIsValid = true;
       if (this.species.val === '') {
@@ -168,8 +193,12 @@ export default {
         this.plantationType.isValid = false;
         this.formIsValid = false;
       }
-      if (this.plantationDate.val === '') {
-        this.plantationDate.isValid = false;
+      if (this.plantationDate.start.val === '') {
+        this.plantationDate.start.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.plantationDate.end.val === '') {
+        this.plantationDate.end.isValid = false;
         this.formIsValid = false;
       }
     },
@@ -189,6 +218,9 @@ export default {
       this.validateForm();
       if (!this.formIsValid) return;
 
+      // #################
+      // TODO - Modify dates handling in formData below
+      // #################
       const formData = {
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
@@ -219,7 +251,8 @@ export default {
   display: flex;
 }
 
-.dates .plant-date {
+.dates .plant-date,
+.dates .harvest-date {
   margin-right: 2rem;
 }
 
