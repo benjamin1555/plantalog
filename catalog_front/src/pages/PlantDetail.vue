@@ -1,6 +1,10 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <base-dialog
+      v-if="selectedPlant"
       :show="detailsVisible"
       :title="formattedName"
       @close="closeDialog">
@@ -37,7 +41,8 @@ export default {
     return {
       id: this.$route.params.id,
       selectedPlant: null,
-      detailsVisible: true
+      detailsVisible: true,
+      error: null
     }
   },
   computed: {
@@ -84,10 +89,25 @@ export default {
     closeDialog() {
       this.detailsVisible = false;
       this.$router.replace('/catalogue');
+    },
+    async fetchPlant() {
+      try {
+        await this.$store.dispatch('plants/fetchPlant', this.id);
+        this.selectedPlant = this.$store.getters['plants/plant'];
+      } catch (err) {
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
+      }
+    },
+    handleError() {
+      this.error = null;
     }
   },
   created() {
-    this.selectedPlant = this.$store.getters['plants/plants'].find(plant => plant._id === this.id);
+    this.fetchPlant();
   }
 };
 </script>

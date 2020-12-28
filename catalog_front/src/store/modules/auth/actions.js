@@ -27,7 +27,6 @@ export default {
       const error = new Error(responseData.message || 'Failed to signup.');
       throw error;
     }
-
   },
   async login(context, payload) {
     const response = await fetch('http://localhost:3000/auth/login', {
@@ -48,7 +47,7 @@ export default {
       throw error;
     }
 
-    const expiresIn = 7200 * 1000;
+    const expiresIn = 3600 * 1000;
     const expirationDate = new Date().getTime() + expiresIn;
 
     localStorage.setItem('token', responseData.token);

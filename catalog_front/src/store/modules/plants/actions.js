@@ -4,6 +4,23 @@ export default {
     const responseData = await response.json();
     context.commit('fetchPlants', responseData.plants);
   },
+  async fetchPlant(context, plantId) {
+    const response = await fetch(`http://localhost:3000/catalog/plants/${plantId}`)
+    const responseData = await response.json();
+    console.log(responseData);
+
+    if (!response.ok && responseData.statusCode === 404) {
+      const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
+      throw error;
+    }
+    if (!response.ok && responseData.statusCode === 500) {
+      const error = new Error('Une erreur interne vient de se produire. (Code 500)');
+      throw error;
+    }
+
+    context.commit('setFetchedPlant', responseData.plant);
+    return responseData.plant;
+  },
   async addPlant(context, data) {
     const formData = createFormData(data);
     const response = await fetch('http://localhost:3000/catalog/plants', {

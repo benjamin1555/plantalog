@@ -2,6 +2,9 @@ export default {
   fetchPlants(state, payload) {
     state.plants = payload;
   },
+  setFetchedPlant(state, payload) {
+    state.fetchedPlant = payload;
+  },
   searchPlant(state, payload) {
     state.foundPlants = payload;
   },

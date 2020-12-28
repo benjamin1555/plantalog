@@ -18,18 +18,6 @@ export default {
   components: {
     PlantSearch,
     PlantsAll
-  },
-  methods: {
-    async loadPlants() {
-      await this.$store.dispatch('plants/fetchPlants');
-    },
-    async loadDiseases() {
-      await this.$store.dispatch('diseases/fetchDiseases');
-    }
-  },
-  created() {
-    this.loadPlants();
-    this.loadDiseases();
   }
 };
 </script>

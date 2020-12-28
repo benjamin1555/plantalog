@@ -5,6 +5,9 @@ export default {
   plants(state) {
     return state.plants;
   },
+  plant(state) {
+    return state.fetchedPlant;
+  },
   sortedPlants(state) {
     const sortedPlants = state.plants.sort((a, b) => {
       if (a.species === b.species) {
