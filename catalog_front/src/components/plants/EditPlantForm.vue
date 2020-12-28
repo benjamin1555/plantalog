@@ -177,7 +177,7 @@ export default {
     this.variety.val = this.plant.variety;
     this.plantationType.val = this.plant.plantationType;
     this.plantationDate.val = this.formatDate(this.plant.plantationDate);
-    this.harvestDate.val = this.formatDate(this.plant.harvestDate);
+    this.harvestDate.val = this.formatDate(this.plant.harvestDate) || null;
     this.beneficialInteractions = this.plant.beneficialInteractions;
     this.harmfulInteractions = this.plant.harmfulInteractions;
     this.diseases = this.plant.diseases;

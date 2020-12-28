@@ -5,6 +5,7 @@
       <p>{{ getTodayDate }}</p>
     </header>
     <p>{{ username }}, voici l'état actuel de ce que vous avez planté :</p>
+    <base-flash></base-flash>
   </div>
 </template>
 
