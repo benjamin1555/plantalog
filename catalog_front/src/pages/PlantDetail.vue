@@ -12,11 +12,11 @@
           <p><span class="underline">Dates de récolte :</span> {{ selectedPlant.harvestDate }}</p>
           <p><span class="underline">Interactions bénéfiques :</span> {{ fetchBeneficialInteractions }}</p>
           <p><span class="underline">Interactions néfastes :</span> {{ fetchHarmfulInteractions }}</p>
-          <p><span class="underline">Maladies connues :</span> {{ selectedPlant.diseases }}</p>
+          <p><span class="underline">Maladies connues :</span> {{ fetchDiseases }}</p>
           <p><span class="underline">Remarques :</span> {{ selectedPlant.notes }}</p>
         </div>
         <div class="content-img">
-          <img src="https://via.placeholder.com/150" alt="plant_image">
+          <img :src="regularImageLink" alt="plant_image">
         </div>
       </div>
       <div class="edit-btn">
@@ -47,12 +47,25 @@ export default {
       return firstLetter + restOfWord;
     },
     fetchBeneficialInteractions() {
-      if (!this.selectedPlant.beneficialInteractions || this.selectedPlant.beneficialInteractions.length === 0) return;
+      if (!this.selectedPlant.beneficialInteractions || this.selectedPlant.beneficialInteractions.length === 0) return 'néant';
       return this.fetchInteractions(this.selectedPlant.beneficialInteractions);
     },
     fetchHarmfulInteractions() {
-      if (!this.selectedPlant.harmfulInteractions || this.selectedPlant.harmfulInteractions.length === 0) return;
+      if (!this.selectedPlant.harmfulInteractions || this.selectedPlant.harmfulInteractions.length === 0) return 'néant';
       return this.fetchInteractions(this.selectedPlant.harmfulInteractions);
+    },
+    fetchDiseases() {
+      if (!this.selectedPlant.diseases || this.selectedPlant.diseases.length === 0) return 'néant';
+      const diseasesList = this.selectedPlant.diseases.map(id => {
+        const disease = this.$store.getters['diseases/diseases'].find(disease => {
+          return disease._id === id;
+        });
+        return disease.name;
+      });
+      return diseasesList.join(', ');
+    },
+    regularImageLink() {
+      return `http://localhost:3000/images/${this.selectedPlant.imagesUrl.regular}`;
     },
     editPlantLink() {
       return `${this.$route.path}/editer`;
