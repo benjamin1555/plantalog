@@ -1,9 +1,11 @@
 <template>
   <div>
     <base-card v-if="hasSearched">
-      <ul v-if="hasFoundPlants">
+      <h3>Résultats</h3>
+      <base-spinner v-if="isLoading"></base-spinner>
+      <ul v-else-if="!isLoading && hasPlants">
         <plant-item
-          v-for="plant in foundPlants"
+          v-for="plant in plants"
           :key="plant._id"
           :id="plant._id"
           :species="plant.species"
@@ -23,20 +25,31 @@ export default {
   components: {
     PlantItem
   },
-  props: ['hasSearched'],
+  props: ['hasSearched', 'isLoading'],
   computed: {
     ...mapGetters('plants', [
-      'hasFoundPlants',
-      'foundPlants'
+      'hasPlants',
+      'plants'
     ])
   }
 };
 </script>
 
 <style scoped>
+h3 {
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 300;
+  border-bottom: 1.5px solid #CCC;
+}
+
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+ul li:last-child {
+  border-bottom: none!important;
 }
 </style>

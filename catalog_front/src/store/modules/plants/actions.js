@@ -1,6 +1,8 @@
 export default {
-  async fetchPlants(context) {
-    const response = await fetch('http://localhost:3000/catalog/plants');
+  async fetchPlants(context, payload) {
+    let searchQuery = payload ? payload.searchQuery : '';
+
+    const response = await fetch(`http://localhost:3000/catalog/plants/?search=${searchQuery}`);
     const responseData = await response.json();
     context.commit('setPlants', responseData.plants);
   },
@@ -40,14 +42,6 @@ export default {
     const plantIdToEdit = plants.findIndex(plant => plant._id === data._id);
     plants[plantIdToEdit] = data;
     context.commit('editPlant', plants);
-  },
-  searchPlant(context, searchQuery) {
-    if (!searchQuery) return null;
-    const regexp = new RegExp(searchQuery);
-    const results = context.state.plants.filter(plant => {
-      return plant.species.match(new RegExp(regexp));
-    });
-    context.commit('searchPlant', results);
   }
 };
 

@@ -10,7 +10,7 @@
       <base-button mode="outline" link :to="addPlantLink"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
       <router-view></router-view>
     </section>
-    <plant-search-results :has-searched="hasSearched"></plant-search-results>
+    <plant-search-results :has-searched="hasSearched" :is-loading="isLoading"></plant-search-results>
   </div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
   },
   data() {
     return {
-      hasSearched: false
+      hasSearched: false,
+      isLoading: false
     }
   },
   computed: {
@@ -35,12 +36,22 @@ export default {
     }
   },
   methods: {
-    searchPlant() {
+    async searchPlant() {
+      this.hasSearched = false;
+      this.isLoading = true;
       const searchQuery = this.$refs.searchPlantInput.value.toLowerCase().trim();
       if (!searchQuery) return;
-      this.$store.dispatch('plants/searchPlant', searchQuery);
-      this.hasSearched = true;
-      this.$refs.searchPlantInput.value = '';
+
+      try {
+        this.hasSearched = true;
+        await this.$store.dispatch('plants/fetchPlants', { searchQuery });
+        this.isLoading = false;
+        this.hasSearched = true;
+        this.$refs.searchPlantInput.value = '';
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
+      }
     }
   }
 }

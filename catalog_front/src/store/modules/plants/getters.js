@@ -16,11 +16,5 @@ export default {
       return a.species > b.species ? 1 : -1;
     });
     return sortedPlants;
-  },
-  hasFoundPlants(state) {
-    return state.foundPlants.length > 0;
-  },
-  foundPlants(state) {
-    return state.foundPlants;
   }
 };

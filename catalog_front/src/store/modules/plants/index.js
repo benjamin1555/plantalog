@@ -6,7 +6,6 @@ export default {
   namespaced: true,
   state() {
     return {
-      foundPlants: [],
       plant: null,
       plants: []
     };
