@@ -143,9 +143,6 @@ export default {
     plantToEdit() {
       this.plant = this.$store.getters['plants/plant'];
     },
-    formatDate(date) {
-      return date.split('T')[0];
-    },
     clearInvalidField(input) {
       this[input].isValid = true;
     },
@@ -208,8 +205,8 @@ export default {
     this.species.val = this.plant.species;
     this.variety.val = this.plant.variety;
     this.plantationType.val = this.plant.plantationType;
-    this.plantationDate.val = this.formatDate(this.plant.plantationDate);
-    this.harvestDate.val = this.formatDate(this.plant.harvestDate) || null;
+    this.plantationDate.val = this.plant.plantationDate;
+    this.harvestDate.val = this.plant.plantationDate || null;
     this.beneficialInteractions = this.plant.beneficialInteractions;
     this.harmfulInteractions = this.plant.harmfulInteractions;
     this.diseases = this.plant.diseases;

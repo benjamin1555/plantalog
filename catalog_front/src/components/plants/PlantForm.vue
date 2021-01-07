@@ -45,7 +45,7 @@
       <add-plant-attributes
         attributeName="beneficialInteractions"
         default-option="interaction bénéfique"
-        :attributes-list="getAllPlants"
+        :attributes-list="sortedPlants"
         @get-selected-values="setBeneficialInteractions"
       ></add-plant-attributes>
     </div>
@@ -54,7 +54,7 @@
       <add-plant-attributes
         attributeName="harmfulInteractions"
         default-option="interaction néfaste"
-        :attributes-list="getAllPlants"
+        :attributes-list="sortedPlants"
         @get-selected-values="setHarmfulInteractions"
       ></add-plant-attributes>
     </div>
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import AddPlantAttributes from './AddPlantAttributes.vue';
 import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
 
@@ -144,14 +145,15 @@ export default {
     };
   },
   computed: {
-    getAllPlants() {
-      return this.$store.getters['plants/sortedPlants'];
-    },
-    getAllDiseases() {
-      return this.$store.getters['diseases/diseases'];
-    },
+    ...mapGetters('plants', [
+      'sortedPlants'
+    ]),
+    ...mapGetters({
+      getAllDiseases: 'diseases/diseases',
+      lastAddedDisease: 'diseases/lastAddedDisease'
+    }),
     getLastCreatedDisease() {
-      let lastDisease = this.$store.getters['diseases/lastAddedDisease'];
+      let lastDisease = this.lastAddedDisease
       if (lastDisease) {
         const lastDiseaseId = lastDisease._id;
         this.setDiseases([lastDiseaseId])
@@ -167,11 +169,11 @@ export default {
     }
   },
   methods: {
-    loadDiseases() {
-      return this.$store.dispatch('diseases/fetchDiseases');
-    },
+    ...mapActions('diseases', [
+      'fetchDiseases'
+    ]),
     handleCreatedDisease() {
-      this.loadDiseases();
+      this.fetchDiseases();
       this.diseaseFormVisible = false;
     },
     toggleAddDiseaseForm() {
@@ -237,7 +239,7 @@ export default {
     }
   },
   mounted() {
-    this.loadDiseases();
+    this.fetchDiseases();
   }
 }
 </script>

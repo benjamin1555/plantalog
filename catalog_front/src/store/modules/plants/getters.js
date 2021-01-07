@@ -6,7 +6,7 @@ export default {
     return state.plants;
   },
   plant(state) {
-    return state.fetchedPlant;
+    return state.plant;
   },
   sortedPlants(state) {
     const sortedPlants = state.plants.sort((a, b) => {

@@ -2,7 +2,7 @@ export default {
   async fetchPlants(context) {
     const response = await fetch('http://localhost:3000/catalog/plants');
     const responseData = await response.json();
-    context.commit('fetchPlants', responseData.plants);
+    context.commit('setPlants', responseData.plants);
   },
   async fetchPlant(context, plantId) {
     const response = await fetch(`http://localhost:3000/catalog/plants/${plantId}`)
@@ -16,9 +16,7 @@ export default {
       const error = new Error('Une erreur interne vient de se produire. (Code 500)');
       throw error;
     }
-
-    context.commit('setFetchedPlant', responseData.plant);
-    return responseData.plant;
+    context.commit('setPlant', responseData.plant);
   },
   async addPlant(context, data) {
     const formData = createFormData(data);

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import PlantItem from './PlantItem';
 
 export default {
@@ -32,12 +33,10 @@ export default {
     };
   },
   computed: {
-    hasPlants() {
-      return this.$store.getters['plants/hasPlants'];
-    },
-    sortedPlants() {
-      return this.$store.getters['plants/sortedPlants'];
-    },
+    ...mapGetters('plants', [
+      'hasPlants',
+      'sortedPlants'
+    ]),
     plantsDisplayBtnText() {
       return this.displayPlants ? 'Masquer' : 'Afficher Tout'
     },

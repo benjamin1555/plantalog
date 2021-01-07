@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import PlantItem from './PlantItem.vue';
 
 export default {
@@ -24,12 +25,10 @@ export default {
   },
   props: ['hasSearched'],
   computed: {
-    hasFoundPlants() {
-      return this.$store.getters['plants/hasFoundPlants'];
-    },
-    foundPlants() {
-      return this.$store.getters['plants/foundPlants'];
-    }
+    ...mapGetters('plants', [
+      'hasFoundPlants',
+      'foundPlants'
+    ])
   }
 };
 </script>
