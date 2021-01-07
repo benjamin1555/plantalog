@@ -220,16 +220,19 @@ export default {
       this.validateForm();
       if (!this.formIsValid) return;
 
-      // #################
-      // TODO - Modify dates handling in formData below
-      // #################
       const formData = {
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
         image: this.image,
         plantationType: this.plantationType.val.toLowerCase(),
-        plantationDate: this.plantationDate.val,
-        harvestDate: this.harvestDate.val,
+        plantationDate: {
+          start: this.plantationDate.start.val,
+          end: this.plantationDate.end.val,
+        },
+        harvestDate: {
+          start: this.harvestDate.start.val,
+          end: this.harvestDate.end.val,
+        },
         beneficialInteractions: this.beneficialInteractions,
         harmfulInteractions: this.harmfulInteractions,
         diseases: this.diseases,

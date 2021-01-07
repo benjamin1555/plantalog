@@ -52,8 +52,10 @@ const createFormData = data => {
   formData.append('variety', data.variety);
   formData.append('image', data.image);
   formData.append('plantationType', data.plantationType);
-  formData.append('plantationDate', data.plantationDate);
-  formData.append('harvestDate', data.harvestDate);
+  formData.append('plantationDateStart', data.plantationDate.start);
+  formData.append('plantationDateEnd', data.plantationDate.end);
+  formData.append('harvestDateStart', data.harvestDate.start);
+  formData.append('harvestDateEnd', data.harvestDate.end);
   formData.append('beneficialInteractions', convertEmptyProxyToNull(data.beneficialInteractions));
   formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
   formData.append('diseases', convertEmptyProxyToNull(data.diseases));

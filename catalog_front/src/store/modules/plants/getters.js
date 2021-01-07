@@ -39,7 +39,7 @@ const formatDate = datesObj => {
       formattedDate += k === 'start' ? `du ${parsedDate}` : ` au ${parsedDate}`;
     }
   } else {
-    formattedDate = 'Néant';
+    formattedDate = 'néant';
   }
   return formattedDate
 };
