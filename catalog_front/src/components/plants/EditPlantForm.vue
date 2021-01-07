@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     plantToEdit() {
-      this.plant = this.$store.getters['plants/plants'].find(plant => plant._id === this.id);
+      this.plant = this.$store.getters['plants/plant'];
     },
     formatDate(date) {
       return date.split('T')[0];

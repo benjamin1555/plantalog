@@ -7,7 +7,6 @@ export default {
   async fetchPlant(context, plantId) {
     const response = await fetch(`http://localhost:3000/catalog/plants/${plantId}`)
     const responseData = await response.json();
-    console.log(responseData);
 
     if (!response.ok && responseData.statusCode === 404) {
       const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
