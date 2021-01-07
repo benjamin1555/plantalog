@@ -8,12 +8,13 @@
       :show="detailsVisible"
       :title="formattedName"
       @close="closeDialog">
-      <div class="content">
+      <base-spinner v-if="isLoading"></base-spinner>
+      <div class="content" v-else>
         <div class="content-text">
           <p><span class="underline">Variété :</span> {{ plant.variety }}</p>
           <p><span class="underline">Type de plantation :</span> {{ plant.plantationType }}</p>
-          <p><span class="underline">Date de plantation :</span> {{ plant.plantationDate }}</p>
-          <p><span class="underline">Dates de récolte :</span> {{ plant.harvestDate }}</p>
+          <p><span class="underline">Dates de plantation :</span> {{ formattedPlantationDate }}</p>
+          <p><span class="underline">Dates de récolte :</span> {{ formattedHarvestDate }}</p>
           <p><span class="underline">Interactions bénéfiques :</span> {{ fetchBeneficialInteractions }}</p>
           <p><span class="underline">Interactions néfastes :</span> {{ fetchHarmfulInteractions }}</p>
           <p><span class="underline">Maladies connues :</span> {{ fetchDiseases }}</p>
@@ -42,12 +43,15 @@ export default {
     return {
       id: this.$route.params.id,
       detailsVisible: true,
-      error: null
+      error: null,
+      isLoading: false
     }
   },
   computed: {
     ...mapGetters('plants', [
-      'plant'
+      'plant',
+      'formattedPlantationDate',
+      'formattedHarvestDate'
     ]),
     ...mapGetters('diseases', [
       'diseases'
@@ -97,9 +101,13 @@ export default {
       this.$router.replace('/catalogue');
     },
     async fetchPlant() {
+      this.isLoading = true;
+
       try {
         await this.$store.dispatch('plants/fetchPlant', this.id);
+        this.isLoading = false;
       } catch (err) {
+        this.isLoading = false;
         if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
         } else {

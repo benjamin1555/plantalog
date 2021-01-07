@@ -16,5 +16,34 @@ export default {
       return a.species > b.species ? 1 : -1;
     });
     return sortedPlants;
+  },
+  formattedPlantationDate(state) {
+    return formatDate(state.plant.plantationDate);
+  },
+  formattedHarvestDate(state) {
+    return formatDate(state.plant.harvestDate);
   }
+};
+
+// Private
+const formatDate = datesObj => {
+  let formattedDate = '';
+  if (hasDateFields(datesObj)) {
+    for (let [k, v] of Object.entries(datesObj)) {
+      k
+      const parsedDate = v.split('T')[0]
+        .split('-')
+        .splice(1, 2)
+        .reverse()
+        .join('/');
+      formattedDate += k === 'start' ? `du ${parsedDate}` : ` au ${parsedDate}`;
+    }
+  } else {
+    formattedDate = 'Néant';
+  }
+  return formattedDate
+};
+
+const hasDateFields = datesObj => {
+  return !!datesObj && !!datesObj.start && !!datesObj.end;
 };
