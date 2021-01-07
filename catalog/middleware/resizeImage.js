@@ -2,15 +2,17 @@ const sharp = require('sharp');
 const { nanoid } = require('nanoid');
 
 const SIZES = {
-  regular: 128,
-  thumbnail: 48,
-  icon: 16
+  regular: 256,
+  thumbnail: 64,
+  icon: 32
 };
 
 const makeImage = async (randomToken, file, size, format) => {
   const newFilename = `${randomToken}-${size}-${file.originalname.split('.')[0]}.${format}`;
   await sharp(file.buffer)
-    .resize(SIZES[size], SIZES[size])
+    .resize(SIZES[size], SIZES[size], {
+      fit: 'inside'
+    })
     .toFormat(format)
     .toFile(`images/${newFilename}`);
   return newFilename;
@@ -39,7 +41,6 @@ const resizeImage = async (req, res, next) => {
     thumbnail: results[1],
     icon: results[2]
    };
-   console.log(req.body.images)
   next();
 };
 

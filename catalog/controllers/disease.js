@@ -5,7 +5,7 @@ const Disease = require('../models/disease');
 
 exports.getDiseases = async (req, res, next) => {
   try {
-    const diseases = await Disease.find();
+    const diseases = await Disease.find().sort({ name: 1 });
     res.status(200).json({
       message: 'Diseases fetched.',
       diseases
@@ -89,6 +89,8 @@ exports.deleteDisease = async (req, res, next) => {
     next(defaultError(err));
   }
 };
+
+// Private
 
 const findDisease = async diseaseId => {
   const disease = await Disease.findById(diseaseId);

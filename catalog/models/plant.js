@@ -21,11 +21,22 @@ const plantSchema = new Schema({
       required: true
     },
     plantationDate: {
-      type: Date,
-      required: true
+      start: {
+        type: Date,
+        required: true
+      },
+      end: {
+        type: Date,
+        required: true
+      }
     },
     harvestDate: {
-      type: Date
+      start: {
+        type: Date
+      },
+      end: {
+        type: Date,
+      }
     },
     beneficialInteractions: [{
       type: Schema.Types.ObjectId,
