@@ -45,7 +45,7 @@
       <add-plant-attributes
         attributeName="beneficialInteractions"
         default-option="interaction bénéfique"
-        :attributes-list="getAllPlants"
+        :attributes-list="plants"
         :known-interactions="beneficialInteractions"
         @get-selected-values="setBeneficialInteractions"
       ></add-plant-attributes>
@@ -55,15 +55,25 @@
       <add-plant-attributes
         attributeName="harmfulInteractions"
         default-option="interaction néfaste"
-        :attributes-list="getAllPlants"
+        :attributes-list="plants"
         :known-interactions="harmfulInteractions"
         @get-selected-values="setHarmfulInteractions"
       ></add-plant-attributes>
     </div>
     <div class="form-control">
       <label for="diseases">Maladies</label>
-      <input type="calendar" id="diseases" v-model="diseases.val">
+      <add-plant-attributes
+        attributeName="diseases"
+        default-option="maladie"
+        :attributes-list="getAllDiseases"
+        :knownInteractions="getLastCreatedDisease"
+        @get-selected-values="setDiseases"
+      ></add-plant-attributes>
     </div>
+    <div class="add-disease-wrapper">
+      <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
+    </div>
+    <add-disease-form v-if="diseaseFormVisible" @create-disease="handleCreatedDisease"></add-disease-form>
     <div class="form-control">
       <label for="notes">Remarques</label>
       <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
@@ -76,17 +86,18 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import AddPlantAttributes from './AddPlantAttributes.vue';
+import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
 
 export default {
   components: {
-    AddPlantAttributes
+    AddPlantAttributes,
+    AddDiseaseForm
   },
-  emits: ['save-data'],
   props: ['id'],
   data() {
     return {
-      plant: null,
       species: {
         val: '',
         isValid: true
@@ -131,17 +142,50 @@ export default {
       notes: {
         val: ''
       },
-      formIsValid: true
+      formIsValid: true,
+      diseaseFormVisible: false
     };
   },
   computed: {
-    getAllPlants() {
-      return this.$store.getters['plants/sortedPlants'];
+    ...mapGetters('plants', [
+      'plant',
+      'plants',
+    ]),
+    ...mapGetters('diseases', {
+      getAllDiseases: 'diseases',
+      lastAddedDisease: 'lastAddedDisease'
+    }),
+    getLastCreatedDisease() {
+      let lastDisease = this.lastAddedDisease
+      if (lastDisease) {
+        const lastDiseaseId = lastDisease._id;
+        this.setDiseases([lastDiseaseId])
+        return [lastDiseaseId];
+      }
+      return null;
+    },
+    createDiseaseBtnIcon() {
+      return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
+    },
+    createDiseaseBtnText() {
+      return this.diseaseFormVisible ? 'Masquer' : 'Créer une maladie';
     }
   },
   methods: {
-    plantToEdit() {
-      this.plant = this.$store.getters['plants/plant'];
+    ...mapActions('diseases', [
+      'fetchDiseases'
+    ]),
+    parsedDateForEdit(dateToParse) {
+      if (dateToParse) {
+        return dateToParse.split('T')[0];
+      }
+    },
+    handleCreatedDisease() {
+      this.fetchDiseases();
+      this.diseaseFormVisible = false;
+    },
+    toggleAddDiseaseForm() {
+      this.diseaseFormVisible = !this.diseaseFormVisible;
     },
     clearInvalidField(input) {
       this[input].isValid = true;
@@ -177,36 +221,44 @@ export default {
     setHarmfulInteractions(interactions) {
       this.harmfulInteractions = interactions;
     },
+    setDiseases(diseases) {
+      this.diseases = diseases;
+    },
     submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
 
-      // #################
-      // TODO - Modify dates handling in formData below
-      // #################
       const formData = {
         _id: this.id,
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
         image: this.image,
         plantationType: this.plantationType.val.toLowerCase(),
-        plantationDate: this.plantationDate.val,
-        harvestDate: this.harvestDate.val,
+        plantationDate: {
+          start: this.plantationDate.start.val,
+          end: this.plantationDate.end.val,
+        },
+        harvestDate: {
+          start: this.harvestDate.start.val,
+          end: this.harvestDate.end.val,
+        },
         beneficialInteractions: this.beneficialInteractions,
         harmfulInteractions: this.harmfulInteractions,
         diseases: this.diseases,
         notes: this.notes.val
       };
-      this.$emit('save-data', formData);
+      this.$store.dispatch('plants/editPlant', formData);
+      this.$router.replace('/catalogue');
     }
   },
   mounted() {
-    this.plantToEdit();
     this.species.val = this.plant.species;
     this.variety.val = this.plant.variety;
     this.plantationType.val = this.plant.plantationType;
-    this.plantationDate.val = this.plant.plantationDate;
-    this.harvestDate.val = this.plant.plantationDate || null;
+    this.plantationDate.start.val = this.parsedDateForEdit(this.plant.plantationDate.start);
+    this.plantationDate.end.val = this.parsedDateForEdit(this.plant.plantationDate.end);
+    this.harvestDate.start.val = this.plant.harvestDate ? this.parsedDateForEdit(this.plant.harvestDate.start) : '';
+    this.harvestDate.end.val = this.plant.harvestDate ? this.parsedDateForEdit(this.plant.harvestDate.end) : '';
     this.beneficialInteractions = this.plant.beneficialInteractions;
     this.harmfulInteractions = this.plant.harmfulInteractions;
     this.diseases = this.plant.diseases;

@@ -1,8 +1,8 @@
 export default {
-  fetchDiseases(state, payload) {
+  setDiseases(state, payload) {
     state.diseases = payload;
   },
-  addDisease(state, payload) {
+  setDisease(state, payload) {
     state.diseases.push(payload);
   },
   setLastAddedDisease(state, payload) {

@@ -3,7 +3,7 @@
     :show="formVisible"
     title="Modifier Une Espèce"
     @close="redirectToPlantDetail">
-    <edit-plant-form :id="id" @save-data="editPlant"></edit-plant-form>
+    <edit-plant-form :id="id"></edit-plant-form>
   </base-dialog>
 </template>
 
@@ -24,10 +24,6 @@ export default {
     redirectToPlantDetail() {
       this.formVisible = false;
       this.$router.replace(`${this.$route.path.replace(/\/editer/, '')}`);
-    },
-    editPlant(data) {
-      this.$store.dispatch('plants/editPlant', data);
-      this.$router.replace('/catalogue');
     }
   }
 };

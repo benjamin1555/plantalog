@@ -2,7 +2,7 @@ export default {
   async fetchDiseases(context) {
     const response = await fetch('http://localhost:3000/catalog/diseases');
     const responseData = await response.json();
-    context.commit('fetchDiseases', responseData.diseases);
+    context.commit('setDiseases', responseData.diseases);
   },
   async addDisease(context, data) {
     const formData = createFormData(data);
@@ -17,7 +17,7 @@ export default {
     console.log(responseData);
 
     context.commit('setLastAddedDisease', responseData.savedDisease);
-    context.commit('addDisease', {
+    context.commit('setDisease', {
       _id: responseData.savedDisease._id,
       ...data
     });

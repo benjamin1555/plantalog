@@ -23,6 +23,8 @@ export default {
       throw error;
     }
 
+    console.log(responseData);
+
     context.commit('setPlant', responseData.plant);
   },
   async addPlant(context, data) {
