@@ -7,7 +7,9 @@ export default {
   state() {
     return {
       plant: null,
-      plants: []
+      plants: [],
+      searchQuery: '',
+      paginationData: null
     };
   },
   mutations,

@@ -2,9 +2,15 @@ export default {
   async fetchPlants(context, payload) {
     let searchQuery = payload ? payload.searchQuery : '';
 
+    console.log(payload);
+
     const response = await fetch(`http://localhost:3000/catalog/plants/?search=${searchQuery}`);
     const responseData = await response.json();
+    const cleanedSearchQuery = searchQuery.includes('&') ? searchQuery.split('&')[0] : searchQuery;
+
     context.commit('setPlants', responseData.plants);
+    context.commit('setSearchQuery', { cleanedSearchQuery });
+    context.commit('setPaginationData', responseData);
   },
   async fetchPlant(context, plantId) {
     const response = await fetch(`http://localhost:3000/catalog/plants/${plantId}`)
@@ -18,6 +24,7 @@ export default {
       const error = new Error('Une erreur interne vient de se produire. (Code 500)');
       throw error;
     }
+
     context.commit('setPlant', responseData.plant);
   },
   async addPlant(context, data) {
@@ -41,6 +48,7 @@ export default {
     const plants = context.getters.plants;
     const plantIdToEdit = plants.findIndex(plant => plant._id === data._id);
     plants[plantIdToEdit] = data;
+
     context.commit('editPlant', plants);
   }
 };

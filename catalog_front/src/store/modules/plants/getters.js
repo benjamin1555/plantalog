@@ -8,6 +8,12 @@ export default {
   plant(state) {
     return state.plant;
   },
+  searchQuery(state) {
+    return state.searchQuery;
+  },
+  paginationData(state) {
+    return state.paginationData;
+  },
   sortedPlants(state) {
     const sortedPlants = state.plants.sort((a, b) => {
       if (a.species === b.species) {

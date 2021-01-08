@@ -3,15 +3,18 @@
     <base-card v-if="hasSearched">
       <h3>Résultats</h3>
       <base-spinner v-if="isLoading"></base-spinner>
-      <ul v-else-if="!isLoading && hasPlants">
-        <plant-item
-          v-for="plant in plants"
-          :key="plant._id"
-          :id="plant._id"
-          :species="plant.species"
-          :variety="plant.variety"
-        ></plant-item>
-      </ul>
+      <template v-else-if="!isLoading && hasPlants">
+        <ul>
+          <plant-item
+            v-for="plant in plants"
+            :key="plant._id"
+            :id="plant._id"
+            :species="plant.species"
+            :variety="plant.variety"
+          ></plant-item>
+        </ul>
+        <base-pagination></base-pagination>
+      </template>
       <p v-else>Pas de résultat...</p>
     </base-card>
   </div>
