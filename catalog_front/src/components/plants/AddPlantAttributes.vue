@@ -1,5 +1,8 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <select :id="attributeName" @change="onChange($event)">
       <option value="" selected>-- Ajoutez une {{ defaultOption }} --</option>
       <option
@@ -21,19 +24,28 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import BaseLabel from '../ui/BaseLabel.vue';
+
 export default {
   components: {
     BaseLabel
   },
-  props: ['attributeName', 'defaultOption', 'attributesList', 'knownInteractions'],
+  props: ['attributeName', 'attributesList', 'defaultOption', 'knownInteractions'],
   emits: ['get-selected-values'],
   data() {
     return {
-      selectedValues: []
+      selectedValues: [],
+      error: null
     };
   },
   computed: {
+    ...mapGetters('plants', [
+      'plants'
+    ]),
+    ...mapGetters('diseases', [
+      'diseases'
+    ]),
     formattedSelectedValues() {
       const values = this.selectedValues.map(itemId => {
         const item = this.attributesList.find(i => i._id === itemId);
@@ -52,7 +64,7 @@ export default {
   methods: {
      initializeInteractionsValues() {
       if (this.knownInteractions && this.knownInteractions.length > 0) {
-        this.selectedValues = this.knownInteractions;
+        this.selectedValues = this.knownInteractions.map(({ _id }) => _id);
       }
     },
     onChange(event) {
@@ -63,10 +75,27 @@ export default {
     },
     removeAttribute(plantToRemoveId) {
       this.selectedValues.splice(this.selectedValues.indexOf(plantToRemoveId), 1);
-    }
+    },
+    async loadPlantsAndDiseases() {
+      try {
+        await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
+        await this.$store.dispatch('diseases/fetchDiseases');
+        this.initializeInteractionsValues();
+      } catch (err) {
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
+      }
+    },
+    handleError() {
+      this.error = null;
+      this.redirectToCatalog();
+    },
   },
-  beforeUpdate() {
-    this.initializeInteractionsValues();
+  created() {
+    this.loadPlantsAndDiseases();
   }
 };
 </script>

@@ -71,13 +71,7 @@ export default {
     },
     fetchDiseases() {
       if (!this.plant.diseases || this.plant.diseases.length === 0) return 'néant';
-      const diseasesList = this.plant.diseases.map(id => {
-        const disease = this.diseases.find(disease => {
-          return disease._id === id;
-        });
-        return disease.name;
-      });
-      return diseasesList.join(', ');
+      return this.plant.diseases.map(disease => disease.name).join(', ');
     },
     regularImageLink() {
       return `http://localhost:3000/images/${this.plant.imagesUrl.regular}`;
@@ -88,13 +82,9 @@ export default {
   },
   methods: {
     fetchInteractions(interactionType) {
-      const interactionsList = interactionType.map(id => {
-        const interaction = this.$store.getters['plants/plants'].find(plant => {
-          return plant._id === id;
-        });
-        return interaction.variety ? `${interaction.species} - ${interaction.variety}` : interaction.species;
-      });
-      return interactionsList.join(', ');
+      return interactionType.map(item => {
+        return item.variety ? `${item.species} - ${item.variety}` : item.species;
+      }).join(', ');
     },
     closeDialog() {
       this.detailsVisible = false;
