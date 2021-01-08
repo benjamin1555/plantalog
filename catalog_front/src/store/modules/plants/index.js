@@ -9,7 +9,9 @@ export default {
       plant: null,
       plants: [],
       searchQuery: '',
-      paginationData: null
+      paginationData: null,
+      searchPartialResultsVisible: false,
+      searchAllResultsVisible: false
     };
   },
   mutations,

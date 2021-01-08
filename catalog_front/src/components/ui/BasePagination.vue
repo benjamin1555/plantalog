@@ -70,16 +70,12 @@ export default {
   },
   methods: {
     async searchPlant(searchQuery) {
-      console.log(searchQuery);
-      this.hasSearched = false;
       this.isLoading = true;
       if (!searchQuery) return;
 
       try {
-        this.hasSearched = true;
         await this.$store.dispatch('plants/fetchPlants', { searchQuery });
         this.isLoading = false;
-        this.hasSearched = true;
       } catch (err) {
         this.isLoading = false;
         console.log(err);

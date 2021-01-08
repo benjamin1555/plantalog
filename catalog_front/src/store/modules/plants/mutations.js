@@ -27,5 +27,11 @@ export default {
   },
   editPlant(state, payload) {
     state.plants = payload;
+  },
+  toggleSearchAllResults(state) {
+    state.searchAllResultsVisible = !state.searchAllResultsVisible;
+  },
+  toggleSearchPartialResults(state) {
+    state.searchPartialResultsVisible = !state.searchPartialResultsVisible;
   }
 };

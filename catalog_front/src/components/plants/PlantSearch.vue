@@ -10,11 +10,12 @@
       <base-button mode="outline" link :to="addPlantLink"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
       <router-view></router-view>
     </section>
-    <plant-search-results :has-searched="hasSearched" :is-loading="isLoading"></plant-search-results>
+    <plant-search-results :is-loading="isLoading"></plant-search-results>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import PlantSearchResults from './PlantSearchResults.vue';
 
 export default {
@@ -23,30 +24,32 @@ export default {
   },
   data() {
     return {
-      hasSearched: false,
       isLoading: false
     }
   },
   computed: {
+    ...mapGetters('plants', [
+      'searchPartialResultsVisible'
+    ]),
     addPlantLink() {
       return `${this.$route.path}/ajouter-plante`;
-    },
-    searched() {
-      return this.hasSearched;
     }
   },
   methods: {
+    ...mapActions('plants', [
+      'displayPartialResults'
+    ]),
     async searchPlant() {
-      this.hasSearched = false;
-      this.isLoading = true;
       const searchQuery = this.$refs.searchPlantInput.value.toLowerCase().trim();
       if (!searchQuery) return;
+      if (!this.searchPartialResultsVisible) {
+        this.displayPartialResults();
+      }
+      this.isLoading = true;
 
       try {
-        this.hasSearched = true;
         await this.$store.dispatch('plants/fetchPlants', { searchQuery });
         this.isLoading = false;
-        this.hasSearched = true;
         this.$refs.searchPlantInput.value = '';
       } catch (err) {
         this.isLoading = false;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-card v-if="hasSearched">
+    <base-card v-if="searchPartialResultsVisible">
       <h3>Résultats</h3>
       <base-spinner v-if="isLoading"></base-spinner>
       <template v-else-if="!isLoading && hasPlants">
@@ -28,11 +28,12 @@ export default {
   components: {
     PlantItem
   },
-  props: ['hasSearched', 'isLoading'],
+  props: ['isLoading'],
   computed: {
     ...mapGetters('plants', [
       'hasPlants',
-      'plants'
+      'plants',
+      'searchPartialResultsVisible'
     ])
   }
 };

@@ -1,25 +1,28 @@
 <template>
   <div>
-    <base-button @click="togglePlantsDisplay" mode="outline"><i :class="plantsDisplayBtnIcon"></i>{{ plantsDisplayBtnText }}</base-button>
-    <base-card v-if="displayPlants">
+    <base-button @click="fetchPlants" mode="outline"><i :class="plantsDisplayBtnIcon"></i>{{ plantsDisplayBtnText }}</base-button>
+    <base-card v-if="searchAllResultsVisible">
       <base-spinner v-if="isLoading"></base-spinner>
-      <ul v-else-if="!isLoading && hasPlants">
-        <h3>Liste des plantes enregistrées</h3>
-        <plant-item
-          v-for="plant in sortedPlants"
-          :key="plant._id"
-          :id="plant._id"
-          :species="plant.species"
-          :variety="plant.variety"
-        ></plant-item>
-      </ul>
+      <template v-else-if="!isLoading && hasPlants">
+        <ul>
+          <h3>Liste des plantes enregistrées</h3>
+          <plant-item
+            v-for="plant in plants"
+            :key="plant._id"
+            :id="plant._id"
+            :species="plant.species"
+            :variety="plant.variety"
+          ></plant-item>
+        </ul>
+        <base-pagination></base-pagination>
+      </template>
       <p v-else>Aucune plante pour le moment...</p>
     </base-card>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import PlantItem from './PlantItem';
 
 export default {
@@ -28,35 +31,37 @@ export default {
   },
   data() {
     return {
-      displayPlants: false,
       isLoading: false
     };
   },
   computed: {
     ...mapGetters('plants', [
       'hasPlants',
-      'sortedPlants'
+      'plants',
+      'searchAllResultsVisible'
     ]),
     plantsDisplayBtnText() {
-      return this.displayPlants ? 'Masquer' : 'Afficher Tout'
+      return this.searchAllResultsVisible ? 'Masquer' : 'Afficher Tout'
     },
     plantsDisplayBtnIcon() {
-      return this.displayPlants ? 'fas fa-angle-double-up' : 'fas fa-angle-double-down'
+      return this.searchAllResultsVisible ? 'fas fa-angle-double-up' : 'fas fa-angle-double-down'
     }
   },
   methods: {
-    async togglePlantsDisplay() {
-      this.displayPlants = !this.displayPlants;
+    ...mapActions('plants', {
+      fetchAllPlants: 'fetchPlants',
+      displayAllResults: 'displayAllResults'
+    }),
+    async fetchPlants() {
+      this.displayAllResults();
 
-      if (this.displayPlants) {
-        this.isLoading = true;
-        try {
-          await this.$store.dispatch('plants/fetchPlants');
-          this.isLoading = false
-        } catch (err) {
-          this.isLoading = false;
-          console.log(err);
-        }
+      this.isLoading = true;
+      try {
+        await this.fetchAllPlants();
+        this.isLoading = false
+      } catch (err) {
+        this.isLoading = false;
+        console.log(err);
       }
     }
   }

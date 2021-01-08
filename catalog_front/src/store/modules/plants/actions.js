@@ -2,8 +2,6 @@ export default {
   async fetchPlants(context, payload) {
     let searchQuery = payload ? payload.searchQuery : '';
 
-    console.log(payload);
-
     const response = await fetch(`http://localhost:3000/catalog/plants/?search=${searchQuery}`);
     const responseData = await response.json();
     const cleanedSearchQuery = searchQuery.includes('&') ? searchQuery.split('&')[0] : searchQuery;
@@ -50,6 +48,18 @@ export default {
     plants[plantIdToEdit] = data;
 
     context.commit('editPlant', plants);
+  },
+  displayAllResults(context) {
+    if (context.state.searchPartialResultsVisible) {
+      context.commit('toggleSearchPartialResults');
+    }
+    context.commit('toggleSearchAllResults');
+  },
+  displayPartialResults(context) {
+    if (context.state.searchAllResultsVisible) {
+      context.commit('toggleSearchAllResults');
+    }
+    context.commit('toggleSearchPartialResults');
   }
 };
 
