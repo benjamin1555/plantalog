@@ -1,7 +1,4 @@
 <template>
-
-  {{ selectedValues }}
-
   <div>
     <select :id="attributeName" @change="onChange($event)">
       <option value="" selected>-- Ajoutez une {{ defaultOption }} --</option>
