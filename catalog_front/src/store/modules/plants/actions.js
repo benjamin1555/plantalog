@@ -50,16 +50,16 @@ export default {
     context.commit('editPlant', plants);
   },
   displayAllResults(context) {
-    if (context.state.searchPartialResultsVisible) {
-      context.commit('toggleSearchPartialResults');
-    }
+    checkAndHidePartialResults(context);
     context.commit('toggleSearchAllResults');
   },
   displayPartialResults(context) {
-    if (context.state.searchAllResultsVisible) {
-      context.commit('toggleSearchAllResults');
-    }
+    checkAndHideAllResults(context);
     context.commit('toggleSearchPartialResults');
+  },
+  hideAllSearchResults(context) {
+    checkAndHidePartialResults(context);
+    checkAndHideAllResults(context);
   }
 };
 
@@ -80,6 +80,19 @@ const createFormData = data => {
   return formData;
 };
 
+const checkAndHidePartialResults = context => {
+  if (context.state.searchPartialResultsVisible) {
+    context.commit('toggleSearchPartialResults');
+  }
+};
+
+const checkAndHideAllResults = context => {
+  if (context.state.searchAllResultsVisible) {
+    context.commit('toggleSearchAllResults');
+  }
+};
+
+// TODO - is this function still necessary?
 const convertEmptyProxyToNull = proxy => {
   return proxy.val === null ? null : proxy;
 };

@@ -45,7 +45,7 @@
       <add-plant-attributes
         attributeName="beneficialInteractions"
         default-option="interaction bénéfique"
-        :attributes-list="sortedPlants"
+        :attributes-list="plants"
         @get-selected-values="setBeneficialInteractions"
       ></add-plant-attributes>
     </div>
@@ -54,7 +54,7 @@
       <add-plant-attributes
         attributeName="harmfulInteractions"
         default-option="interaction néfaste"
-        :attributes-list="sortedPlants"
+        :attributes-list="plants"
         @get-selected-values="setHarmfulInteractions"
       ></add-plant-attributes>
     </div>
@@ -93,7 +93,6 @@ export default {
     AddPlantAttributes,
     AddDiseaseForm
   },
-  emits: ['save-data'],
   data() {
     return {
       species: {
@@ -146,11 +145,11 @@ export default {
   },
   computed: {
     ...mapGetters('plants', [
-      'sortedPlants'
+      'plants'
     ]),
-    ...mapGetters({
-      getAllDiseases: 'diseases/diseases',
-      lastAddedDisease: 'diseases/lastAddedDisease'
+    ...mapGetters('diseases', {
+      getAllDiseases: 'diseases',
+      lastAddedDisease: 'lastAddedDisease'
     }),
     getLastCreatedDisease() {
       let lastDisease = this.lastAddedDisease
@@ -238,11 +237,9 @@ export default {
         diseases: this.diseases,
         notes: this.notes.val
       };
-      this.$emit('save-data', formData);
+      this.$store.dispatch('plants/addPlant', formData);
+      this.$router.replace('/catalogue');
     }
-  },
-  mounted() {
-    this.fetchDiseases();
   }
 }
 </script>

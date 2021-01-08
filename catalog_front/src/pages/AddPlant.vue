@@ -8,12 +8,13 @@
       :show="formVisible"
       title="Ajouter Une Espèce"
       @close="redirectToCatalog">
-      <plant-form @save-data="addPlant"></plant-form>
+      <plant-form></plant-form>
     </base-dialog>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import PlantForm from '../components/plants/PlantForm.vue';
 
 export default {
@@ -27,17 +28,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions('plants', [
+      'hideAllSearchResults'
+    ]),
     redirectToCatalog() {
       this.formVisible = false;
       this.$router.replace('/catalogue');
     },
-    addPlant(data) {
-      this.$store.dispatch('plants/addPlant', data);
-      this.$router.replace('/catalogue');
-    },
     async loadPlantsAndDiseases() {
       try {
-        await this.$store.dispatch('plants/fetchPlants');
+        await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
         await this.$store.dispatch('diseases/fetchDiseases');
         this.formVisible = true;
       } catch (err) {
@@ -54,6 +54,7 @@ export default {
     }
   },
   created() {
+    this.hideAllSearchResults();
     this.loadPlantsAndDiseases();
   }
 }
