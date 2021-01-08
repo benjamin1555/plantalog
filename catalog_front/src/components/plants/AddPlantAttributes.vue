@@ -1,4 +1,7 @@
 <template>
+
+  {{ selectedValues }}
+
   <div>
     <select :id="attributeName" @change="onChange($event)">
       <option value="" selected>-- Ajoutez une {{ defaultOption }} --</option>
@@ -50,16 +53,16 @@ export default {
     }
   },
   methods: {
+     initializeInteractionsValues() {
+      if (this.knownInteractions && this.knownInteractions.length > 0) {
+        this.selectedValues = this.knownInteractions;
+      }
+    },
     onChange(event) {
       const inputValue = event.target.value;
       if (this.selectedValues.includes(inputValue)) return;
       this.selectedValues.push(inputValue);
       this.$emit('get-selected-values', this.selectedValues);
-    },
-    initializeInteractionsValues() {
-      if (this.knownInteractions && this.knownInteractions.length > 0) {
-        this.selectedValues = this.knownInteractions;
-      }
     },
     removeAttribute(plantToRemoveId) {
       this.selectedValues.splice(this.selectedValues.indexOf(plantToRemoveId), 1);

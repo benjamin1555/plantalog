@@ -94,7 +94,6 @@ const checkAndHideAllResults = context => {
   }
 };
 
-// TODO - is this function still necessary?
 const convertEmptyProxyToNull = proxy => {
   return proxy.val === null ? null : proxy;
 };
