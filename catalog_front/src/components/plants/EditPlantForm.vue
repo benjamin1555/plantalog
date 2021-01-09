@@ -67,7 +67,7 @@
           attributeName="diseases"
           default-option="maladie"
           :attributes-list="getAllDiseases"
-          :knownInteractions="getLastCreatedDisease"
+          :knownInteractions="diseases"
           @get-selected-values="setDiseases"
         ></add-plant-attributes>
       </div>
@@ -133,13 +133,13 @@ export default {
         }
       },
       beneficialInteractions: {
-        val: []
+        val: null
       },
       harmfulInteractions: {
-        val: []
+        val: null
       },
       diseases: {
-        val: []
+        val: null
       },
       notes: {
         val: ''
@@ -236,14 +236,14 @@ export default {
     this.plantationType.val = this.plant.plantationType;
     this.plantationDate.start.val = this.parsedDateForEdit(this.plant.plantationDate.start);
     this.plantationDate.end.val = this.parsedDateForEdit(this.plant.plantationDate.end);
-    this.harvestDate.start.val = this.plant.harvestDate ? this.parsedDateForEdit(this.plant.harvestDate.start) : '';
-    this.harvestDate.end.val = this.plant.harvestDate ? this.parsedDateForEdit(this.plant.harvestDate.end) : '';
+    this.harvestDate.start.val = this.plant.harvestDate.start ? this.parsedDateForEdit(this.plant.harvestDate.start) : '';
+    this.harvestDate.end.val = this.plant.harvestDate.end ? this.parsedDateForEdit(this.plant.harvestDate.end) : '';
     this.beneficialInteractions = this.plant.beneficialInteractions;
     this.harmfulInteractions = this.plant.harmfulInteractions;
     this.diseases = this.plant.diseases;
     this.notes.val = this.plant.notes;
     },
-    submitForm() {
+    async submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
 
@@ -266,13 +266,17 @@ export default {
         diseases: this.diseases,
         notes: this.notes.val
       };
-      this.$store.dispatch('plants/editPlant', formData);
-      this.$router.replace('/catalogue');
+
+      try {
+        await this.$store.dispatch('plants/editPlant', formData);
+        this.$router.replace('/catalogue');
+      } catch (err) {
+        console.log(err);
+      }
     }
   },
   async created() {
     try {
-      console.log('IN CREATED HOOK')
       await this.fetchPlant(this.id);
       this.populateFormValues();
     } catch (err) {

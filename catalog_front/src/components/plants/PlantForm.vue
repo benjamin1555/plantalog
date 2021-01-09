@@ -215,7 +215,7 @@ export default {
     setDiseases(diseases) {
       this.diseases = diseases;
     },
-    submitForm() {
+    async submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
 
@@ -237,8 +237,13 @@ export default {
         diseases: this.diseases,
         notes: this.notes.val
       };
-      this.$store.dispatch('plants/addPlant', formData);
-      this.$router.replace('/catalogue');
+
+      try {
+        await this.$store.dispatch('plants/addPlant', formData);
+        this.$router.replace('/catalogue');
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 }

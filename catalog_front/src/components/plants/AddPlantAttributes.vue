@@ -73,8 +73,9 @@ export default {
       this.selectedValues.push(inputValue);
       this.$emit('get-selected-values', this.selectedValues);
     },
-    removeAttribute(plantToRemoveId) {
-      this.selectedValues.splice(this.selectedValues.indexOf(plantToRemoveId), 1);
+    removeAttribute(attributeToRemoveId) {
+      this.selectedValues.splice(this.selectedValues.indexOf(attributeToRemoveId), 1);
+      this.$emit('get-selected-values', this.selectedValues);
     },
     async loadPlantsAndDiseases() {
       try {

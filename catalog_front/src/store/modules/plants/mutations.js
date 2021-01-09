@@ -25,9 +25,6 @@ export default {
   addPlant(state, payload) {
     state.plants.push(payload);
   },
-  editPlant(state, payload) {
-    state.plants = payload;
-  },
   toggleSearchAllResults(state) {
     state.searchAllResultsVisible = !state.searchAllResultsVisible;
   },
