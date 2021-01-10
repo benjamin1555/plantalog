@@ -17,10 +17,18 @@ export default {
     console.log(responseData);
 
     context.commit('setLastAddedDisease', responseData.savedDisease);
-    context.commit('setDisease', {
-      _id: responseData.savedDisease._id,
-      ...data
-    });
+  },
+  clearLastAddedDisease(context) {
+    context.commit('clearLastAddedDisease');
+  },
+  clearSelectedDiseases(context) {
+    context.commit('clearSelectedDiseases');
+  },
+  addSelectedDisease(context, payload) {
+    context.commit('addSelectedDisease', payload);
+  },
+  removeSelectedDisease(context, payload) {
+    context.commit('removeSelectedDisease', payload);
   }
 };
 

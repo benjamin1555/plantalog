@@ -43,13 +43,10 @@ export default {
     ...mapGetters('plants', [
       'plants'
     ]),
-    ...mapGetters('diseases', [
-      'diseases'
-    ]),
     formattedSelectedValues() {
       const values = this.selectedValues.map(itemId => {
         const item = this.attributesList.find(i => i._id === itemId);
-        const name = item.variety ? `${item.species} - ${item.variety}` : item.species || item.name;
+        const name = item.variety ? `${item.species} - ${item.variety}` : item.species;
         return {
           _id: item._id,
           name
@@ -77,10 +74,9 @@ export default {
       this.selectedValues.splice(this.selectedValues.indexOf(attributeToRemoveId), 1);
       this.$emit('get-selected-values', this.selectedValues);
     },
-    async loadPlantsAndDiseases() {
+    async loadPlants() {
       try {
         await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
-        await this.$store.dispatch('diseases/fetchDiseases');
         this.initializeInteractionsValues();
       } catch (err) {
         if (err.message === 'Failed to fetch') {
@@ -92,11 +88,10 @@ export default {
     },
     handleError() {
       this.error = null;
-      this.redirectToCatalog();
-    },
+    }
   },
   created() {
-    this.loadPlantsAndDiseases();
+    this.loadPlants();
   }
 };
 </script>

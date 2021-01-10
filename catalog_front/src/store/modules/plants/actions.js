@@ -91,6 +91,8 @@ const createFormData = data => {
   formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
   formData.append('diseases', convertEmptyProxyToNull(data.diseases));
 
+  console.log(data);
+
   return formData;
 };
 

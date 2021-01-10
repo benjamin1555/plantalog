@@ -7,7 +7,8 @@ export default {
   state() {
     return {
       lastAddedDisease: null,
-      diseases: []
+      diseases: [],
+      selectedDiseases: []
     };
   },
   mutations,

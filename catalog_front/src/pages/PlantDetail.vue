@@ -24,7 +24,7 @@
           <img :src="regularImageLink" alt="plant_image">
         </div>
       </div>
-      <div class="edit-btn">
+      <div class="edit-btn" v-if="isAuthenticated">
         <router-link :to="editPlantLink"><base-button>Éditer</base-button></router-link>
       </div>
     </base-dialog>
@@ -56,6 +56,7 @@ export default {
     ...mapGetters('diseases', [
       'diseases'
     ]),
+    ...mapGetters(['isAuthenticated']),
     formattedName() {
       const firstLetter = this.plant.species.substring(0, 1).toUpperCase();
       const restOfWord = this.plant.species.substring(1);

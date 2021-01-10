@@ -60,13 +60,7 @@
     </div>
     <div class="form-control">
       <label for="diseases">Maladies</label>
-      <add-plant-attributes
-        attributeName="diseases"
-        default-option="maladie"
-        :attributes-list="getAllDiseases"
-        :knownInteractions="getLastCreatedDisease"
-        @get-selected-values="setDiseases"
-      ></add-plant-attributes>
+      <add-plant-diseases></add-plant-diseases>
     </div>
     <div class="add-disease-wrapper">
       <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
@@ -86,12 +80,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddPlantAttributes from './AddPlantAttributes.vue';
+import AddPlantDiseases from './AddPlantDiseases.vue';
 import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
 
 export default {
   components: {
     AddPlantAttributes,
-    AddDiseaseForm
+    AddDiseaseForm,
+    AddPlantDiseases
   },
   data() {
     return {
@@ -133,9 +129,6 @@ export default {
       harmfulInteractions: {
         val: null
       },
-      diseases: {
-        val: null
-      },
       notes: {
         val: ''
       },
@@ -149,17 +142,9 @@ export default {
     ]),
     ...mapGetters('diseases', {
       getAllDiseases: 'diseases',
-      lastAddedDisease: 'lastAddedDisease'
+      lastAddedDisease: 'lastAddedDisease',
+      selectedDiseases: 'selectedDiseases'
     }),
-    getLastCreatedDisease() {
-      let lastDisease = this.lastAddedDisease
-      if (lastDisease) {
-        const lastDiseaseId = lastDisease._id;
-        this.setDiseases([lastDiseaseId])
-        return [lastDiseaseId];
-      }
-      return null;
-    },
     createDiseaseBtnIcon() {
       return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
     },
@@ -169,11 +154,19 @@ export default {
   },
   methods: {
     ...mapActions('diseases', [
-      'fetchDiseases'
+      'fetchDiseases',
+      'addSelectedDisease',
+      'clearLastAddedDisease'
     ]),
-    handleCreatedDisease() {
-      this.fetchDiseases();
-      this.diseaseFormVisible = false;
+    async handleCreatedDisease() {
+      try {
+        await this.fetchDiseases();
+        this.diseaseFormVisible = false;
+        this.addSelectedDisease({ _id: this.lastAddedDisease._id});
+        this.clearLastAddedDisease();
+      } catch (err) {
+        console.log(err);
+      }
     },
     toggleAddDiseaseForm() {
       this.diseaseFormVisible = !this.diseaseFormVisible;
@@ -212,9 +205,6 @@ export default {
     setHarmfulInteractions(interactions) {
       this.harmfulInteractions = interactions;
     },
-    setDiseases(diseases) {
-      this.diseases = diseases;
-    },
     async submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
@@ -234,7 +224,7 @@ export default {
         },
         beneficialInteractions: this.beneficialInteractions,
         harmfulInteractions: this.harmfulInteractions,
-        diseases: this.diseases,
+        diseases: this.selectedDiseases,
         notes: this.notes.val
       };
 

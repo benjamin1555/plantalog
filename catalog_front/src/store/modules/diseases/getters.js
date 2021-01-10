@@ -7,5 +7,8 @@ export default {
   },
   lastAddedDisease(state) {
     return state.lastAddedDisease;
+  },
+  selectedDiseases(state) {
+    return state.selectedDiseases;
   }
 };

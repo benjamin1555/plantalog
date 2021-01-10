@@ -7,7 +7,7 @@
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
       </form>
-      <base-button mode="outline" link :to="addPlantLink"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
+      <base-button mode="outline" link :to="addPlantLink" v-if="isAuthenticated"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
       <router-view></router-view>
     </section>
     <plant-search-results :is-loading="isLoading"></plant-search-results>
@@ -31,6 +31,7 @@ export default {
     ...mapGetters('plants', [
       'searchPartialResultsVisible'
     ]),
+    ...mapGetters(['isAuthenticated']),
     addPlantLink() {
       return `${this.$route.path}/ajouter-plante`;
     }
