@@ -25,6 +25,18 @@ export default {
   addPlant(state, payload) {
     state.plants.push(payload);
   },
+  clearSelectedInteractions(state, { interactionType }) {
+    state[interactionType] = [];
+  },
+  addSelectedInteraction(state, { interactionType, _id }) {
+    if (!state[interactionType].includes(_id)) {
+      state[interactionType].push(_id);
+    }
+  },
+  removeSelectedInteraction(state, { interactionType, _id }) {
+    const interactionIndex = state[interactionType].findIndex(itemId => itemId === _id);
+    state[interactionType].splice(interactionIndex, 1);
+  },
   toggleSearchAllResults(state) {
     state.searchAllResultsVisible = !state.searchAllResultsVisible;
   },

@@ -1,80 +1,81 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div class="form-control" :class="{ invalid: !species.isValid }">
-      <label for="species">Espèce</label>
-      <input type="text" id="species" v-model.trim="species.val" @blur="clearInvalidField('species')">
-      <p v-if="!species.isValid">L'espèce doit être renseignée.</p>
-    </div>
-    <div class="form-control">
-      <label for="variety">Variété</label>
-      <input type="text" id="variety" v-model.trim="variety.val">
-    </div>
-    <div class="form-control">
-      <label for="image">Image</label>
-      <input type="file" id="image" ref="image" @change="selectImage">
-    </div>
-    <div class="form-control" :class="{ invalid: !plantationType.isValid }">
-      <label for="plantationType">Type de plantation</label>
-      <input type="text" id="plantationType" v-model.trim="plantationType.val" @blur="clearInvalidField('plantationType')">
-      <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
-    </div>
-    <div class="dates">
-      <div class="form-control plant-date" :class="{ invalid: !plantationDate.start.isValid }">
-        <label for="plantationDateStart">Date début de plantation</label>
-        <input type="date" id="plantationDateStart" v-model="plantationDate.start.val" @blur="clearInvalidDateField('plantationDate', 'start')">
-        <p v-if="!plantationDate.start.isValid">La date de début de plantation doit être renseignée.</p>
+  <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <form @submit.prevent="submitForm">
+      <div class="form-control" :class="{ invalid: !species.isValid }">
+        <label for="species">Espèce</label>
+        <input type="text" id="species" v-model.trim="species.val" @blur="clearInvalidField('species')">
+        <p v-if="!species.isValid">L'espèce doit être renseignée.</p>
       </div>
-      <div class="form-control plant-date" :class="{ invalid: !plantationDate.end.isValid }">
-        <label for="plantationDateEnd">Date fin de plantation</label>
-        <input type="date" id="plantationDateEnd" v-model="plantationDate.end.val" @blur="clearInvalidDateField('plantationDate', 'end')">
-        <p v-if="!plantationDate.end.isValid">La date de fin de plantation doit être renseignée.</p>
+      <div class="form-control">
+        <label for="variety">Variété</label>
+        <input type="text" id="variety" v-model.trim="variety.val">
       </div>
-    </div>
-    <div class="dates">
-      <div class="form-control harvest-date">
-        <label for="harvestDateStart">Date début de récolte</label>
-        <input type="date" id="harvestDateStart" v-model="harvestDate.start.val">
+      <div class="form-control">
+        <label for="image">Image</label>
+        <input type="file" id="image" ref="image" @change="selectImage">
       </div>
-      <div class="form-control harvest-date">
-        <label for="harvestDateEnd">Date fin de récolte</label>
-        <input type="date" id="harvestDateEnd" v-model="harvestDate.end.val">
+      <div class="form-control" :class="{ invalid: !plantationType.isValid }">
+        <label for="plantationType">Type de plantation</label>
+        <input type="text" id="plantationType" v-model.trim="plantationType.val" @blur="clearInvalidField('plantationType')">
+        <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
       </div>
-    </div>
-    <div class="form-control">
-      <label for="beneficialInteractions">Interactions bénéfiques</label>
-      <add-plant-attributes
-        attributeName="beneficialInteractions"
-        default-option="interaction bénéfique"
-        :attributes-list="plants"
-        @get-selected-values="setBeneficialInteractions"
-      ></add-plant-attributes>
-    </div>
-    <div class="form-control">
-      <label for="harmfulInteractions">Interactions néfastes</label>
-      <add-plant-attributes
-        attributeName="harmfulInteractions"
-        default-option="interaction néfaste"
-        :attributes-list="plants"
-        @get-selected-values="setHarmfulInteractions"
-      ></add-plant-attributes>
-    </div>
-    <div class="form-control">
-      <label for="diseases">Maladies</label>
-      <add-plant-diseases></add-plant-diseases>
-    </div>
-    <div class="add-disease-wrapper">
-      <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
-    </div>
-    <add-disease-form v-if="diseaseFormVisible" @create-disease="handleCreatedDisease"></add-disease-form>
-    <div class="form-control">
-      <label for="notes">Remarques</label>
-      <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
-    </div>
-    <p v-if="!formIsValid" class="invalid">Des champs sont manquants.</p>
-    <div class="submit-btn">
-      <base-button>Ajouter Espèce</base-button>
-    </div>
-  </form>
+      <div class="dates">
+        <div class="form-control plant-date" :class="{ invalid: !plantationDate.start.isValid }">
+          <label for="plantationDateStart">Date début de plantation</label>
+          <input type="date" id="plantationDateStart" v-model="plantationDate.start.val" @blur="clearInvalidDateField('plantationDate', 'start')">
+          <p v-if="!plantationDate.start.isValid">La date de début de plantation doit être renseignée.</p>
+        </div>
+        <div class="form-control plant-date" :class="{ invalid: !plantationDate.end.isValid }">
+          <label for="plantationDateEnd">Date fin de plantation</label>
+          <input type="date" id="plantationDateEnd" v-model="plantationDate.end.val" @blur="clearInvalidDateField('plantationDate', 'end')">
+          <p v-if="!plantationDate.end.isValid">La date de fin de plantation doit être renseignée.</p>
+        </div>
+      </div>
+      <div class="dates">
+        <div class="form-control harvest-date">
+          <label for="harvestDateStart">Date début de récolte</label>
+          <input type="date" id="harvestDateStart" v-model="harvestDate.start.val">
+        </div>
+        <div class="form-control harvest-date">
+          <label for="harvestDateEnd">Date fin de récolte</label>
+          <input type="date" id="harvestDateEnd" v-model="harvestDate.end.val">
+        </div>
+      </div>
+      <div class="form-control">
+        <label for="beneficialInteractions">Interactions bénéfiques</label>
+        <add-plant-attributes
+          selectedInteractionsName="selectedBeneficialInteractions"
+          default-option="interaction bénéfique"
+        ></add-plant-attributes>
+      </div>
+      <div class="form-control">
+        <label for="harmfulInteractions">Interactions néfastes</label>
+        <add-plant-attributes
+          selectedInteractionsName="selectedHarmfulInteractions"
+          default-option="interaction néfaste"
+        ></add-plant-attributes>
+      </div>
+      <div class="form-control">
+        <label for="diseases">Maladies</label>
+        <add-plant-diseases></add-plant-diseases>
+      </div>
+      <div class="add-disease-wrapper">
+        <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
+      </div>
+      <add-disease-form v-if="diseaseFormVisible" @create-disease="handleCreatedDisease"></add-disease-form>
+      <div class="form-control">
+        <label for="notes">Remarques</label>
+        <textarea id="notes" rows="5" v-model.trim="notes.val"></textarea>
+      </div>
+      <p v-if="!formIsValid" class="invalid">Des champs sont manquants.</p>
+      <div class="submit-btn">
+        <base-button>Ajouter Espèce</base-button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -123,25 +124,21 @@ export default {
           val: ''
         }
       },
-      beneficialInteractions: {
-        val: null
-      },
-      harmfulInteractions: {
-        val: null
-      },
       notes: {
         val: ''
       },
       formIsValid: true,
-      diseaseFormVisible: false
+      diseaseFormVisible: false,
+      error: null
     };
   },
   computed: {
     ...mapGetters('plants', [
-      'plants'
+      'plants',
+      'selectedBeneficialInteractions',
+      'selectedHarmfulInteractions'
     ]),
     ...mapGetters('diseases', {
-      getAllDiseases: 'diseases',
       lastAddedDisease: 'lastAddedDisease',
       selectedDiseases: 'selectedDiseases'
     }),
@@ -199,12 +196,6 @@ export default {
     selectImage() {
       this.image = this.$refs.image.files[0];
     },
-    setBeneficialInteractions(interactions) {
-      this.beneficialInteractions = interactions;
-    },
-    setHarmfulInteractions(interactions) {
-      this.harmfulInteractions = interactions;
-    },
     async submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
@@ -222,8 +213,8 @@ export default {
           start: this.harvestDate.start.val,
           end: this.harvestDate.end.val,
         },
-        beneficialInteractions: this.beneficialInteractions,
-        harmfulInteractions: this.harmfulInteractions,
+        beneficialInteractions: this.selectedBeneficialInteractions,
+        harmfulInteractions: this.selectedHarmfulInteractions,
         diseases: this.selectedDiseases,
         notes: this.notes.val
       };
@@ -234,7 +225,24 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    },
+    async loadPlants() {
+      try {
+        await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
+      } catch (err) {
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
+      }
+    },
+    handleError() {
+      this.error = null;
     }
+  },
+  created() {
+    this.loadPlants();
   }
 }
 </script>

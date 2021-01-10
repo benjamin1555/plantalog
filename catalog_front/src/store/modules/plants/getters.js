@@ -8,6 +8,12 @@ export default {
   plant(state) {
     return state.plant;
   },
+  selectedBeneficialInteractions(state) {
+    return state.selectedBeneficialInteractions;
+  },
+  selectedHarmfulInteractions(state) {
+    return state.selectedHarmfulInteractions;
+  },
   searchQuery(state) {
     return state.searchQuery;
   },

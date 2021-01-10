@@ -61,6 +61,22 @@ export default {
 
     context.commit('setPlant');
   },
+  clearSelectedInteractions(context) {
+    context.commit('clearSelectedInteractions', { interactionType: 'selectedBeneficialInteractions' });
+    context.commit('clearSelectedInteractions', { interactionType: 'selectedHarmfulInteractions' });
+  },
+  addSelectedInteraction(context, payload) {
+    context.commit('addSelectedInteraction', {
+      interactionType: payload.interactionType,
+      _id: payload._id
+    });
+  },
+  removeSelectedInteraction(context, payload) {
+    context.commit('removeSelectedInteraction', {
+      interactionType: payload.interactionType,
+      _id: payload._id
+    });
+  },
   displayAllResults(context) {
     checkAndHidePartialResults(context);
     context.commit('toggleSearchAllResults');
@@ -81,7 +97,7 @@ const createFormData = data => {
   const formData = new FormData();
   formData.append('species', data.species);
   formData.append('variety', data.variety);
-  formData.append('image', convertEmptyProxyToNull(data.image));
+  formData.append('image', data.image);
   formData.append('plantationType', data.plantationType);
   formData.append('plantationDateStart', data.plantationDate.start);
   formData.append('plantationDateEnd', data.plantationDate.end);
@@ -91,7 +107,7 @@ const createFormData = data => {
   formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
   formData.append('diseases', convertEmptyProxyToNull(data.diseases));
 
-  console.log(data);
+  console.log(formData.get('beneficialInteractions'));
 
   return formData;
 };
@@ -109,7 +125,13 @@ const checkAndHideAllResults = context => {
 };
 
 const convertEmptyProxyToNull = proxy => {
-  if (Object.entries(proxy).length === 0 || proxy.val === null) {
+  if (Object.entries(proxy).length === 0 || (proxy.val && proxy.val === null)) {
     return proxy.val === null ? null : proxy;
+  } else {
+    const arr = [];
+    for (let item of Object.entries(proxy)) {
+      arr.push(item[1]);
+    }
+    return arr;
   }
 };

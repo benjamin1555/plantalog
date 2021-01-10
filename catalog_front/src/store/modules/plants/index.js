@@ -8,6 +8,8 @@ export default {
     return {
       plant: null,
       plants: [],
+      selectedBeneficialInteractions: [],
+      selectedHarmfulInteractions: [],
       searchQuery: '',
       paginationData: null,
       searchPartialResultsVisible: false,
