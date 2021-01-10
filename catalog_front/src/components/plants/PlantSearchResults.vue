@@ -56,4 +56,8 @@ ul {
 ul li:last-child {
   border-bottom: none!important;
 }
+
+p {
+  color: rgb(153, 153, 153);
+}
 </style>

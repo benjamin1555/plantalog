@@ -223,7 +223,11 @@ export default {
         await this.$store.dispatch('plants/addPlant', formData);
         this.$router.replace('/catalogue');
       } catch (err) {
-        console.log(err);
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
     },
     async loadPlants() {
