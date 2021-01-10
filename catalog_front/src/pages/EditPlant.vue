@@ -3,7 +3,7 @@
     :show="formVisible"
     title="Modifier Une Espèce"
     @close="redirectToPlantDetail">
-    <edit-plant-form :id="id"></edit-plant-form>
+    <edit-plant-form></edit-plant-form>
   </base-dialog>
 </template>
 
@@ -16,7 +16,6 @@ export default {
   },
   data() {
     return {
-      id: this.$route.params.id,
       formVisible: true
     };
   },

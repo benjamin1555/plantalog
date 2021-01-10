@@ -60,11 +60,6 @@ export default {
       'addSelectedInteraction',
       'removeSelectedInteraction'
     ]),
-    initializeInteractionsValues() {
-      if (this.knownInteractions && this.knownInteractions.length > 0) {
-        this.selectedValues = this.knownInteractions.map(({ _id }) => _id);
-      }
-    },
     onChange(event) {
       const inputValue = event.target.value;
       this.addSelectedInteraction({
@@ -81,7 +76,6 @@ export default {
   },
   created() {
     this.clearSelectedInteractions();
-    this.initializeInteractionsValues();
   }
 };
 </script>

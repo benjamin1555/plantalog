@@ -45,10 +45,6 @@ export default {
   async editPlant(context, data) {
     const formData = createFormData(data);
 
-    console.log(formData.get('beneficialInteractions'));
-    console.log(formData.get('harmfulInteractions'));
-    console.log(formData.get('diseases'));
-
     const response = await fetch(`http://localhost:3000/catalog/plants/${data._id}`, {
       method: 'PUT',
       headers: {
@@ -95,6 +91,7 @@ export default {
 const createFormData = data => {
 
   const formData = new FormData();
+  formData.append('_id', data._id);
   formData.append('species', data.species);
   formData.append('variety', data.variety);
   formData.append('image', data.image);
@@ -106,8 +103,6 @@ const createFormData = data => {
   formData.append('beneficialInteractions', convertEmptyProxyToNull(data.beneficialInteractions));
   formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
   formData.append('diseases', convertEmptyProxyToNull(data.diseases));
-
-  console.log(formData.get('beneficialInteractions'));
 
   return formData;
 };

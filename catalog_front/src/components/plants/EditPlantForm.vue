@@ -1,5 +1,8 @@
 <template>
-  <span>
+  <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <form @submit.prevent="submitForm">
       <div class="form-control" :class="{ invalid: !species.isValid }">
         <label for="species">Espèce</label>
@@ -44,32 +47,20 @@
       <div class="form-control">
         <label for="beneficialInteractions">Interactions bénéfiques</label>
         <add-plant-attributes
-          attributeName="beneficialInteractions"
+          selectedInteractionsName="selectedBeneficialInteractions"
           default-option="interaction bénéfique"
-          :attributes-list="plants"
-          :known-interactions="beneficialInteractions"
-          @get-selected-values="setBeneficialInteractions"
         ></add-plant-attributes>
       </div>
       <div class="form-control">
         <label for="harmfulInteractions">Interactions néfastes</label>
         <add-plant-attributes
-          attributeName="harmfulInteractions"
+          selectedInteractionsName="selectedHarmfulInteractions"
           default-option="interaction néfaste"
-          :attributes-list="plants"
-          :known-interactions="harmfulInteractions"
-          @get-selected-values="setHarmfulInteractions"
         ></add-plant-attributes>
       </div>
       <div class="form-control">
         <label for="diseases">Maladies</label>
-        <add-plant-attributes
-          attributeName="diseases"
-          default-option="maladie"
-          :attributes-list="getAllDiseases"
-          :knownInteractions="diseases"
-          @get-selected-values="setDiseases"
-        ></add-plant-attributes>
+        <add-plant-diseases></add-plant-diseases>
       </div>
       <div class="add-disease-wrapper">
         <base-button class="add-disease-btn" @click.prevent="toggleAddDiseaseForm" mode="outline"><i :class="createDiseaseBtnIcon"></i>{{ createDiseaseBtnText }}</base-button>
@@ -84,20 +75,21 @@
         <base-button>Valider</base-button>
       </div>
     </form>
-  </span>
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddPlantAttributes from './AddPlantAttributes.vue';
+import AddPlantDiseases from './AddPlantDiseases.vue';
 import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
 
 export default {
   components: {
     AddPlantAttributes,
-    AddDiseaseForm
+    AddDiseaseForm,
+    AddPlantDiseases
   },
-  props: ['id'],
   data() {
     return {
       species: {
@@ -132,18 +124,10 @@ export default {
           val: ''
         }
       },
-      beneficialInteractions: {
-        val: null
-      },
-      harmfulInteractions: {
-        val: null
-      },
-      diseases: {
-        val: null
-      },
       notes: {
         val: ''
       },
+      plantId: this.$route.params.id,
       formIsValid: true,
       diseaseFormVisible: false,
       error: null
@@ -153,20 +137,13 @@ export default {
     ...mapGetters('plants', [
       'plant',
       'plants',
+      'selectedBeneficialInteractions',
+      'selectedHarmfulInteractions'
     ]),
     ...mapGetters('diseases', {
-      getAllDiseases: 'diseases',
-      lastAddedDisease: 'lastAddedDisease'
+      lastAddedDisease: 'lastAddedDisease',
+      selectedDiseases: 'selectedDiseases'
     }),
-    getLastCreatedDisease() {
-      let lastDisease = this.lastAddedDisease
-      if (lastDisease) {
-        const lastDiseaseId = lastDisease._id;
-        this.setDiseases([lastDiseaseId])
-        return [lastDiseaseId];
-      }
-      return null;
-    },
     createDiseaseBtnIcon() {
       return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
     },
@@ -176,22 +153,35 @@ export default {
   },
   methods: {
     ...mapActions('plants', [
-      'fetchPlant'
+      'hideAllSearchResults',
+      'fetchPlant',
+      'clearSelectedInteractions',
+      'addSelectedInteraction'
     ]),
     ...mapActions('diseases', [
-      'fetchDiseases'
+      'fetchDiseases',
+      'addSelectedDisease',
+      'clearLastAddedDisease',
+      'clearSelectedDiseases',
+      'addSelectedDisease'
     ]),
+    async handleCreatedDisease() {
+      try {
+        await this.fetchDiseases();
+        this.diseaseFormVisible = false;
+        this.addSelectedDisease({ _id: this.lastAddedDisease._id});
+        this.clearLastAddedDisease();
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    toggleAddDiseaseForm() {
+      this.diseaseFormVisible = !this.diseaseFormVisible;
+    },
     parsedDateForEdit(dateToParse) {
       if (dateToParse) {
         return dateToParse.split('T')[0];
       }
-    },
-    handleCreatedDisease() {
-      this.fetchDiseases();
-      this.diseaseFormVisible = false;
-    },
-    toggleAddDiseaseForm() {
-      this.diseaseFormVisible = !this.diseaseFormVisible;
     },
     clearInvalidField(input) {
       this[input].isValid = true;
@@ -221,15 +211,6 @@ export default {
     selectImage() {
       this.image = this.$refs.image.files[0];
     },
-    setBeneficialInteractions(interactions) {
-      this.beneficialInteractions = interactions;
-    },
-    setHarmfulInteractions(interactions) {
-      this.harmfulInteractions = interactions;
-    },
-    setDiseases(diseases) {
-      this.diseases = diseases;
-    },
     populateFormValues() {
     this.species.val = this.plant.species;
     this.variety.val = this.plant.variety;
@@ -238,17 +219,30 @@ export default {
     this.plantationDate.end.val = this.parsedDateForEdit(this.plant.plantationDate.end);
     this.harvestDate.start.val = this.plant.harvestDate.start ? this.parsedDateForEdit(this.plant.harvestDate.start) : '';
     this.harvestDate.end.val = this.plant.harvestDate.end ? this.parsedDateForEdit(this.plant.harvestDate.end) : '';
-    this.beneficialInteractions = this.plant.beneficialInteractions;
-    this.harmfulInteractions = this.plant.harmfulInteractions;
-    this.diseases = this.plant.diseases;
     this.notes.val = this.plant.notes;
+    this.populateInteractions(this.plant.beneficialInteractions, 'selectedBeneficialInteractions');
+    this.populateInteractions(this.plant.harmfulInteractions, 'selectedHarmfulInteractions');
+    this.populateDiseases();
+    },
+    populateInteractions(existingInteractions, interactionType) {
+      for (let { _id } of existingInteractions) {
+        this.addSelectedInteraction({
+          _id,
+          interactionType
+        });
+      }
+    },
+    populateDiseases() {
+      for (let { _id } of this.plant.diseases) {
+        this.addSelectedDisease({ _id });
+      }
     },
     async submitForm() {
       this.validateForm();
       if (!this.formIsValid) return;
 
       const formData = {
-        _id: this.id,
+        _id: this.plantId,
         species: this.species.val.toLowerCase(),
         variety: this.variety.val.toLowerCase(),
         image: this.image,
@@ -261,27 +255,41 @@ export default {
           start: this.harvestDate.start.val,
           end: this.harvestDate.end.val,
         },
-        beneficialInteractions: this.beneficialInteractions,
-        harmfulInteractions: this.harmfulInteractions,
-        diseases: this.diseases,
+        beneficialInteractions: this.selectedBeneficialInteractions,
+        harmfulInteractions: this.selectedHarmfulInteractions,
+        diseases: this.selectedDiseases,
         notes: this.notes.val
       };
 
       try {
         await this.$store.dispatch('plants/editPlant', formData);
+        this.hideAllSearchResults();
         this.$router.replace('/catalogue');
       } catch (err) {
         console.log(err);
       }
+    },
+    async loadPlants() {
+      try {
+        this.clearSelectedInteractions();
+        this.clearSelectedDiseases();
+        await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
+        await this.fetchPlant(this.plantId);
+        this.populateFormValues();
+      } catch (err) {
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
+      }
+    },
+    handleError() {
+      this.error = null;
     }
   },
-  async created() {
-    try {
-      await this.fetchPlant(this.id);
-      this.populateFormValues();
-    } catch (err) {
-      console.log(err);
-    }
+  created() {
+    this.loadPlants();
   }
 }
 </script>
