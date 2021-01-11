@@ -14,8 +14,9 @@
         <input type="text" id="variety" v-model.trim="variety.val">
       </div>
       <div class="form-control">
-        <label for="image">Image</label>
-        <input type="file" id="image" ref="image" @change="selectImage">
+        <label for="plantImage">Image</label>
+        <img id="output-plant-image">
+        <input type="file" id="plantImage" ref="image" @change="selectImage">
       </div>
       <div class="form-control" :class="{ invalid: !plantationType.isValid }">
         <label for="plantationType">Type de plantation</label>
@@ -80,6 +81,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+
+import imagePreview from '../../util/imageUploadPreview';
 import AddPlantAttributes from './AddPlantAttributes.vue';
 import AddPlantDiseases from './AddPlantDiseases.vue';
 import AddDiseaseForm from '../diseases/AddDiseaseForm.vue';
@@ -294,6 +297,9 @@ export default {
   },
   created() {
     this.loadPlants();
+  },
+   mounted() {
+    imagePreview('plantImage', 'output-plant-image');
   }
 }
 </script>
@@ -301,6 +307,12 @@ export default {
 <style scoped>
 .form-control {
   margin: 0.5rem 0;
+}
+
+#output-plant-image {
+  max-width: 200px;
+  display: none;
+  margin-bottom: 1rem;
 }
 
 .dates {

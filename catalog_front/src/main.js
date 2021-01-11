@@ -8,6 +8,7 @@ import BaseCard from './components/ui/BaseCard.vue';
 import BaseDialog from './components/ui/BaseDialog.vue';
 import BaseSpinner from './components/ui/BaseSpinner.vue';
 import BasePagination from './components/ui/BasePagination.vue';
+import BaseTooltip from './components/ui/BaseTooltip.vue';
 import BaseFlash from './components/ui/BaseFlash.vue'; // TODO
 
 const app = createApp(App);
@@ -20,6 +21,7 @@ app.component('base-card', BaseCard);
 app.component('base-dialog', BaseDialog);
 app.component('base-spinner', BaseSpinner);
 app.component('base-pagination', BasePagination);
+app.component('base-tooltip', BaseTooltip);
 app.component('base-flash', BaseFlash);
 
 app.mount('#app');

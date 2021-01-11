@@ -14,8 +14,9 @@
         <p v-if="!name.isValid">Les symptômes doivent être renseignés.</p>
       </div>
       <div class="form-control">
-        <label for="image">Image</label>
-        <input type="file" id="image" ref="image" @change="selectImage">
+        <label for="diseaseImage">Image</label>
+        <img id="output-disease-image">
+        <input type="file" id="diseaseImage" ref="image" @change="selectImage">
       </div>
       <div class="form-control" :class="{ invalid: !treatment.isValid }">
         <label for="treatment">Traitement</label>
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+import imagePreview from '../../util/imageUploadPreview';
+
 export default {
   emits: ['create-disease'],
   data() {
@@ -97,6 +100,9 @@ export default {
         }
       }
     }
+  },
+  mounted() {
+    imagePreview('diseaseImage', 'output-disease-image');
   }
 };
 </script>
@@ -104,6 +110,12 @@ export default {
 <style scoped>
 .form-control {
   margin: 0.5rem 0;
+}
+
+#output-disease-image {
+  max-width: 200px;
+  display: none;
+  margin-bottom: 1rem;
 }
 
 label {
