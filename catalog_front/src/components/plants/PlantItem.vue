@@ -1,12 +1,13 @@
 <template>
   <li>
+    <img :src="iconImageLink" alt="">
     <router-link :to="plantLink"><p>{{ formatedSpecies }} <span v-if="hasVariety">- {{ formatedVariety }}</span></p></router-link>
   </li>
 </template>
 
 <script>
 export default {
-  props: ['id', 'species', 'variety'],
+  props: ['id', 'species', 'variety', 'imagesUrl'],
   computed: {
     hasVariety() {
       return !!this.variety;
@@ -16,6 +17,12 @@ export default {
     },
     formatedVariety() {
       return this.formatString(this.variety);
+    },
+    iconImageLink() {
+      return `http://localhost:3000/images/${this.imagesUrl.icon}`;
+    },
+    iconAltImage() {
+      return `${this.id}_icon`;
     },
     plantLink() {
       return `/catalogue/plants/${this.id}`;
@@ -38,9 +45,14 @@ a {
 }
 
 li {
+  display: flex;
   border-bottom: 0.5px solid rgba(204, 204, 204, 0.3);
   padding: 0.75rem;
   margin-bottom: 0.25rem;
+}
+
+li img {
+  margin-right: 10px;
 }
 
 li p {

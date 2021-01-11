@@ -107,7 +107,7 @@ select {
   font: inherit;
 }
 
-.added-attributes {
+.added-diseases {
   margin-top: 0.5rem;
 }
 

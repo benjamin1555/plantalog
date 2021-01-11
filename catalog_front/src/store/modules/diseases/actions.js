@@ -14,6 +14,16 @@ export default {
       body: formData
     });
     const responseData = await response.json();
+
+    if (!response.ok && responseData.statusCode === 422) {
+      const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
+      const error = new Error(`Erreur de validation: ${validationMessage}`);
+      throw error;
+    }
+    if (!response.ok && responseData.statusCode === 500) {
+      const error = new Error('Une erreur interne vient de se produire. (Code 500)');
+      throw error;
+    }
     console.log(responseData);
 
     context.commit('setLastAddedDisease', responseData.savedDisease);

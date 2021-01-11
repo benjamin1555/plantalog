@@ -1,5 +1,7 @@
 <template>
   <base-card>
+    <h3>Créer une maladie</h3>
+    <p v-if="error" class="invalid">{{ error }}</p>
     <form @submit.prevent="submitForm">
       <div class="form-control" :class="{ invalid: !name.isValid }">
         <label for="name">Nom</label>
@@ -46,12 +48,14 @@ export default {
         val: '',
         isValid: true
       },
-      formIsValid: true
+      formIsValid: true,
+      error: null
     };
   },
   methods: {
     clearInvalidField(input) {
       this[input].isValid = true;
+      this.error = null;
     },
     validateForm() {
       this.formIsValid = true;
@@ -81,8 +85,17 @@ export default {
         image: this.image,
         treatment: this.treatment.val
       };
-      await this.$store.dispatch('diseases/addDisease', formData);
-      this.$emit('create-disease');
+
+      try {
+        await this.$store.dispatch('diseases/addDisease', formData);
+        this.$emit('create-disease');
+      } catch (err) {
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
+      }
     }
   }
 };
@@ -131,9 +144,8 @@ input[type='checkbox']:focus {
   outline: #3d008d solid 1px;
 }
 
-h3 {
-  margin: 0.5rem 0;
-  font-size: 1rem;
+h2, h3 {
+  font-weight: 300;
 }
 
 .submit-btn {

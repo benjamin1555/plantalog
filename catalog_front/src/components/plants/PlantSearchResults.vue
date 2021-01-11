@@ -11,6 +11,7 @@
             :id="plant._id"
             :species="plant.species"
             :variety="plant.variety"
+            :imagesUrl='plant.imagesUrl'
           ></plant-item>
         </ul>
         <base-pagination></base-pagination>
