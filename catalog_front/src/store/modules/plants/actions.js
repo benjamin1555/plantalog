@@ -51,7 +51,7 @@ export default {
     }
     console.log(responseData);
 
-    context.commit('addPlant', {
+    context.commit('setPlant', {
       _id: responseData.savedPlant._id,
       ...data
     });
