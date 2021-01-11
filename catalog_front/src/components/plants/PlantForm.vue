@@ -209,10 +209,10 @@ export default {
       if (!this.formIsValid) return;
 
       const formData = {
-        species: this.species.val.toLowerCase(),
-        variety: this.variety.val.toLowerCase(),
+        species: this.species.val.toLowerCase().trim(),
+        variety: this.variety.val.toLowerCase().trim(),
         image: this.image,
-        plantationType: this.plantationType.val.toLowerCase(),
+        plantationType: this.plantationType.val.toLowerCase().trim(),
         plantationDate: {
           start: this.plantationDate.start.val,
           end: this.plantationDate.end.val,
@@ -224,7 +224,7 @@ export default {
         beneficialInteractions: this.selectedBeneficialInteractions,
         harmfulInteractions: this.selectedHarmfulInteractions,
         diseases: this.selectedDiseases,
-        notes: this.notes.val
+        notes: this.notes.val.trim()
       };
 
       try {

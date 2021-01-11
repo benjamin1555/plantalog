@@ -83,10 +83,10 @@ export default {
       if (!this.formIsValid) return;
 
       const formData = {
-        name: this.name.val.toLowerCase(),
-        symptoms: this.symptoms.val,
+        name: this.name.val.toLowerCase().trim(),
+        symptoms: this.symptoms.val.trim(),
         image: this.image,
-        treatment: this.treatment.val
+        treatment: this.treatment.val.trim()
       };
 
       try {

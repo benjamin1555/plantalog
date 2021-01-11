@@ -127,6 +127,7 @@ const createFormData = data => {
   formData.append('beneficialInteractions', convertEmptyProxyToNull(data.beneficialInteractions));
   formData.append('harmfulInteractions', convertEmptyProxyToNull(data.harmfulInteractions));
   formData.append('diseases', convertEmptyProxyToNull(data.diseases));
+  formData.append('notes', data.notes);
 
   return formData;
 };
