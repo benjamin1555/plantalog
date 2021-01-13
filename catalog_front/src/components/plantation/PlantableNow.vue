@@ -1,7 +1,7 @@
 <template>
   <div>
     <base-spinner v-if="isLoading"></base-spinner>
-    <div v-else>
+    <div v-else-if="!isLoading && hasPlantableNextMonth">
       <p>{{ username }}, voici ce qu'il est possible de planter dans les 30 prochains jours :</p>
       <ul>
         <plant-item
@@ -19,9 +19,9 @@
           ></base-progress-bar>
         </plant-item>
       </ul>
-
       <router-view></router-view>
     </div>
+    <p v-else>Rien à planter dans les 30 prochains jours... 🥱 </p>
   </div>
 </template>
 
@@ -42,7 +42,8 @@ export default {
   computed: {
     ...mapGetters(['username']),
     ...mapGetters('plantations', [
-      'plantableNextMonth'
+      'plantableNextMonth',
+      'hasPlantableNextMonth'
     ])
   },
   methods: {
