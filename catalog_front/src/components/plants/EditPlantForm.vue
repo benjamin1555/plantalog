@@ -244,12 +244,15 @@ export default {
       this.validateForm();
       if (!this.formIsValid) return;
 
+      console.log(this.variety);
+      console.log(this.notes);
+
       const formData = {
         _id: this.plantId,
         species: this.species.val.toLowerCase().trim(),
         variety: this.variety.val.toLowerCase().trim(),
         image: this.image,
-        plantationType: this.plantationType.val.toLowerCase().trim(),
+        plantationType: this.plantationType.val.toLowerCase(),
         plantationDate: {
           start: this.plantationDate.start.val,
           end: this.plantationDate.end.val,

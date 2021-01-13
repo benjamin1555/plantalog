@@ -89,7 +89,7 @@ export default {
     },
     closeDialog() {
       this.detailsVisible = false;
-      this.$router.replace('/catalogue');
+      this.$router.go(-1);
     },
     async fetchPlant() {
       this.isLoading = true;

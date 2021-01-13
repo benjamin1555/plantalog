@@ -1,7 +1,12 @@
 <template>
   <li>
-    <img :src="iconImageLink" alt="">
-    <router-link :to="plantLink"><p>{{ formatedSpecies }} <span v-if="hasVariety">- {{ formatedVariety }}</span></p></router-link>
+    <div class="link">
+      <img :src="thumbnailImageLink" :alt="thumbnailAltImage">
+      <router-link :to="plantLink"><p>{{ formatedSpecies }} <span v-if="hasVariety">- {{ formatedVariety }}</span></p></router-link>
+    </div>
+    <div class="progress-bar-comp">
+      <slot></slot>
+    </div>
   </li>
 </template>
 
@@ -18,14 +23,14 @@ export default {
     formatedVariety() {
       return this.formatString(this.variety);
     },
-    iconImageLink() {
-      return `http://localhost:3000/images/${this.imagesUrl.icon}`;
+    thumbnailImageLink() {
+      return `http://localhost:3000/images/${this.imagesUrl.thumbnail}`;
     },
-    iconAltImage() {
-      return `${this.id}_icon`;
+    thumbnailAltImage() {
+      return `${this.id}_thumbnail`;
     },
     plantLink() {
-      return `/catalogue/plants/${this.id}`;
+      return `${this.$route.path}/plants/${this.id}`;
     }
   },
   methods: {
@@ -46,21 +51,28 @@ a {
 
 li {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 0.5px solid rgba(204, 204, 204, 0.3);
   padding: 0.75rem;
   margin-bottom: 0.25rem;
 }
 
-li img {
-  margin-right: 10px;
-}
-
-li p {
-  margin: 0;
-}
-
 li:hover {
   background: #DFD6EB;
   cursor: pointer;
+}
+
+li .link {
+  display: flex;
+  align-items: center;
+}
+
+li .link img {
+  margin-right: 10px;
+}
+
+li .link p {
+  margin: 0;
 }
 </style>

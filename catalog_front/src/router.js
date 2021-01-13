@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Plant from './pages/Plant.vue';
+import Plantation from './pages/Plantation.vue';
 import Catalog from './pages/Catalog.vue';
 import AddPlant from './pages/AddPlant.vue';
 import PlantDetail from './pages/PlantDetail.vue';
@@ -19,7 +19,16 @@ const router = createRouter({
         return store.getters.isAuthenticated ? '/planter' : '/catalogue';
       }
     },
-    { path: '/planter', meta: { needsAuth: true }, component: Plant},
+    {
+      path: '/planter',
+      meta: { needsAuth: true },
+      component: Plantation,
+      props: true,
+      children: [
+        { path: 'plants/:id', component: PlantDetail },
+        { path: 'plants/:id/editer', meta: { needsAuth: true }, component: EditPlant },
+      ]
+    },
     {
       path: '/catalogue',
       component: Catalog,
