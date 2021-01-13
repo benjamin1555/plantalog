@@ -1,13 +1,15 @@
 <template>
-  <li>
-    <div class="link">
-      <img :src="thumbnailImageLink" :alt="thumbnailAltImage">
-      <router-link :to="plantLink"><p>{{ formatedSpecies }} <span v-if="hasVariety">- {{ formatedVariety }}</span></p></router-link>
-    </div>
-    <div class="progress-bar-comp">
-      <slot></slot>
-    </div>
-  </li>
+  <router-link :to="plantLink">
+    <li>
+      <div class="link">
+        <img :src="thumbnailImageLink" :alt="thumbnailAltImage">
+        <p>{{ formatedSpecies }} <span v-if="hasVariety">- {{ formatedVariety }}</span></p>
+      </div>
+      <div class="progress-bar-comp">
+        <slot></slot>
+      </div>
+    </li>
+  </router-link>
 </template>
 
 <script>
