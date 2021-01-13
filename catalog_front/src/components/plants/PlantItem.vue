@@ -69,6 +69,8 @@ li .link {
 }
 
 li .link img {
+  width: 65px;
+  height: 65px;
   margin-right: 10px;
 }
 
