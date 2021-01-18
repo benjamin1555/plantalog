@@ -2,24 +2,45 @@
   <div>
     <base-spinner v-if="isLoading"></base-spinner>
     <div v-else-if="!isLoading && hasPlantableNextMonth">
-      <p>{{ username }}, voici ce qu'il est possible de planter dans les 30 prochains jours :</p>
-      <ul>
-        <plant-item
-          v-for="plant in plantableNextMonth"
-          :key="plant._id"
-          :id="plant._id"
-          :species="plant.species"
-          :variety="plant.variety"
-          :imagesUrl='plant.imagesUrl'
-        >
-          <base-progress-bar
-            :is-plantable-now="plant.isPlantableNow"
-            :can-be-planted-until="plant.canBePlantedUntil"
-            :can-be-planted-in="plant.canBePlantedIn"
-          ></base-progress-bar>
-        </plant-item>
-      </ul>
-      <router-view></router-view>
+      <base-card>
+        <h3>Pour les 30 prochains jours, voici ce qu'il est possible de planter maintenant :</h3>
+        <ul>
+          <plant-item
+            v-for="plant in plantableNextMonthNow"
+            :key="plant._id"
+            :id="plant._id"
+            :species="plant.species"
+            :variety="plant.variety"
+            :imagesUrl='plant.imagesUrl'
+          >
+            <base-progress-bar
+              :is-plantable-now="plant.isPlantableNow"
+              :can-be-planted-until="plant.canBePlantedUntil"
+            ></base-progress-bar>
+          </plant-item>
+        </ul>
+        <router-view></router-view>
+      </base-card>
+
+      <base-card>
+        <h3>Pour les 30 prochains jours, voici ce qu'il sera possible de planter :</h3>
+        <ul>
+          <plant-item
+            v-for="plant in plantableNextMonthFuture"
+            :key="plant._id"
+            :id="plant._id"
+            :species="plant.species"
+            :variety="plant.variety"
+            :imagesUrl='plant.imagesUrl'
+          >
+            <base-progress-bar
+              :can-be-planted-in="plant.canBePlantedIn"
+            ></base-progress-bar>
+          </plant-item>
+        </ul>
+        <router-view></router-view>
+      </base-card>
+
     </div>
     <p v-else>Rien à planter dans les 30 prochains jours... 🥱 </p>
   </div>
@@ -42,7 +63,8 @@ export default {
   computed: {
     ...mapGetters(['username']),
     ...mapGetters('plantations', [
-      'plantableNextMonth',
+      'plantableNextMonthNow',
+      'plantableNextMonthFuture',
       'hasPlantableNextMonth'
     ])
   },
@@ -73,5 +95,10 @@ export default {
 </script>
 
 <style scoped>
-
+h3 {
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: 300;
+  border-bottom: 1.5px solid #CCC;
+}
 </style>

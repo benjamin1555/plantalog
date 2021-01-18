@@ -1,8 +1,9 @@
 export default {
-  plantableNextMonth(state) {
-    const plantableNow = filterAndSortPlantableNow(state.plantableNextMonth);
-    const notPlantableNow = filterAndSortNotPlantableNow(state.plantableNextMonth);
-    return [...plantableNow, ...notPlantableNow];
+  plantableNextMonthNow(state) {
+    return filterAndSortPlantableNow(state.plantableNextMonth);
+  },
+  plantableNextMonthFuture(state) {
+    return filterAndSortNotPlantableNow(state.plantableNextMonth);
   },
   hasPlantableNextMonth(state) {
     return state.plantableNextMonth.length > 0;
