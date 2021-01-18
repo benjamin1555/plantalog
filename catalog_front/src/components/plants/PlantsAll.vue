@@ -1,5 +1,8 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <base-button @click="fetchPlants" mode="outline"><i :class="plantsDisplayBtnIcon"></i>{{ plantsDisplayBtnText }}</base-button>
     <base-card v-if="searchAllResultsVisible">
       <base-spinner v-if="isLoading"></base-spinner>
@@ -17,7 +20,7 @@
         </ul>
         <base-pagination></base-pagination>
       </template>
-      <p v-else>Aucune plante pour le moment...</p>
+      <p class="light-gray" v-else>Aucune plante pour le moment...</p>
     </base-card>
   </div>
 </template>
@@ -32,7 +35,8 @@ export default {
   },
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   },
   computed: {
@@ -62,8 +66,16 @@ export default {
         this.isLoading = false
       } catch (err) {
         this.isLoading = false;
-        console.log(err);
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
+    },
+    handleError() {
+      this.error = null;
+      this.redirectToCatalog();
     }
   }
 };
@@ -91,7 +103,7 @@ ul li:last-child {
   border-bottom: none!important;
 }
 
-p {
+p.light-gray {
   color: rgb(153, 153, 153)
 }
 

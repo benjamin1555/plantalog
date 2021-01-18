@@ -1,5 +1,8 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <base-spinner v-if="isLoading"></base-spinner>
     <div v-else-if="!isLoading && hasPlantableNextMonth">
       <base-card>
@@ -19,7 +22,6 @@
             ></base-progress-bar>
           </plant-item>
         </ul>
-        <router-view></router-view>
       </base-card>
 
       <base-card>
@@ -38,11 +40,10 @@
             ></base-progress-bar>
           </plant-item>
         </ul>
-        <router-view></router-view>
       </base-card>
 
     </div>
-    <p v-else>Rien à planter dans les 30 prochains jours... 🥱 </p>
+    <p v-else-if="!error && !hasPlantableNextMonth">Rien à planter dans les 30 prochains jours... 🥱 </p>
   </div>
 </template>
 
@@ -57,7 +58,8 @@ export default {
   },
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   },
   computed: {
@@ -80,11 +82,18 @@ export default {
       try {
         await this.fetchAllPlants();
         this.fetchPlantableNextMonth();
-        this.isLoading = false
+        this.isLoading = false;
       } catch (err) {
         this.isLoading = false;
-        console.log(err);
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
+    },
+    handleError() {
+      this.error = null;
     }
   },
   created() {

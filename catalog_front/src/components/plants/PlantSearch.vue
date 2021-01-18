@@ -1,5 +1,8 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <section class="search-section">
       <form @submit.prevent="searchPlant">
         <div class="form-control">
@@ -24,7 +27,8 @@ export default {
   },
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      error: null
     }
   },
   computed: {
@@ -54,8 +58,16 @@ export default {
         this.$refs.searchPlantInput.value = '';
       } catch (err) {
         this.isLoading = false;
-        console.log(err);
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
+    },
+    handleError() {
+      this.error = null;
+      this.redirectToCatalog();
     }
   }
 }

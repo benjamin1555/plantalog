@@ -10,6 +10,7 @@
       <h2>À Venir</h2>
     </header>
     <plantable-in-future></plantable-in-future>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -45,12 +46,12 @@ header {
   align-items: center;
   margin-bottom: 1rem;
   border-bottom: 1px solid #CCC;
-  opacity: 0.7;
 }
 
 header h2 {
   font-weight: 300;
   font-size: 1.8rem;
+  opacity: 0.7;
 }
 
 header p {

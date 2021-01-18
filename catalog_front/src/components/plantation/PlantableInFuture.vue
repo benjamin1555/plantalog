@@ -1,5 +1,8 @@
 <template>
   <div>
+    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
     <base-button @click="togglePlantableInFuture" mode="outline"><i :class="plantableInFutureDisplayBtnIcon"></i>{{ plantableInFutureDisplayBtnText }}</base-button>
     <base-card v-if="displayPlantableInFuture">
       <base-spinner v-if="isLoading"></base-spinner>
@@ -37,7 +40,8 @@ export default {
   data() {
     return {
       displayPlantableInFuture: false,
-      isLoading: false
+      isLoading: false,
+      error: null
     };
   },
   computed: {
@@ -74,8 +78,15 @@ export default {
         this.isLoading = false
       } catch (err) {
         this.isLoading = false;
-        console.log(err);
+        if (err.message === 'Failed to fetch') {
+          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
+        } else {
+          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
+        }
       }
+    },
+     handleError() {
+      this.error = null;
     }
   }
 };
