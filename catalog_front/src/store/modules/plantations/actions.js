@@ -2,21 +2,31 @@ const moment = require('moment');
 
 export default {
   fetchPlantableNextMonth({ commit, rootGetters }) {
-    const plants = rootGetters['plants/plants'];
-
-    plants.map(plant => {
-      plant.plantationDate = setCorrectDateYear(plant.plantationDate);
-      plant.isPlantableNow = setIsPlantableNow(plant);
-      plant.canBePlantedUntil = setCanBePlantedUntil(plant);
-      plant.canBePlantedIn = setCanBePlantedIn(plant);
-    });
+    const plants = populatePlantsObjects(rootGetters['plants/plants']);
     const filteredPlants = plants.filter(plant => isPlantableIn(plant, 30));
 
     commit('setPlantableNextMonth', filteredPlants);
+  },
+
+  fetchPlantableInFuture({ commit, rootGetters }) {
+    const plants = populatePlantsObjects(rootGetters['plants/plants']);
+    const filteredPlants = plants.filter(plant => !isPlantableIn(plant, 30));
+
+    commit('setPlantableInFuture', filteredPlants);
   }
 };
 
 // Private
+function populatePlantsObjects(plants) {
+  return plants.map(plant => {
+    plant.plantationDate = setCorrectDateYear(plant.plantationDate);
+    plant.isPlantableNow = setIsPlantableNow(plant);
+    plant.canBePlantedUntil = setCanBePlantedUntil(plant);
+    plant.canBePlantedIn = setCanBePlantedIn(plant);
+    return plant;
+  });
+}
+
 function setCorrectDateYear(plantationDate) {
   const { start, end } = plantationDate;
 
@@ -64,13 +74,6 @@ function isPlantableIn(plant, unitlInDays) {
   const dateDifferenceStart = plantationDate.start.diff(moment(), 'days');
   const dateDifferenceEnd = plantationDate.end.diff(moment(), 'days');
   const isPlantableIn = dateDifferenceStart < unitlInDays || dateDifferenceEnd < unitlInDays;
-
-  if (plant.species === 'tomates') {
-    console.log('plantationDate: ', plantationDate)
-    console.log('dateDifferenceStart: ', dateDifferenceStart)
-    console.log('dateDifferenceEnd: ', dateDifferenceEnd)
-    console.log('isPlantableIn: ', isPlantableIn)
-  }
 
   return isPlantableIn;
 }

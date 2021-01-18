@@ -3,8 +3,8 @@
     <base-spinner v-if="isLoading"></base-spinner>
     <div v-else-if="!isLoading && hasPlantableNextMonth">
       <base-card>
-        <h3>Pour les 30 prochains jours, voici ce qu'il est possible de planter maintenant :</h3>
         <ul>
+          <h3>Pour les 30 prochains jours, voici ce qu'il est possible de planter maintenant :</h3>
           <plant-item
             v-for="plant in plantableNextMonthNow"
             :key="plant._id"
@@ -23,8 +23,8 @@
       </base-card>
 
       <base-card>
-        <h3>Pour les 30 prochains jours, voici ce qu'il sera possible de planter :</h3>
         <ul>
+          <h3>Pour les 30 prochains jours, voici ce qu'il sera possible de planter :</h3>
           <plant-item
             v-for="plant in plantableNextMonthFuture"
             :key="plant._id"
@@ -61,7 +61,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['username']),
     ...mapGetters('plantations', [
       'plantableNextMonthNow',
       'plantableNextMonthFuture',
@@ -101,4 +100,5 @@ h3 {
   font-weight: 300;
   border-bottom: 1.5px solid #CCC;
 }
+
 </style>

@@ -5,6 +5,11 @@
       <p>{{ getTodayDate }}</p>
     </header>
     <plantable-now></plantable-now>
+
+    <header>
+      <h2>À Venir</h2>
+    </header>
+    <plantable-in-future></plantable-in-future>
   </div>
 </template>
 
@@ -12,10 +17,12 @@
 import moment from 'moment';
 
 import PlantableNow from '../components/plantation/PlantableNow.vue';
+import PlantableInFuture from '../components/plantation/PlantableInFuture.vue';
 
 export default {
   components: {
-    PlantableNow
+    PlantableNow,
+    PlantableInFuture
   },
   computed: {
     getTodayDate() {
@@ -37,6 +44,7 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  border-bottom: 1px solid #CCC;
   opacity: 0.7;
 }
 

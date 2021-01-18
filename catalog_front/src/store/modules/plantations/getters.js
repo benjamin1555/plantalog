@@ -7,6 +7,12 @@ export default {
   },
   hasPlantableNextMonth(state) {
     return state.plantableNextMonth.length > 0;
+  },
+  plantableInFuture(state) {
+    return state.plantableInFuture;
+  },
+  hasPlantableInFuture(state) {
+    return state.plantableInFuture.length > 0;
   }
 };
 
