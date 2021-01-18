@@ -45,6 +45,7 @@ function setCanBePlantedUntil(plant) {
   if (!plant.isPlantableNow) {
     return null;
   }
+
   const endPlantationDate = plant.plantationDate.end;
   const dateDifferenceEnd = endPlantationDate.diff(moment(), 'days');
 
@@ -64,6 +65,12 @@ function isPlantableIn(plant, unitlInDays) {
   const dateDifferenceEnd = plantationDate.end.diff(moment(), 'days');
   const isPlantableIn = dateDifferenceStart < unitlInDays || dateDifferenceEnd < unitlInDays;
 
+  if (plant.species === 'tomates') {
+    console.log('plantationDate: ', plantationDate)
+    console.log('dateDifferenceStart: ', dateDifferenceStart)
+    console.log('dateDifferenceEnd: ', dateDifferenceEnd)
+    console.log('isPlantableIn: ', isPlantableIn)
+  }
+
   return isPlantableIn;
 }
-

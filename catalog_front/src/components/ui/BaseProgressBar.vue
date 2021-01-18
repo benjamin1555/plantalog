@@ -4,18 +4,28 @@
       <div class="progress">
         <div class="progress-bar" :class="barColor" role="progressbar" :style="widthStyle" :aria-valuenow="remainingPercentage" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
-      {{ canBePlantedUntil }} jours restants
+      <span v-if="canBePlantedUntil === 0">
+        Dernier jour pour planter
+      </span>
+      <span v-else>
+        {{ canBePlantedUntil }} {{ pluralizeCanBePlantedUntil }}
+      </span>
     </div>
-    <p v-else>A planter dans {{ canBePlantedIn }} jours</p>
+    <p v-else>À planter dans {{ canBePlantedIn }} {{ pluralizeCanBePlantedIn }}</p>
   </div>
 </template>
-
 <script>
 export default {
   props: ['isPlantableNow', 'canBePlantedUntil', 'canBePlantedIn'],
   computed: {
     remainingPercentage() {
       return Math.round(100 * this.canBePlantedUntil  / 30);
+    },
+    pluralizeCanBePlantedUntil() {
+      return this.canBePlantedUntil > 1 ? 'jours restants' : 'jour restant';
+    },
+    pluralizeCanBePlantedIn() {
+      return this.canBePlantedIn > 1 ? 'jours' : 'jour';
     },
     barColor() {
       let color;
