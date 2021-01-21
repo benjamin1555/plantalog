@@ -107,10 +107,12 @@ export default {
 
 .content-img {
   margin-top: 2rem;
+  margin-left: 1rem;
   max-width: 256px;
 }
 
 .edit-btn {
   text-align: right;
+  margin-top: 1rem;
 }
 </style>

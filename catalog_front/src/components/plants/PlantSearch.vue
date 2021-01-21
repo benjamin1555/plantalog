@@ -11,7 +11,6 @@
         </div>
       </form>
       <base-button mode="outline" link :to="addPlantLink" v-if="isAuthenticated"><i class="fas fa-plus"></i> Ajouter Espèce</base-button>
-      <router-view></router-view>
     </section>
     <plant-search-results :is-loading="isLoading"></plant-search-results>
   </div>

@@ -7,6 +7,7 @@
       <plant-search></plant-search>
       <search-all></search-all>
     </section>
+    <router-view></router-view>
   </div>
 </template>
 

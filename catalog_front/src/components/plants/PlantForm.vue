@@ -20,7 +20,12 @@
       </div>
       <div class="form-control" :class="{ invalid: !plantationType.isValid }">
         <label for="plantationType">Type de plantation</label>
-        <input type="text" id="plantationType" v-model.trim="plantationType.val" @blur="clearInvalidField('plantationType')">
+        <select name="plantationType" id="plantationType" v-model="plantationType.val" @blur="clearInvalidField('plantationType')">
+          <option value="" selected>-- Ajoutez un type de plantation --</option>
+          <option value="bouture">Bouture</option>
+          <option value="graine">Graine</option>
+          <option value="semie">Semie</option>
+        </select>
         <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
       </div>
       <div class="dates">
