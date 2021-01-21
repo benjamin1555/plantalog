@@ -5,19 +5,19 @@
     </header>
     <section>
       <plant-search></plant-search>
-      <plants-all></plants-all>
+      <search-all></search-all>
     </section>
   </div>
 </template>
 
 <script>
 import PlantSearch from '../components/plants/PlantSearch.vue';
-import PlantsAll from '../components/plants/PlantsAll.vue';
+import SearchAll from '../components/catalog/SearchAll.vue';
 
 export default {
   components: {
     PlantSearch,
-    PlantsAll
+    SearchAll
   }
 };
 </script>

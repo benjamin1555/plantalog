@@ -6,6 +6,7 @@ export default {
     const responseData = await response.json();
     const cleanedSearchQuery = searchQuery.includes('&') ? searchQuery.split('&')[0] : searchQuery;
 
+    handleBadResponse(response, responseData);
     context.commit('setPlants', responseData.plants);
     context.commit('setSearchQuery', { cleanedSearchQuery });
     context.commit('setPaginationData', responseData);
@@ -14,15 +15,8 @@ export default {
     const response = await fetch(`http://localhost:3000/catalog/plants/${plantId}`)
     const responseData = await response.json();
 
-    if (!response.ok && responseData.statusCode === 404) {
-      const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
-      throw error;
-    }
-    if (!response.ok && responseData.statusCode === 500) {
-      const error = new Error('Une erreur interne vient de se produire. (Code 500)');
-      throw error;
-    }
-
+    handleBadResponse(response, responseData);
+    console.log(responseData);
     context.commit('setPlant', responseData.plant);
   },
   async addPlant(context, data) {
@@ -36,17 +30,8 @@ export default {
     });
     const responseData = await response.json();
 
-    if (!response.ok && responseData.statusCode === 422) {
-      const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
-      const error = new Error(`Erreur de validation: ${validationMessage}`);
-      throw error;
-    }
-    if (!response.ok && responseData.statusCode === 500) {
-      const error = new Error('Une erreur interne vient de se produire. (Code 500)');
-      throw error;
-    }
+    handleBadResponse(response, responseData);
     console.log(responseData);
-
     context.commit('setPlant', {
       _id: responseData.savedPlant._id,
       ...data
@@ -64,21 +49,8 @@ export default {
     })
     const responseData = await response.json();
 
-    if (!response.ok && responseData.statusCode === 404) {
-      const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
-      throw error;
-    }
-    if (!response.ok && responseData.statusCode === 422) {
-      const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
-      const error = new Error(`Erreur de validation: ${validationMessage}`);
-      throw error;
-    }
-    if (!response.ok && responseData.statusCode === 500) {
-      const error = new Error('Une erreur interne vient de se produire. (Code 500)');
-      throw error;
-    }
+    handleBadResponse(response, responseData);
     console.log(responseData);
-
     context.commit('setPlant');
   },
   clearSelectedInteractions(context) {
@@ -130,6 +102,24 @@ const createFormData = data => {
   formData.append('notes', data.notes);
 
   return formData;
+};
+
+const handleBadResponse = (response, responseData) => {
+  if (!response.ok && responseData.statusCode === 404) {
+    const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
+    throw error;
+  }
+
+  if (!response.ok && responseData.statusCode === 422) {
+    const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
+    const error = new Error(`Erreur de validation: ${validationMessage}`);
+    throw error;
+  }
+
+  if (!response.ok && responseData.statusCode === 500) {
+    const error = new Error('Une erreur interne vient de se produire. (Code 500)');
+    throw error;
+  }
 };
 
 const checkAndHidePartialResults = context => {

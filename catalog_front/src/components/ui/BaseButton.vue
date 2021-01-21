@@ -53,6 +53,11 @@ a {
   border: none;
 }
 
+.regular {
+  border-color: #3d008d;
+  color: #FFF;
+}
+
 .outline {
   background-color: transparent;
   border-color: #3d008d;

@@ -33,7 +33,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import BaseDialog from '../components/ui/BaseDialog.vue';
+import BaseDialog from '../../components/ui/BaseDialog.vue';
 
 export default {
   components: {

@@ -3,10 +3,7 @@
     <li>
       <div class="link">
         <img :src="thumbnailImageLink" :alt="thumbnailAltImage">
-        <p>{{ formattedSpecies }} <span v-if="hasVariety">- {{ formattedVariety }}</span></p>
-      </div>
-      <div class="progress-bar-comp">
-        <slot></slot>
+        <p>{{ formattedName }}</p>
       </div>
     </li>
   </router-link>
@@ -14,25 +11,22 @@
 
 <script>
 export default {
-  props: ['id', 'species', 'variety', 'imagesUrl'],
+  props: ['id', 'name', 'imagesUrl'],
   computed: {
     hasVariety() {
       return !!this.variety;
     },
-    formattedSpecies() {
-      return this.formatString(this.species);
-    },
-    formattedVariety() {
-      return this.formatString(this.variety);
+    formattedName() {
+      return this.formatString(this.name);
     },
     thumbnailImageLink() {
       return `http://localhost:3000/images/${this.imagesUrl.thumbnail}`;
     },
     thumbnailAltImage() {
-      return `${this.species}${this.variety}_thumbnail`;
+      return `${this.name}_thumbnail`;
     },
     plantLink() {
-      return `${this.$route.path}/plants/${this.id}`;
+      return `${this.$route.path}/diseases/${this.id}`;
     }
   },
   methods: {

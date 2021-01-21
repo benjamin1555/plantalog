@@ -15,18 +15,8 @@ export default {
     });
 
     const responseData = await response.json();
+    handleBadResponse(response, responseData);
     console.log(responseData);
-
-    if (!response.ok && responseData.statusCode === 422) {
-      const errorMessage = responseData.data.map(el => Object.values(el));
-      const error = new Error(errorMessage || 'Failed to signup.');
-      throw error;
-    }
-
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Failed to signup.');
-      throw error;
-    }
   },
   async login(context, payload) {
     const response = await fetch('http://localhost:3000/auth/login', {
@@ -42,10 +32,7 @@ export default {
 
     const responseData = await response.json();
 
-    if (!response.ok && responseData.statusCode === 401) {
-      const error = new Error('Email/Mot de passe invalides.');
-      throw error;
-    }
+    handleBadResponse(response, responseData);
 
     const expiresIn = 3600 * 1000;
     const expirationDate = new Date().getTime() + expiresIn;
@@ -104,5 +91,24 @@ export default {
   autoLogout(context) {
     context.dispatch('logout');
     context.commit('setAutoLogout');
+  }
+};
+
+// Private functions
+const handleBadResponse = (response, responseData) => {
+  if (!response.ok && responseData.statusCode === 401) {
+    const error = new Error('Email/Mot de passe invalides.');
+    throw error;
+  }
+
+  if (!response.ok && responseData.statusCode === 422) {
+    const validationMessage = responseData.data.map(el => Object.values(el));
+    const error = new Error(`Erreur de validation: ${validationMessage}`);
+    throw error;
+  }
+
+  if (!response.ok && responseData.statusCode === 500) {
+    const error = new Error(responseData.message || 'Failed to signup.');
+    throw error;
   }
 };

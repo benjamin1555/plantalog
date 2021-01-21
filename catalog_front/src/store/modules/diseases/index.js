@@ -6,8 +6,9 @@ export default {
   namespaced: true,
   state() {
     return {
-      lastAddedDisease: null,
+      disease: null,
       diseases: [],
+      lastAddedDisease: null,
       selectedDiseases: []
     };
   },

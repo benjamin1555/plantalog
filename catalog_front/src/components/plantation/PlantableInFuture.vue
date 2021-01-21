@@ -50,10 +50,10 @@ export default {
       'hasPlantableInFuture'
     ]),
     plantableInFutureDisplayBtnText() {
-      return this.displayPlantableInFuture ? 'Masquer' : 'Afficher'
+      return this.displayPlantableInFuture ? 'Masquer' : 'Afficher';
     },
     plantableInFutureDisplayBtnIcon() {
-      return this.displayPlantableInFuture ? 'fas fa-angle-double-up' : 'fas fa-angle-double-down'
+      return this.displayPlantableInFuture ? 'fas fa-angle-double-up' : 'fas fa-angle-double-down';
     }
   },
   methods: {

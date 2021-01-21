@@ -5,32 +5,31 @@
     </base-dialog>
     <base-card>
       <base-spinner v-if="isLoading"></base-spinner>
-      <template v-else-if="!isLoading && hasPlants">
+      <template v-else-if="!isLoading && hasDiseases">
         <ul>
-          <h3>Liste des plantes enregistrées</h3>
-          <plant-item
-            v-for="plant in plants"
-            :key="plant._id"
-            :id="plant._id"
-            :species="plant.species"
-            :variety="plant.variety"
-            :imagesUrl="plant.imagesUrl"
-          ></plant-item>
+          <h3>Liste des maladies enregistrées</h3>
+          <disease-item
+            v-for="disease in diseases"
+            :key="disease._id"
+            :id="disease._id"
+            :name="disease.name"
+            :imagesUrl="disease.imagesUrl"
+          ></disease-item>
         </ul>
         <base-pagination></base-pagination>
       </template>
-      <p class="light-gray" v-else>Aucune plante pour le moment...</p>
+      <p class="light-gray" v-else>Aucune maladie pour le moment...</p>
     </base-card>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import PlantItem from './PlantItem';
+import DiseaseItem from './DiseaseItem.vue';
 
 export default {
   components: {
-    PlantItem
+    DiseaseItem
   },
   data() {
     return {
@@ -39,19 +38,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('plants', [
-      'hasPlants',
-      'plants'
+    ...mapGetters('diseases', [
+      'hasDiseases',
+      'diseases'
     ])
   },
   methods: {
-    ...mapActions('plants', {
-      fetchAllPlants: 'fetchPlants',
+    ...mapActions('diseases', {
+      fetchAllDiseases: 'fetchDiseases'
     }),
-    async fetchPlants() {
+    async fetchDiseases() {
       this.isLoading = true;
       try {
-        await this.fetchAllPlants();
+        await this.fetchAllDiseases();
         this.isLoading = false
       } catch (err) {
         this.isLoading = false;
@@ -67,7 +66,7 @@ export default {
     }
   },
   created() {
-    this.fetchPlants();
+    this.fetchDiseases()
   }
 };
 </script>
