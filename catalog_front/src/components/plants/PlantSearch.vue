@@ -36,7 +36,7 @@ export default {
     ]),
     ...mapGetters(['isAuthenticated']),
     addPlantLink() {
-      return `${this.$route.path}/ajouter-plante`;
+      return `${this.$route.path}/add-plant`;
     }
   },
   methods: {

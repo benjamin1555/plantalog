@@ -78,7 +78,7 @@ export default {
       return `http://localhost:3000/images/${this.plant.imagesUrl.regular}`;
     },
     editPlantLink() {
-      return `${this.$route.path}/editer`;
+      return `${this.$route.path}/edit`;
     }
   },
   methods: {

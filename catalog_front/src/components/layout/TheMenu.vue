@@ -1,8 +1,8 @@
 <template>
   <nav class="wrapper">
     <ul>
-      <li><router-link to="/planter">Planter</router-link></li>
-      <li><router-link to="/catalogue">Catalogue</router-link></li>
+      <li><router-link to="/plant">Planter</router-link></li>
+      <li><router-link to="/catalog">Catalogue</router-link></li>
       <li v-if="!isLoggedIn"><router-link to="/login">Se connecter</router-link></li>
       <li v-else><router-link to="/login" @click="logout">Se déconnecter</router-link></li>
     </ul>

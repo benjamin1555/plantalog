@@ -22,7 +22,7 @@ export default {
   methods: {
     redirectToPlantDetail() {
       this.formVisible = false;
-      this.$router.replace(`${this.$route.path.replace(/\/editer/, '')}`);
+      this.$router.replace(`${this.$route.path.replace(/\/edit/, '')}`);
     }
   }
 };

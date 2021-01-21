@@ -33,7 +33,7 @@ export default {
     ]),
     redirectToCatalog() {
       this.formVisible = false;
-      this.$router.replace('/catalogue');
+      this.$router.replace('/catalog');
     },
     async loadPlantsAndDiseases() {
       try {

@@ -17,27 +17,27 @@ const router = createRouter({
     {
       path: '/',
       redirect() {
-        return store.getters.isAuthenticated ? '/planter' : '/catalogue';
+        return store.getters.isAuthenticated ? '/plant' : '/catalog';
       }
     },
     {
-      path: '/planter',
+      path: '/plant',
       meta: { needsAuth: true },
       component: Plantation,
       props: true,
       children: [
         { path: 'plants/:id', component: PlantDetail },
-        { path: 'plants/:id/editer', meta: { needsAuth: true }, component: EditPlant },
+        { path: 'plants/:id/edit', meta: { needsAuth: true }, component: EditPlant },
       ]
     },
     {
-      path: '/catalogue',
+      path: '/catalog',
       component: Catalog,
       props: true,
       children: [
         { path: 'plants/:id', component: PlantDetail },
-        { path: 'plants/:id/editer', meta: { needsAuth: true }, component: EditPlant },
-        { path: 'ajouter-plante', meta: { needsAuth: true }, component: AddPlant },
+        { path: 'plants/:id/edit', meta: { needsAuth: true }, component: EditPlant },
+        { path: 'add-plant', meta: { needsAuth: true }, component: AddPlant },
         { path: 'diseases/:id', component: DiseaseDetail }
       ]
     },

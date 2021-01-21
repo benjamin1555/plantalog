@@ -234,7 +234,7 @@ export default {
 
       try {
         await this.$store.dispatch('plants/addPlant', formData);
-        this.$router.replace(`/catalogue/plants/${this.plant._id}`);
+        this.$router.replace(`/catalog/plants/${this.plant._id}`);
       } catch (err) {
         if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
