@@ -6,7 +6,7 @@
     <section class="search-section">
       <form @submit.prevent="searchPlant">
         <div class="form-control">
-          <input type="text" ref="searchPlantInput" id="searchInput" placeholder="Rechercher une espèce">
+          <input type="text" ref="searchPlantInput" id="searchInput" placeholder="Rechercher une espèce/maladie">
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
       </form>

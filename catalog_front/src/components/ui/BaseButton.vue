@@ -47,6 +47,12 @@ a {
   opacity: 0.8;
 }
 
+.small-regular {
+  border-color: #3d008d;
+  color: #FFF;
+  padding: 0.2rem 0.5rem;
+}
+
 .flat {
   background-color: transparent;
   color: rgb(58, 0, 97);

@@ -4,8 +4,10 @@ import Plantation from './pages/Plantation.vue';
 import Catalog from './pages/Catalog.vue';
 import AddPlant from './pages/AddPlant.vue';
 import PlantDetail from './components/plants/PlantDetail.vue';
+import PlantDetailPage from './pages/PlantDetailPage.vue';
 import EditPlant from './pages/EditPlant.vue';
-import DiseaseDetail from './components/diseases/DiseaseDetail.vue'
+import DiseaseDetail from './components/diseases/DiseaseDetail.vue';
+import DiseaseDetailPage from './pages/DiseaseDetailPage.vue';
 import Login from './pages/Login.vue';
 import SignUp from './pages/SignUp.vue';
 import NotFound from './pages/NotFound.vue';
@@ -41,6 +43,8 @@ const router = createRouter({
         { path: 'diseases/:id', component: DiseaseDetail }
       ]
     },
+    { path: '/plant-detail/:id', component: PlantDetailPage },
+    { path: '/disease-detail/:id', component: DiseaseDetailPage },
     { path: '/login', meta: { needsUnAuth: true }, component: Login },
     { path: '/signup', meta: { needsUnAuth: true }, component: SignUp },
     { path: '/:notFound(.*)', component: NotFound }
