@@ -172,10 +172,6 @@ export default {
   font-weight: 600;
 }
 
-.small-btn {
-  /* margin: 0 5px; */
-}
-
 .content-img {
   margin-top: 2rem;
   max-width: 256px;
