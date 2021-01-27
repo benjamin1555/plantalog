@@ -14,12 +14,11 @@ const plantValidationRules = () => {
           variety: req.body.variety
         })
         .then(plant => {
-          if (plant.length > 0) {
-            if (req.method === 'PUT' && plant[0]._id.toString() !== req.body._id.toString()) {
-              return Promise.reject('Cannot update plant: a plant with this name/variety already exists.');
-            } else {
-              return Promise.reject('Cannot update plant: a plant with this name/variety already exists.');
-            }
+          if (plant.length > 0 && req.method !== 'PUT') {
+            return Promise.reject('A plant with this name/variety already exists.');
+          }
+          if (plant.length > 0 && req.method === 'PUT' && plant[0]._id.toString() !== req.body._id.toString()) {
+            return Promise.reject('A plant with this name/variety already exists.');
           }
         });
       }),
