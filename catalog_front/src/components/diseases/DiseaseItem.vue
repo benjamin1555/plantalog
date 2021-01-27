@@ -20,7 +20,7 @@ export default {
       return this.formatString(this.name);
     },
     thumbnailImageLink() {
-      return `http://localhost:3000/images/${this.imagesUrl.thumbnail}`;
+      return `http://api.plantalog.fr/images/${this.imagesUrl.thumbnail}`;
     },
     thumbnailAltImage() {
       return `${this.name}_thumbnail`;

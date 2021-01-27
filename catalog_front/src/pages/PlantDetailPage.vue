@@ -110,7 +110,7 @@ export default {
       return this.fetchInteractions(this.plant.harmfulInteractions);
     },
     regularImageLink() {
-      return `http://localhost:3000/images/${this.plant.imagesUrl.regular}`;
+      return `http://api.plantalog.fr/images/${this.plant.imagesUrl.regular}`;
     },
     editPlantLink() {
       return `/catalog/plants/${this.id}/edit`;
