@@ -114,7 +114,7 @@ export default {
       return this.fetchInteractions(this.plant.harmfulInteractions);
     },
     regularImageLink() {
-      return `http://api.plantalog.fr/images/${this.plant.imagesUrl.regular}`;
+      return `https://api.plantalog.fr/images/${this.plant.imagesUrl.regular}`;
     },
     editPlantLink() {
       return `${this.$route.path}/edit`;

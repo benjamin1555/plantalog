@@ -2,7 +2,7 @@ export default {
   async fetchPlants(context, payload) {
     let searchQuery = payload ? payload.searchQuery : '';
 
-    const response = await fetch(`http://api.plantalog.fr/catalog/plants/?search=${searchQuery}`);
+    const response = await fetch(`https://api.plantalog.fr/catalog/plants/?search=${searchQuery}`);
     const responseData = await response.json();
     const cleanedSearchQuery = searchQuery.includes('&') ? searchQuery.split('&')[0] : searchQuery;
 
@@ -12,7 +12,7 @@ export default {
     context.commit('setPaginationData', responseData);
   },
   async fetchPlant(context, plantId) {
-    const response = await fetch(`http://api.plantalog.fr/catalog/plants/${plantId}`)
+    const response = await fetch(`https://api.plantalog.fr/catalog/plants/${plantId}`)
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
@@ -21,7 +21,7 @@ export default {
   },
   async addPlant(context, data) {
     const formData = createFormData(data);
-    const response = await fetch('http://api.plantalog.fr/catalog/plants', {
+    const response = await fetch('https://api.plantalog.fr/catalog/plants', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${context.rootGetters.token}`
@@ -40,7 +40,7 @@ export default {
   async editPlant(context, data) {
     const formData = createFormData(data);
 
-    const response = await fetch(`http://api.plantalog.fr/catalog/plants/${data._id}`, {
+    const response = await fetch(`https://api.plantalog.fr/catalog/plants/${data._id}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${context.rootGetters.token}`

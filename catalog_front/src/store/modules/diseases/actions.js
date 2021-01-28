@@ -1,13 +1,13 @@
 export default {
   async fetchDiseases(context) {
-    const response = await fetch('http://api.plantalog.fr/catalog/diseases');
+    const response = await fetch('https://api.plantalog.fr/catalog/diseases');
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
     context.commit('setDiseases', responseData.diseases);
   },
   async fetchDisease(context, diseaseId) {
-    const response = await fetch(`http://api.plantalog.fr/catalog/diseases/${diseaseId}`)
+    const response = await fetch(`https://api.plantalog.fr/catalog/diseases/${diseaseId}`)
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
@@ -16,7 +16,7 @@ export default {
   },
   async addDisease(context, data) {
     const formData = createFormData(data);
-    const response = await fetch('http://api.plantalog.fr/catalog/diseases', {
+    const response = await fetch('https://api.plantalog.fr/catalog/diseases', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${context.rootGetters.token}`

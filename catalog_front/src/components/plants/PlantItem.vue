@@ -26,7 +26,7 @@ export default {
       return this.formatString(this.variety);
     },
     thumbnailImageLink() {
-      return `http://api.plantalog.fr/images/${this.imagesUrl.thumbnail}`;
+      return `https://api.plantalog.fr/images/${this.imagesUrl.thumbnail}`;
     },
     thumbnailAltImage() {
       return `${this.species}${this.variety}_thumbnail`;

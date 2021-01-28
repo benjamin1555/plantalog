@@ -2,7 +2,7 @@ let timer;
 
 export default {
   async signup(context, payload) {
-    const response = await fetch('http://api.plantalog.fr/auth/signup', {
+    const response = await fetch('https://api.plantalog.fr/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -19,7 +19,7 @@ export default {
     console.log(responseData);
   },
   async login(context, payload) {
-    const response = await fetch('http://api.plantalog.fr/auth/login', {
+    const response = await fetch('https://api.plantalog.fr/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
