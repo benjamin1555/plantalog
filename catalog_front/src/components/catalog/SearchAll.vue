@@ -1,8 +1,5 @@
 <template>
   <div class="search-all">
-    <base-dialog :show="!!error" title="Une erreur s'est produite" @close="handleError">
-      <p>{{ error }}</p>
-    </base-dialog>
     <base-button @click="displayAllResults" mode="outline"><i :class="searchAllDisplayBtnIcon"></i>{{ searchAllDisplayBtnText }}</base-button>
     <base-card v-if="searchAllResultsVisible">
       <div class="components-control">
@@ -27,7 +24,6 @@ export default {
   data() {
     return {
       selectedComponent: 'plants-all',
-      error: null
     };
   },
   computed: {
@@ -53,10 +49,6 @@ export default {
     }),
     setSelectedComponent(component) {
       this.selectedComponent = component;
-    },
-    handleError() {
-      this.error = null;
-      this.redirectToCatalog();
     }
   },
   updated() {

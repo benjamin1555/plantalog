@@ -32,7 +32,7 @@
         <div class="form-control plant-date" :class="{ invalid: !plantationDate.end.isValid }">
           <label for="plantationDateEnd">Date fin de plantation</label>
           <input type="date" id="plantationDateEnd" v-model="plantationDate.end.val" @blur="clearInvalidDateField('plantationDate', 'end')">
-          <p v-if="!plantationDate.end.isValid">La date de fin de plantation doit être renseignée.</p>
+          <p v-if="!plantationDate.end.isValid">La date de fin de plantation doit être renseignée et postérieure à la date de début de plantation.</p>
         </div>
       </div>
       <div class="dates">
@@ -206,10 +206,15 @@ export default {
         this.plantationDate.start.isValid = false;
         this.formIsValid = false;
       }
-      if (this.plantationDate.end.val === '') {
+      if (this.plantationDate.end.val === '' || !this.isEndDateValid()) {
         this.plantationDate.end.isValid = false;
         this.formIsValid = false;
       }
+    },
+    isEndDateValid() {
+      const startDate = new Date(this.plantationDate.start.val).getTime();
+      const endDate = new Date(this.plantationDate.end.val).getTime();
+      return startDate < endDate;
     },
     selectImage() {
       this.image = this.$refs.image.files[0];
