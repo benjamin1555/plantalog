@@ -7,7 +7,7 @@
     <div v-else-if="!isLoading && hasPlantableNextMonth">
       <base-card>
         <ul>
-          <h3>Pour les 30 prochains jours, voici ce qu'il est possible de planter maintenant :</h3>
+          <h3>Pour les 30 prochains jours, voici ce qu'il est possible de planter dès aujourd'hui :</h3>
           <plant-item
             v-for="plant in plantableNextMonthNow"
             :key="plant._id"
@@ -81,7 +81,7 @@ export default {
 
       try {
         await this.fetchAllPlants();
-        this.fetchPlantableNextMonth();
+        await this.fetchPlantableNextMonth();
         this.isLoading = false;
       } catch (err) {
         this.isLoading = false;

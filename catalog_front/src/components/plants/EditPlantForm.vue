@@ -143,10 +143,10 @@ export default {
       'selectedBeneficialInteractions',
       'selectedHarmfulInteractions'
     ]),
-    ...mapGetters('diseases', {
-      lastAddedDisease: 'lastAddedDisease',
-      selectedDiseases: 'selectedDiseases'
-    }),
+    ...mapGetters('diseases', [
+      'lastAddedDisease',
+      'selectedDiseases'
+    ]),
     createDiseaseBtnIcon() {
       return this.diseaseFormVisible ? 'fas fa-angle-double-up' : 'fas fa-plus' ;
     },
@@ -251,8 +251,8 @@ export default {
 
       const formData = {
         _id: this.plantId,
-        species: this.species.val.toLowerCase().trim(),
-        variety: this.variety.val.toLowerCase().trim(),
+        species: this.species.val.toLowerCase(),
+        variety: this.variety.val.toLowerCase(),
         image: this.image,
         plantationType: this.plantationType.val.toLowerCase(),
         plantationDate: {
@@ -266,7 +266,7 @@ export default {
         beneficialInteractions: this.selectedBeneficialInteractions,
         harmfulInteractions: this.selectedHarmfulInteractions,
         diseases: this.selectedDiseases,
-        notes: this.notes.val.trim()
+        notes: this.notes.val
       };
 
       try {
@@ -275,11 +275,7 @@ export default {
         const currentPage = `/${this.$route.path.split('/')[1]}/plants/${this.plantId}`;
         this.$router.replace(currentPage);
       } catch (err) {
-        if (err.message === 'Failed to fetch') {
-          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
-        } else {
-          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
-        }
+        this.handleHttpError(err);
       }
     },
     async loadPlants() {
@@ -290,11 +286,14 @@ export default {
         await this.fetchPlant(this.plantId);
         this.populateFormValues();
       } catch (err) {
-        if (err.message === 'Failed to fetch') {
+        this.handleHttpError(err);
+      }
+    },
+    handleHttpError(err) {
+      if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
-        } else {
-          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
-        }
+      } else {
+        this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
       }
     },
     handleError() {

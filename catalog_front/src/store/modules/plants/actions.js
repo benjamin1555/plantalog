@@ -17,7 +17,6 @@ export default {
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
-    console.log(responseData);
     context.commit('setPlant', responseData.plant);
   },
   async addPlant(context, data) {
@@ -32,7 +31,6 @@ export default {
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
-    console.log(responseData);
     context.commit('setPlant', {
       _id: responseData.savedPlant._id,
       ...data
@@ -50,8 +48,7 @@ export default {
     })
     const responseData = await response.json();
 
-    handleBadResponse(response, responseData);
-    console.log(responseData);
+    handleBadResponse(response, responseData)
     context.commit('setPlant');
   },
   clearSelectedInteractions(context) {

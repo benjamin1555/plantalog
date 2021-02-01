@@ -16,7 +16,6 @@ export default {
 
     const responseData = await response.json();
     handleBadResponse(response, responseData);
-    console.log(responseData);
   },
   async login(context, payload) {
     const response = await fetch('https://api.plantalog.fr/auth/login', {

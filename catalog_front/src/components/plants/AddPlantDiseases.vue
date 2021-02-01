@@ -63,11 +63,6 @@ export default {
       'addSelectedDisease',
       'removeSelectedDisease'
     ]),
-    initializeInteractionsValues() {
-      if (this.knownInteractions && this.knownInteractions.length > 0) {
-        this.selectedValues = this.knownInteractions.map(({ _id }) => _id);
-      }
-    },
     onChange(event) {
       const inputValue = event.target.value;
       this.addSelectedDisease({ _id: inputValue });
@@ -80,7 +75,6 @@ export default {
 
       try {
         await this.fetchDiseases()
-        this.initializeInteractionsValues();
       } catch (err) {
         if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';

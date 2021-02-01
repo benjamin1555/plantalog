@@ -38,8 +38,8 @@ export default {
   methods: {
     formatString(str) {
       const firstLetter = str.substring(0, 1).toUpperCase();
-      const restOfString = str.substring(1);
-      return firstLetter + restOfString;
+      const restOfWord = str.substring(1);
+      return firstLetter + restOfWord;
     }
   }
 };

@@ -30,8 +30,7 @@ export default {
   },
   props: [
     'selectedInteractionsName',
-    'defaultOption',
-    'knownInteractions'
+    'defaultOption'
   ],
   computed: {
     ...mapGetters('plants', [

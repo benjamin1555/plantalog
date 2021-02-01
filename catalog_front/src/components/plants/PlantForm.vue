@@ -219,10 +219,10 @@ export default {
       if (!this.formIsValid) return;
 
       const formData = {
-        species: this.species.val.toLowerCase().trim(),
-        variety: this.variety.val.toLowerCase().trim(),
+        species: this.species.val.toLowerCase(),
+        variety: this.variety.val.toLowerCase(),
         image: this.image,
-        plantationType: this.plantationType.val.toLowerCase().trim(),
+        plantationType: this.plantationType.val.toLowerCase(),
         plantationDate: {
           start: this.plantationDate.start.val,
           end: this.plantationDate.end.val,
@@ -234,29 +234,28 @@ export default {
         beneficialInteractions: this.selectedBeneficialInteractions,
         harmfulInteractions: this.selectedHarmfulInteractions,
         diseases: this.selectedDiseases,
-        notes: this.notes.val.trim()
+        notes: this.notes.val
       };
 
       try {
         await this.$store.dispatch('plants/addPlant', formData);
         this.$router.replace(`/catalog/plants/${this.plant._id}`);
       } catch (err) {
-        if (err.message === 'Failed to fetch') {
-          this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
-        } else {
-          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
-        }
+        this.handleHttpError(err);
       }
     },
     async loadPlants() {
       try {
         await this.$store.dispatch('plants/fetchPlants', { searchQuery: '&pagination=false' });
       } catch (err) {
-        if (err.message === 'Failed to fetch') {
+        this.handleHttpError(err);
+      }
+    },
+    handleHttpError(err) {
+      if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
-        } else {
-          this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
-        }
+      } else {
+        this.error = err.message || 'Une erreur vient de produire. Merci de réessayer.';
       }
     },
     handleError() {

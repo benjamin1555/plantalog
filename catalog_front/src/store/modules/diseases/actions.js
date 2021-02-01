@@ -12,7 +12,6 @@ export default {
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
-    console.log(responseData);
     context.commit('setDisease', responseData.disease);
   },
   async addDisease(context, data) {
@@ -27,7 +26,6 @@ export default {
     const responseData = await response.json();
 
     handleBadResponse(response, responseData);
-    console.log(responseData);
     context.commit('setLastAddedDisease', responseData.savedDisease);
   },
   clearLastAddedDisease(context) {

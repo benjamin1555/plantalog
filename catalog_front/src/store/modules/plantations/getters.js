@@ -1,9 +1,11 @@
 export default {
   plantableNextMonthNow(state) {
-    return filterAndSortPlantableNow(state.plantableNextMonth);
+    return state.plantableNextMonth.filter(plant => plant.isPlantableNow)
+      .sort((a, b) => a.canBePlantedUntil - b.canBePlantedUntil);
   },
   plantableNextMonthFuture(state) {
-    return filterAndSortNotPlantableNow(state.plantableNextMonth);
+    return state.plantableNextMonth.filter(plant => !plant.isPlantableNow)
+      .sort((a, b) => a.canBePlantedIn - b.canBePlantedIn);
   },
   hasPlantableNextMonth(state) {
     return state.plantableNextMonth.length > 0;
@@ -15,15 +17,3 @@ export default {
     return state.plantableInFuture.length > 0;
   }
 };
-
-// Private
-
-function filterAndSortPlantableNow(plants) {
-  return plants.filter(plant => plant.isPlantableNow)
-    .sort((a, b) => a.canBePlantedUntil - b.canBePlantedUntil);
-}
-
-function filterAndSortNotPlantableNow(plants) {
-  return plants.filter(plant => !plant.isPlantableNow)
-    .sort((a, b) => a.canBePlantedIn - b.canBePlantedIn);
-}

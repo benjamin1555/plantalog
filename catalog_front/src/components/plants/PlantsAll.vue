@@ -50,6 +50,7 @@ export default {
     }),
     async fetchPlants() {
       this.isLoading = true;
+
       try {
         await this.fetchAllPlants();
         this.isLoading = false

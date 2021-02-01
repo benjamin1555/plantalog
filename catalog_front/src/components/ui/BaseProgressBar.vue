@@ -54,7 +54,6 @@ export default {
 
 .wrapper p {
   margin: auto 0;
-  /* text-align: center; */
 }
 
 .progress {
