@@ -9,17 +9,16 @@
     <base-card class="card">
       <form @submit.prevent="submitForm">
       <h2>Se connecter</h2>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !email.isValid }">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model.trim="email">
+          <input type="email" id="email" v-model.trim="email.val" @blur="clearInvalidField('email')">
+          <p v-if="!email.isValid">L'adresse email doit être renseigné.</p>
         </div>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !password.isValid }">
           <label for="password">Mot de passe</label>
-          <input type="password" id="password" v-model.trim="password">
+          <input type="password" id="password" v-model.trim="password.val" @blur="clearInvalidField('password')">
+          <p v-if="!password.isValid">Le mot de passe doit être renseigné.</p>
         </div>
-        <p class="invalid-form" v-if="!formIsValid">
-          L'adresse email et le mot de passe doivent être renseignés.
-        </p>
         <div class="bottom-links">
           <base-button>Se connecter</base-button>
           <router-link to="/signup">Créer un compte</router-link>
@@ -33,27 +32,48 @@
 export default {
   data() {
     return {
-      email: '',
-      password: '',
+      email: {
+        val: '',
+        isValid: true
+      },
+      password: {
+        val: '',
+        isValid: true
+      },
       formIsValid: true,
       isLoading: false,
       error: null
     };
   },
   methods: {
+    clearInvalidField(input) {
+      this[input].isValid = true;
+    },
+    validateForm() {
+      this.formIsValid = true;
+      if (this.email.val === '') {
+        this.email.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.password.val === '') {
+        this.password.isValid = false;
+        this.formIsValid = false;
+      }
+    },
     async submitForm() {
-      this.formValidation();
+      this.validateForm();
+      if (!this.formIsValid) return;
       this.isLoading = true;
 
       try {
-        if (this.formIsValid) {
-          await this.$store.dispatch('login', {
-            email: this.email,
-            password: this.password
-          });
-          this.$router.replace('/');
-        }
+        await this.$store.dispatch('login', {
+          email: this.email.val,
+          password: this.password.val
+        });
+        this.isLoading = false;
+        this.$router.replace('/');
       } catch (err) {
+        this.isLoading = false;
         if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
         } else {
@@ -61,13 +81,6 @@ export default {
         }
       }
       this.isLoading = false;
-    },
-    formValidation() {
-      this.formIsValid = true;
-      if (!this.email || !this.password) {
-        this.formIsValid = false;
-        return;
-      }
     },
     handleError() {
       this.error = null;
@@ -130,7 +143,12 @@ textarea:focus {
   outline: none;
 }
 
-p.invalid-form {
+.invalid label,
+.invalid p {
   color: red;
+}
+
+.invalid input {
+  border: 1px solid red;
 }
 </style>
