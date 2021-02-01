@@ -5,6 +5,9 @@ export default {
   setDisease(state, payload) {
     state.disease = payload;
   },
+  clearDisease(state) {
+    state.disease = null;
+  },
   setLastAddedDisease(state, payload) {
     state.lastAddedDisease = payload;
   },

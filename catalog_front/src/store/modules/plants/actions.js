@@ -12,6 +12,7 @@ export default {
     context.commit('setPaginationData', responseData);
   },
   async fetchPlant(context, plantId) {
+    context.commit('clearPlant');
     const response = await fetch(`https://api.plantalog.fr/catalog/plants/${plantId}`)
     const responseData = await response.json();
 

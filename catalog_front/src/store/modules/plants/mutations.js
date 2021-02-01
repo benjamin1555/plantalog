@@ -8,6 +8,9 @@ export default {
   setPlant(state, payload) {
     state.plant = payload;
   },
+  clearPlant(state) {
+    state.plant = null;
+  },
   setPaginationData(state, payload) {
     state.paginationData = {
       currentPage: payload.currentPage,

@@ -7,6 +7,7 @@ export default {
     context.commit('setDiseases', responseData.diseases);
   },
   async fetchDisease(context, diseaseId) {
+    context.commit('clearDisease');
     const response = await fetch(`https://api.plantalog.fr/catalog/diseases/${diseaseId}`)
     const responseData = await response.json();
 
