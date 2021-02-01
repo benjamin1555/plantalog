@@ -1,17 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Plantation from './pages/Plantation.vue';
-import Catalog from './pages/Catalog.vue';
-import AddPlant from './pages/AddPlant.vue';
-import PlantDetail from './components/plants/PlantDetail.vue';
-import PlantDetailPage from './pages/PlantDetailPage.vue';
-import EditPlant from './pages/EditPlant.vue';
-import DiseaseDetail from './components/diseases/DiseaseDetail.vue';
-import DiseaseDetailPage from './pages/DiseaseDetailPage.vue';
-import Login from './pages/Login.vue';
-import SignUp from './pages/SignUp.vue';
-import NotFound from './pages/NotFound.vue';
 import store from './store/index.js';
+
+const Plantation = () => import('./pages/Plantation.vue');
+const Catalog = () => import('./pages/Catalog.vue');
+const AddPlant = () => import('./pages/AddPlant.vue');
+const PlantDetail = () => import('./components/plants/PlantDetail.vue');
+const PlantDetailPage = () => import('./pages/PlantDetailPage.vue');
+const EditPlant = () => import('./pages/EditPlant.vue');
+const DiseaseDetail = () => import('./components/diseases/DiseaseDetail.vue');
+const DiseaseDetailPage = () => import('./pages/DiseaseDetailPage.vue');
+const Login = () => import('./pages/Login.vue');
+const SignUp = () => import('./pages/SignUp.vue');
+const NotFound = () => import('./pages/NotFound.vue');
 
 const router = createRouter({
   history: createWebHistory(),
