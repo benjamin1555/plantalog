@@ -9,26 +9,26 @@
     <base-card class="card">
       <form @submit.prevent="submitForm">
       <h2>Création de compte</h2>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !email.isValid }">
           <label for="email">Email</label>
-          <input type="email" id="email" v-model.trim="email">
+          <input type="email" id="email" v-model.trim="email.val" @blur="clearInvalidField('email')">
+          <p v-if="!email.isValid">L'adresse email doit être renseigné.</p>
         </div>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !username.isValid }">
           <label for="username">Nom d'utilisateur</label>
-          <input type="text" id="username" v-model.trim="username">
+          <input type="text" id="username" v-model.trim="username.val" @blur="clearInvalidField('username')">
+          <p v-if="!username.isValid">Le nom d'utilisateur doit être renseigné.</p>
         </div>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !password.isValid }">
           <label for="password">Mot de passe</label>
-          <input type="password" id="password" v-model.trim="password">
+          <input type="password" id="password" v-model.trim="password.val" @blur="clearInvalidField('password')">
+          <p v-if="!password.isValid">Le mot de passe doit être renseigné et contenir au moins 8 caractères, une majuscule et un chiffre.</p>
         </div>
-        <div class="form-control">
+        <div class="form-control" :class="{ invalid: !passwordConfirmation.isValid }">
           <label for="password-confirmation">Mot de passe (confirmation)</label>
-          <input type="password" id="password-confirmation" v-model.trim="passwordConfirmation">
+          <input type="password" id="password-confirmation" v-model.trim="passwordConfirmation.val" @blur="clearInvalidField('passwordConfirmation')">
+          <p v-if="!passwordConfirmation.isValid">La confirmation de mot de passe doit correspondre au mot de passe.</p>
         </div>
-        <p class="invalid-form" v-if="!formIsValid">
-          L'adresse email et le nom d'utilisateur doivent être renseignés. <br>
-          Le mot de passe et la confirmation doivent être identiques et d'une longueur supérieure à 5 caractères.
-        </p>
         <div class="bottom-links">
           <base-button>Créer compte</base-button>
         </div>
@@ -41,33 +41,66 @@
 export default {
   data() {
     return {
-      email: '',
-      username: '',
-      password: '',
-      passwordConfirmation: '',
+      email: {
+        val: '',
+        isValid: true
+      },
+      username: {
+        val: '',
+        isValid: true
+      },
+      password: {
+        val: '',
+        isValid: true
+      },
+      passwordConfirmation: {
+        val: '',
+        isValid: true
+      },
       formIsValid: true,
       isLoading: false,
       error: null
     };
   },
   methods: {
+    clearInvalidField(input) {
+      this[input].isValid = true;
+    },
+    validateForm() {
+      this.formIsValid = true;
+      if (this.email.val === '') {
+        this.email.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.username.val === '') {
+        this.username.isValid = false;
+        this.formIsValid = false;
+      }
+      if (!/\d/.test(this.password.val) || !/[A-Z]/.test(this.password.val) || this.password.val.length < 8) {
+        this.password.isValid = false;
+        this.formIsValid = false;
+      }
+      if (this.passwordConfirmation.val === '' || this.passwordConfirmation.val !== this.password.val) {
+        this.passwordConfirmation.isValid = false;
+        this.formIsValid = false;
+      }
+    },
     async submitForm() {
-      this.formValidation();
+      this.validateForm();
+      if (!this.formIsValid) return;
       this.isLoading = true;
 
       try {
-        if (this.formIsValid) {
-          await this.$store.dispatch('signup', {
-            email: this.email,
-            username: this.username,
-            password: this.password
-          });
-          await this.$store.dispatch('login', {
-            email: this.email,
-            password: this.password
-          });
-          this.$router.replace('/');
-        }
+        await this.$store.dispatch('signup', {
+          email: this.email.val,
+          username: this.username.val,
+          password: this.password.val
+        });
+        await this.$store.dispatch('login', {
+          email: this.email.val,
+          password: this.password.val
+        });
+        this.$router.replace('/');
       } catch (err) {
         if (err.message === 'Failed to fetch') {
           this.error = 'Impossible de se connecter au serveur. Merci de vérifier votre connexion.';
@@ -76,21 +109,6 @@ export default {
         }
       }
       this.isLoading = false;
-    },
-    formValidation() {
-      this.formIsValid = true;
-      if (!this.email || !this.username) {
-        this.formIsValid = false;
-        return;
-      }
-      if (this.password.length < 6 || this.passwordConfirmation.length < 6) {
-        this.formIsValid = false;
-        return;
-      }
-      if (this.password !== this.passwordConfirmation) {
-        this.formIsValid = false;
-        return;
-      }
     },
     handleError() {
       this.error = null;
@@ -154,7 +172,12 @@ textarea:focus {
   outline: none;
 }
 
-p.invalid-form {
+.invalid label,
+.invalid p {
   color: red;
+}
+
+.invalid input {
+  border: 1px solid red;
 }
 </style>
