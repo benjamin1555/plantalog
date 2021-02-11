@@ -136,6 +136,7 @@ export default {
     },
     handleError() {
       this.error = null;
+      this.$router.replace('/');
     }
   },
   created() {

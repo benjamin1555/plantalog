@@ -129,8 +129,7 @@ export default {
     },
     closeDialog() {
       this.detailsVisible = false;
-      const currentPage = '/' + this.$route.path.split('/')[1];
-      this.$router.replace(currentPage);
+      this.$router.replace(this.getCurrentPageLink());
     },
     async fetchPlant() {
       this.isLoading = true;
@@ -149,6 +148,10 @@ export default {
     },
     handleError() {
       this.error = null;
+      this.$router.replace(this.getCurrentPageLink());
+    },
+    getCurrentPageLink() {
+      return '/' + this.$route.path.split('/')[1];
     }
   },
   created() {
