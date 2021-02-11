@@ -24,7 +24,7 @@
           <option value="" selected>-- Ajoutez un type de plantation --</option>
           <option value="bouture">Bouture</option>
           <option value="graine">Graine</option>
-          <option value="semie">Semie</option>
+          <option value="semie">Semi</option>
         </select>
         <p v-if="!plantationType.isValid">Le type de plantation doit être renseigné.</p>
       </div>

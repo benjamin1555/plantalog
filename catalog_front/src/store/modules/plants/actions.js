@@ -1,3 +1,5 @@
+import handleBadResponse from '../../../util/badResponseHandler';
+
 export default {
   async fetchPlants(context, payload) {
     let searchQuery = payload ? payload.searchQuery : '';
@@ -100,24 +102,6 @@ const createFormData = data => {
   formData.append('notes', data.notes);
 
   return formData;
-};
-
-const handleBadResponse = (response, responseData) => {
-  if (!response.ok && responseData.statusCode === 404) {
-    const error = new Error('Aucune plante ne correspond à ce que vous cherchez.');
-    throw error;
-  }
-
-  if (!response.ok && responseData.statusCode === 422) {
-    const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
-    const error = new Error(`Erreur de validation: ${validationMessage}`);
-    throw error;
-  }
-
-  if (!response.ok && responseData.statusCode === 500) {
-    const error = new Error('Une erreur interne vient de se produire. (Code 500)');
-    throw error;
-  }
 };
 
 const checkAndHidePartialResults = context => {

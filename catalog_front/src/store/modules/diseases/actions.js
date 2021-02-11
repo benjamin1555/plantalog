@@ -1,3 +1,5 @@
+import handleBadResponse from '../../../util/badResponseHandler';
+
 export default {
   async fetchDiseases(context) {
     const response = await fetch('https://api.plantalog.fr/catalog/diseases');
@@ -50,22 +52,4 @@ const createFormData = data => {
   formData.append('image', data.image);
   formData.append('treatment', data.treatment);
   return formData;
-};
-
-const handleBadResponse = (response, responseData) => {
-  if (!response.ok && responseData.statusCode === 404) {
-    const error = new Error('Aucune maladie ne correspond à ce que vous cherchez.');
-    throw error;
-  }
-
-  if (!response.ok && responseData.statusCode === 422) {
-    const validationMessage = responseData.data.map(el => `${Object.values(el)}`);
-    const error = new Error(`Erreur de validation: ${validationMessage}`);
-    throw error;
-  }
-
-  if (!response.ok && responseData.statusCode === 500) {
-    const error = new Error('Une erreur interne vient de se produire. (Code 500)');
-    throw error;
-  }
 };

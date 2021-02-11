@@ -21,7 +21,7 @@
       <div class="form-control" :class="{ invalid: !treatment.isValid }">
         <label for="treatment">Traitement</label>
         <input type="text" id="treatment" v-model.trim="treatment.val" @blur="clearInvalidField('treatment')">
-        <p v-if="!name.isValid">Les traitement doit être renseigné.</p>
+        <p v-if="!name.isValid">Les traitement doivent être renseignés.</p>
       </div>
       <p v-if="!formIsValid" class="invalid">Des champs sont manquants.</p>
       <div class="submit-btn">
